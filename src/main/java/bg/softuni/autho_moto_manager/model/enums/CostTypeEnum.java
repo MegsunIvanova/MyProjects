@@ -1,0 +1,16 @@
+package bg.softuni.autho_moto_manager.model.enums;
+
+public enum CostTypeEnum {
+    VEHICLE_AUCTION_PRICE,
+    CONTAINER,
+    AGENT_COMMISSION,
+    AUCTION_COMMISSION,
+    TRANSPORT_EXTERNAL,
+    TRANSPORT_INTERNAL,
+    VAT_DUTY,
+    BANK_FEES,
+    TECHNICAL_INSPECTION,
+    REPAIRMENT_SERVICES,
+    REPAIRMENT_PARTS,
+    OTHER_COSTS
+}
