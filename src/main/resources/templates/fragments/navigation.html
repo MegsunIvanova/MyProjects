@@ -9,6 +9,23 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav .ms-md-auto mb-2 mb-lg-0">
+
+                <li class="nav-item dropdown ms-3" data-bs-theme="dark" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle fs-4" th:href="@{/}" id="navbarDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Add
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item fs-5"
+                           sec:authorize="isAuthenticated()"
+                           th:href="@{models/add}">
+                            Add Model</a>
+                        <a class="dropdown-item fs-5" href="#">Add Vehicle</a>
+<!--                        <div class="dropdown-divider"></div>-->
+<!--                        <a class="dropdown-item" href="#">Something else here</a>-->
+                    </div>
+                </li>
+
                 <li class="nav-item ms-3" sec:authorize="!isAuthenticated()">
                     <a class="nav-link fs-4" aria-current="page"
                        th:href="@{/users/login}">Login</a>

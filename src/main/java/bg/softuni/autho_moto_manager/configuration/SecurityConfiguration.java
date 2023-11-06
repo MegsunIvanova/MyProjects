@@ -1,5 +1,6 @@
 package bg.softuni.autho_moto_manager.configuration;
 
+import bg.softuni.autho_moto_manager.model.enums.UserRoleEnum;
 import bg.softuni.autho_moto_manager.repository.UserRepository;
 import bg.softuni.autho_moto_manager.service.impl.ApplicationUserDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -29,6 +30,7 @@ public class SecurityConfiguration {
                             .requestMatchers("/", "/users/login", "/users/register", "users/login-error")
                             .permitAll()
                             .requestMatchers("/error").permitAll()
+                            .requestMatchers("/models/add").hasRole(UserRoleEnum.USER.name())
                             .anyRequest().authenticated();
                 })
                 .formLogin(formLogin -> {

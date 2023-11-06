@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" ,
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head}"></head>
+
+<body>
+<header>
+  <nav th:replace="~{fragments/navigation}">Navigation</nav>
+</header>
+
+<!--TODO:-->
+
+<div class="container-fluid">
+  <h5 class="text-center">Woops! Something went terribly wrong!
+  We are looking to see what happened!</h5>
+  <div><img th:src="@{/images/parts.png}" alt="Parts"></div>
+  <br>
+  <a th:href="@{/}">Go home ...</a>
+</div>
+
+</body>
+
+</html>

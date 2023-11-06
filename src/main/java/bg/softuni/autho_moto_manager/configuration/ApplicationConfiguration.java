@@ -5,7 +5,7 @@ import bg.softuni.autho_moto_manager.model.entity.RoleEntity;
 import bg.softuni.autho_moto_manager.model.entity.UserEntity;
 import bg.softuni.autho_moto_manager.model.enums.UserRoleEnum;
 import bg.softuni.autho_moto_manager.repository.RoleRepository;
-import bg.softuni.autho_moto_manager.service.exceptions.RoleNotFoundException;
+import bg.softuni.autho_moto_manager.service.exceptions.DatabaseException;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.Provider;
@@ -31,7 +31,7 @@ public class ApplicationConfiguration {
 
         //UserRegistrationDTO -> UserEntity
         Provider<Set<RoleEntity>> roleProvider = p -> Set.of(roleRepository.findByRole(UserRoleEnum.USER)
-                .orElseThrow(() -> new RoleNotFoundException("User role 'USER' was not found!")));
+                .orElseThrow(() -> new DatabaseException("User role 'USER' was not found in database!")));
 
         Converter<String, String> passwordConverter =
                 ctx -> ctx.getSource() == null

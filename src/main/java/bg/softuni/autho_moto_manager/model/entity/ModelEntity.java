@@ -16,7 +16,7 @@ public class ModelEntity extends BaseEntity {
     private VehicleTypeEnum type;
 
     @ManyToOne(optional = false)
-    private MakeEntity maker;
+    private MakerEntity maker;
 
     public ModelEntity() {
     }
@@ -39,11 +39,11 @@ public class ModelEntity extends BaseEntity {
         return this;
     }
 
-    public MakeEntity getMaker() {
+    public MakerEntity getMaker() {
         return maker;
     }
 
-    public ModelEntity setMaker(MakeEntity maker) {
+    public ModelEntity setMaker(MakerEntity maker) {
         this.maker = maker;
         return this;
     }
