@@ -15,14 +15,14 @@ public class VehicleEntity extends BaseEntity {
     @ManyToOne(optional = false)
     private ModelEntity model;
 
-    @Column(name = "vin_lot_number", unique = true)
-    private String vinLotNumber;
+    @Column(name = "vin", unique = true)
+    private String vin;
 
     @Column(nullable = false)
     private Integer year;
 
     @Column(nullable = false)
-    private Long odometerInKm;
+    private Integer odometerInKm;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -55,12 +55,12 @@ public class VehicleEntity extends BaseEntity {
         return this;
     }
 
-    public String getVinLotNumber() {
-        return vinLotNumber;
+    public String getVin() {
+        return vin;
     }
 
-    public VehicleEntity setVinLotNumber(String vinLotNumber) {
-        this.vinLotNumber = vinLotNumber;
+    public VehicleEntity setVinLotNumber(String vin) {
+        this.vin = vin;
         return this;
     }
 
@@ -73,11 +73,11 @@ public class VehicleEntity extends BaseEntity {
         return this;
     }
 
-    public Long getOdometerInKm() {
+    public Integer getOdometerInKm() {
         return odometerInKm;
     }
 
-    public VehicleEntity setOdometerInKm(Long odometerInKm) {
+    public VehicleEntity setOdometerInKm(Integer odometerInKm) {
         this.odometerInKm = odometerInKm;
         return this;
     }
@@ -127,7 +127,7 @@ public class VehicleEntity extends BaseEntity {
     public boolean equals(Object other) {
         if (this == other) return true;
         if (!(other instanceof VehicleEntity that)) return false;
-        return Objects.equals(getId(),that.getId());
+        return Objects.equals(getId(), that.getId());
     }
 
 }

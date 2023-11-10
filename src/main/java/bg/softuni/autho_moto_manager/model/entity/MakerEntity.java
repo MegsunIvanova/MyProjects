@@ -19,6 +19,11 @@ public class MakerEntity extends BaseEntity {
         this.models = new HashSet<>();
     }
 
+    public MakerEntity(String name) {
+        this();
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MakerRepository extends JpaRepository<MakerEntity, Long> {
@@ -14,4 +15,6 @@ public interface MakerRepository extends JpaRepository<MakerEntity, Long> {
             "ORDER BY size(m.models) DESC," +
             "m.name ASC ")
     List<MakerEntity> findAllOrdered ();
+
+    Optional<MakerEntity> findByName(String name);
 }

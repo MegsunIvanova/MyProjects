@@ -10,3 +10,7 @@ INSERT INTO makers (id, name)
 VALUES (1, 'BMW'),
        (2, 'YAMAHA'),
        (3, 'AUDI');
+
+INSERT INTO models (id, model, type, maker_id)
+VALUES (1, 'S 1000 RR', 'MOTORCYCLE', 1),
+       (2, 'A6', 'AUTOMOBILE', 3);

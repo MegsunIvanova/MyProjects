@@ -1,6 +1,7 @@
 package bg.softuni.autho_moto_manager.model.entity;
 
 import bg.softuni.autho_moto_manager.model.enums.VehicleTypeEnum;
+import bg.softuni.autho_moto_manager.model.validation.UniqueModelName;
 import jakarta.persistence.*;
 
 import java.util.Objects;

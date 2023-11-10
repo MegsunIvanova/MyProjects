@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                             .requestMatchers("/", "/users/login", "/users/register", "users/login-error")
                             .permitAll()
                             .requestMatchers("/error").permitAll()
-                            .requestMatchers("/models/add").hasRole(UserRoleEnum.USER.name())
+                            .requestMatchers("/models/add").hasRole(UserRoleEnum.ADMIN.name())
                             .anyRequest().authenticated();
                 })
                 .formLogin(formLogin -> {
