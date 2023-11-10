@@ -38,7 +38,7 @@ public class ModelController {
         List<String> makersNames = modelService.getAllMakersNamesOrdered();
         model.addAttribute("makersNames", makersNames);
 
-        return "add-vehicle-model";
+        return "add-model";
     }
 
     @PostMapping("/add")

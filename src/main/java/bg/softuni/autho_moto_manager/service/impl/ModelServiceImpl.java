@@ -1,9 +1,9 @@
 package bg.softuni.autho_moto_manager.service.impl;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.CreateModelDTO;
-import bg.softuni.autho_moto_manager.model.entity.MakerEntity;
+import bg.softuni.autho_moto_manager.model.entity.MakeEntity;
 import bg.softuni.autho_moto_manager.model.entity.ModelEntity;
-import bg.softuni.autho_moto_manager.repository.MakerRepository;
+import bg.softuni.autho_moto_manager.repository.MakeRepository;
 import bg.softuni.autho_moto_manager.repository.ModelRepository;
 import bg.softuni.autho_moto_manager.service.ModelService;
 import org.modelmapper.ModelMapper;
@@ -13,22 +13,22 @@ import java.util.List;
 
 @Service
 public class ModelServiceImpl implements ModelService {
-    private final MakerRepository makerRepository;
+    private final MakeRepository makeRepository;
     private final ModelRepository modelRepository;
     private final ModelMapper modelMapper;
 
-    public ModelServiceImpl(MakerRepository makerRepository, ModelRepository modelRepository, ModelMapper modelMapper) {
-        this.makerRepository = makerRepository;
+    public ModelServiceImpl(MakeRepository makeRepository, ModelRepository modelRepository, ModelMapper modelMapper) {
+        this.makeRepository = makeRepository;
         this.modelRepository = modelRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public List<String> getAllMakersNamesOrdered() {
-        return makerRepository
+        return makeRepository
                 .findAllOrdered()
                 .stream()
-                .map(MakerEntity::getName)
+                .map(MakeEntity::getName)
                 .toList();
     }
 

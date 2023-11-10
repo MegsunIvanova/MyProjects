@@ -6,11 +6,14 @@ INSERT INTO users_roles (users_id, roles_id)
 VALUES (1, 1),
        (1, 2);
 
-INSERT INTO makers (id, name)
+INSERT INTO makes (id, name)
 VALUES (1, 'BMW'),
        (2, 'YAMAHA'),
        (3, 'AUDI');
 
-INSERT INTO models (id, model, type, maker_id)
+INSERT INTO models (id, model, type, make_id)
 VALUES (1, 'S 1000 RR', 'MOTORCYCLE', 1),
-       (2, 'A6', 'AUTOMOBILE', 3);
+       (2, 'A6', 'AUTOMOBILE', 3),
+       (3, '550 I', 'AUTOMOBILE', 1),
+       (4, 'Q5 PREMIUM', 'AUTOMOBILE', 3),
+       (5, 'YZFR1', 'MOTORCYCLE', 2);

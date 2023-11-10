@@ -2,15 +2,14 @@ package bg.softuni.autho_moto_manager.configuration;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.CreateModelDTO;
 import bg.softuni.autho_moto_manager.model.dto.binding.UserRegisterDTO;
-import bg.softuni.autho_moto_manager.model.entity.MakerEntity;
+import bg.softuni.autho_moto_manager.model.entity.MakeEntity;
 import bg.softuni.autho_moto_manager.model.entity.ModelEntity;
 import bg.softuni.autho_moto_manager.model.entity.RoleEntity;
 import bg.softuni.autho_moto_manager.model.entity.UserEntity;
 import bg.softuni.autho_moto_manager.model.enums.UserRoleEnum;
-import bg.softuni.autho_moto_manager.repository.MakerRepository;
+import bg.softuni.autho_moto_manager.repository.MakeRepository;
 import bg.softuni.autho_moto_manager.repository.RoleRepository;
 import bg.softuni.autho_moto_manager.service.exceptions.DatabaseException;
-import bg.softuni.autho_moto_manager.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.Provider;
@@ -24,12 +23,12 @@ import java.util.Set;
 public class ApplicationConfiguration {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MakerRepository makerRepository;
+    private final MakeRepository makeRepository;
 
-    public ApplicationConfiguration(RoleRepository roleRepository, PasswordEncoder passwordEncoder, MakerRepository makerRepository) {
+    public ApplicationConfiguration(RoleRepository roleRepository, PasswordEncoder passwordEncoder, MakeRepository makeRepository) {
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
-        this.makerRepository = makerRepository;
+        this.makeRepository = makeRepository;
     }
 
     @Bean
@@ -55,15 +54,15 @@ public class ApplicationConfiguration {
                 );
 
         //CreateModelDTO -> ModelEntity
-        Converter<String, MakerEntity> makerConverter =
+        Converter<String, MakeEntity> makerConverter =
                 ctx -> ctx.getSource() == null
                         ? null
-                        : makerRepository.findByName(ctx.getSource())
-                        .orElse(makerRepository.save(new MakerEntity(ctx.getSource())));
+                        : makeRepository.findByName(ctx.getSource())
+                        .orElse(makeRepository.save(new MakeEntity(ctx.getSource())));
         modelMapper.createTypeMap(CreateModelDTO.class, ModelEntity.class)
                 .addMappings(mapper -> mapper
                         .using(makerConverter)
-                        .map(CreateModelDTO::getMaker, ModelEntity::setMaker));
+                        .map(CreateModelDTO::getMaker, ModelEntity::setMake));
 
         return modelMapper;
     }

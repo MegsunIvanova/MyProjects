@@ -10,79 +10,134 @@
 </header>
 
 <section class="user_form container text-white">
-    <h3 class="mt-3 mb-5">
-        <img th:src="@{/images/motorcycle_art.png}" class="img-fluid">
-        Add New Model:</h3>
-    <form th:action="@{/models/add}"
+
+    <div class="container-fluid ">
+        <img th:src="@{/images/car.png}" class=" img-fluid">
+    </div>
+    <h3 class=" mb-5">
+        Add Vehicle:
+    </h3>
+    <form th:action="@{/vehicles/add}"
           th:method="POST"
-          th:object="${createModelDTO}">
+          th:object="${createVehicleDTO}">
         <div class="form-group row mb-3">
-            <label for="model" class="col-sm-4 col-form-label fs-6">Model name:</label>
-            <div class="col-sm-8">
-                <input th:field="*{model}"
-                       th:errorclass="'is-invalid bg-danger'"
-                       id="model"
-                       name="model"
-                       type="text"
-                       class="form-control fs-6"
-                       placeholder="Model Name"
-                       required
-                       minlength="1"
-                       maxlength="30">
-                <small id="nameError"
-                       class="invalid-feedback rounded text-center"
-                       th:text="${#strings.listJoin(#fields.errors('model'), ' ')}">>
-                    Invalid model name!</small>
+            <div class="col-md-6">
+                <label for="model" class="col-form-label fs-6">Model: *</label>
+                <div>
+                    <select th:field="*{model}"
+                            th:errorclass="'is-invalid bg-danger'"
+                            id="model"
+                            name="model"
+                            class="form-select"
+                            aria-label="Default select example"
+                            required>
+                        <option value="" selected>Select a model:</option>
+                        <optgroup th:each="make : ${modelsByMake.keySet()}"
+                                  th:label="${make}">
+                            <option th:each="model : ${modelsByMake.get(make)}"
+                                    th:text="${model}"
+                                    th:value="${model}">Model
+                            </option>
+                        </optgroup>
+                    </select>
+                    <small id="modelError"
+                           class="invalid-feedback rounded text-center"
+                           th:text="${#strings.listJoin(#fields.errors('model'), ' ')}">
+                        Invalid model!</small>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="vin" class="col-form-label fs-6">VIN:</label>
+                <div>
+                    <input th:field="*{vin}"
+                           th:errorclass="'is-invalid bg-danger'"
+                            id="vin"
+                           name="vin"
+                           type="text"
+                           class="form-control fs-6"
+                           placeholder="VIN">
+                    <small id="vinError"
+                           class="invalid-feedback rounded text-center"
+                           th:text="${#strings.listJoin(#fields.errors('vin'), ' ')}">>
+                        Invalid VIN!</small>
+                </div>
             </div>
         </div>
 
+
         <div class="form-group row mb-3">
-            <label for="type" class="col-sm-4 col-form-label fs-6">Type of vehicle:</label>
-            <div class="col-sm-8">
-                <select id="type"
-                        name ="type"
-                        class="form-select"
-                        aria-label="Default select example"
-                        th:field="*{type}"
-                        th:errorclass="'is-invalid bg-danger'"
-                        required>
-                    <option value="" selected>Select type:</option>
-                    <option th:each="type : ${vehicleTypes}"
-                            th:text="${#strings.capitalize(#strings.toLowerCase(type.name()))}"
-                            th:value="${type}">Type name
-                    </option>
-                </select>
-                <small id="typeError"
-                       class="invalid-feedback rounded text-center"
-                       th:text="${#strings.listJoin(#fields.errors('type'), ' ')}">
-                    Invalid model name!</small>
+            <div class="col-md-6">
+                <label for="year" class="col-form-label fs-6">Year: *</label>
+                <div>
+                    <input id="year"
+                           name="year"
+                           type="number"
+                           class="form-control fs-6"
+                           placeholder="YYYY">
+                    <small id="yearError"
+                           class="invalid-feedback rounded text-center">>
+                        Invalid VIN!</small>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="odometerInKm" class="col-form-label fs-6">Odometer (km):</label>
+                <div>
+                    <input id="odometerInKm"
+                           name="odometerInKm"
+                           type="number"
+                           class="form-control fs-6"
+                           placeholder="NNN NNN">
+                    <small id="odometerInKmError"
+                           class="invalid-feedback rounded text-center">>
+                        Invalid odometer!</small>
+                </div>
             </div>
         </div>
 
+
         <div class="form-group row mb-3">
-            <label for="maker" class="col-sm-4 col-form-label fs-6">Maker:</label>
-            <div class="col-sm-8">
-                <select id="maker"
-                        name ="maker"
-                        class="form-select"
-                        aria-label="Default select example"
-                        th:field="*{maker}"
-                        th:errorclass="'is-invalid bg-danger'"
-                        required>
-                    <option value="" selected>Select maker:</option>
-                    <option th:each="makerName : ${makersNames}"
-                            th:text="${makerName}"
-                            th:value="${makerName}">Maker name:
-                    </option>
-                </select>
-                <small id="makerNameError"
-                       class="invalid-feedback rounded text-center"
-                       th:text="${#strings.listJoin(#fields.errors('maker'), ' ')}">
-                    Invalid maker name!</small>
+            <div class="col-md-6">
+                <label for="engine" class="col-form-label fs-6">Engine Type: *</label>
+                <div>
+                    <select id="engine"
+                            name="engine"
+                            class="form-select"
+                            aria-label="Default select example">
+                        <option value="" selected>Select engine type:</option>
+                        <option th:each="engine : ${engineTypes}"
+                                th:value="${engine}"
+                                th:text="${engine}">Select engine type:
+                        </option>
+                    </select>
+                    <small id="engineError"
+                           class="invalid-feedback rounded text-center">
+                        Invalid model!</small>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="transmission" class="col-form-label fs-6">Transmission: *</label>
+                <div>
+                    <select id="transmission"
+                            name="transmission"
+                            class="form-select"
+                            aria-label="Default select example">
+                        <option value="" selected>Select transmission:</option>
+                        <option th:each="transmision : ${transmissions}"
+                                th:value="${transmision}"
+                                th:text="${transmision}">Select transmission: *
+                        </option>
+                    </select>
+                    <small id="transmissionError"
+                           class="invalid-feedback rounded text-center">
+                        Invalid model!</small>
+                </div>
             </div>
         </div>
 
-        <input type="submit" class="btn-lg btn-danger mt-3 mb-3 fs-6" value="Submit"/>
+
+        <input type="submit" class="btn btn-danger mt-3 mb-3 fs-6" value="Submit"/>
     </form>
 </section>
 

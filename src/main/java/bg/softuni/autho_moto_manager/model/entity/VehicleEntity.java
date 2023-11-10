@@ -21,7 +21,7 @@ public class VehicleEntity extends BaseEntity {
     @Column(nullable = false)
     private Integer year;
 
-    @Column(nullable = false)
+    @Column(name="odometer_km")
     private Integer odometerInKm;
 
     @Column(nullable = false)

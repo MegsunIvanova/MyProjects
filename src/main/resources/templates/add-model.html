@@ -17,7 +17,7 @@
           th:method="POST"
           th:object="${createModelDTO}">
         <div class="form-group row mb-3">
-            <label for="model" class="col-sm-4 col-form-label fs-6">Model name:</label>
+            <label for="model" class="col-sm-4 col-form-label fs-6">Model:</label>
             <div class="col-sm-8">
                 <input th:field="*{model}"
                        th:errorclass="'is-invalid bg-danger'"
@@ -25,14 +25,14 @@
                        name="model"
                        type="text"
                        class="form-control fs-6"
-                       placeholder="Model Name"
+                       placeholder="Model"
                        required
                        minlength="1"
                        maxlength="30">
                 <small id="nameError"
                        class="invalid-feedback rounded text-center"
                        th:text="${#strings.listJoin(#fields.errors('model'), ' ')}">>
-                    Invalid model name!</small>
+                    Invalid model!</small>
             </div>
         </div>
 
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        <input type="submit" class="btn-lg btn-danger mt-3 mb-3 fs-6" value="Submit"/>
+        <input type="submit" class="btn btn-danger mt-3 mb-3 fs-6" value="Submit"/>
     </form>
 </section>
 

@@ -12,7 +12,7 @@ public class CreateModelDTO {
     @UniqueModelName
     private String model;
 
-    @NotNull(message = "Please, select type!")
+    @NotNull(message = "Please, select a type!")
     private VehicleTypeEnum type;
 
     @NotEmpty(message = "Please, fill in maker!")

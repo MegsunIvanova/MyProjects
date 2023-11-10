@@ -1,7 +1,6 @@
 package bg.softuni.autho_moto_manager.model.entity;
 
 import bg.softuni.autho_moto_manager.model.enums.VehicleTypeEnum;
-import bg.softuni.autho_moto_manager.model.validation.UniqueModelName;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -17,7 +16,7 @@ public class ModelEntity extends BaseEntity {
     private VehicleTypeEnum type;
 
     @ManyToOne(optional = false)
-    private MakerEntity maker;
+    private MakeEntity make;
 
     public ModelEntity() {
     }
@@ -40,12 +39,12 @@ public class ModelEntity extends BaseEntity {
         return this;
     }
 
-    public MakerEntity getMaker() {
-        return maker;
+    public MakeEntity getMake() {
+        return make;
     }
 
-    public ModelEntity setMaker(MakerEntity maker) {
-        this.maker = maker;
+    public ModelEntity setMake(MakeEntity maker) {
+        this.make = maker;
         return this;
     }
 

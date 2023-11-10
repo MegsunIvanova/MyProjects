@@ -2,32 +2,32 @@ package bg.softuni.autho_moto_manager.model.dto.binding;
 
 import bg.softuni.autho_moto_manager.model.enums.EngineEnum;
 import bg.softuni.autho_moto_manager.model.enums.TransmissionEnum;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
+import bg.softuni.autho_moto_manager.model.validation.PresentOrPastYear;
+import bg.softuni.autho_moto_manager.model.validation.UniqueVIN;
+import jakarta.validation.constraints.*;
 
 public class CreateVehicleDTO {
 
-    @NotEmpty
+    @NotEmpty(message = "Please, select a model!")
     private String model;
 
-    @NotEmpty
-    @Pattern(regexp = "/(?=.*\\d|=.*[A-Z])(?=.*[A-Z])[A-Z0-9]{17}/ig")
-    //TODO: Unique and others constraints
+    @Pattern(regexp = "/(?=.*\\d|=.*[A-Z])(?=.*[A-Z])[A-Z0-9]{17}/ig", message = "Invalid VIN format!")
+    @UniqueVIN(message = "VIN must be unique!")
     private String vin;
 
-    @NotNull
-    //TODO: Between 1190 and current Year
+    @NotNull (message = "Year must be filled in!")
+    @Min(value = 1995, message = "Year must be after 1195!")
+    @PresentOrPastYear
     private Integer year;
 
-    @Positive
+    @Positive (message = "Odometer must be positive!")
+    @Max(value = 400000, message = "Odometer must up to 400000 km!")
     private Integer odometerInKm;
 
-    @NotNull
+    @NotNull(message = "Please, select engine type!")
     private EngineEnum engine;
 
-    @NotNull
+    @NotNull(message = "Please, select transmission!")
     private TransmissionEnum transmission;
 
     public CreateVehicleDTO() {
