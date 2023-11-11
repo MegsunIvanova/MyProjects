@@ -9,7 +9,7 @@ import java.util.Objects;
 @Table(name = "models")
 public class ModelEntity extends BaseEntity {
     @Column(nullable = false, unique = true)
-    private String model;
+    private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -21,12 +21,12 @@ public class ModelEntity extends BaseEntity {
     public ModelEntity() {
     }
 
-    public String getModel() {
-        return model;
+    public String getName() {
+        return name;
     }
 
-    public ModelEntity setModel(String model) {
-        this.model = model;
+    public ModelEntity setName(String model) {
+        this.name = model;
         return this;
     }
 

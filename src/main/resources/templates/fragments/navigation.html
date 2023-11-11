@@ -10,6 +10,10 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav .ms-md-auto mb-2 mb-lg-0">
 
+                <li class="nav-item ms-3">
+                    <a class="nav-link fs-4" th:href="@{/vehicles/all}">All Vehicles</a>
+                </li>
+
                 <li class="nav-item dropdown ms-3" data-bs-theme="dark" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle fs-4" th:href="@{/}" id="navbarDropdown"
                        role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -34,9 +38,7 @@
                 <li class="nav-item ms-3" sec:authorize="!isAuthenticated()">
                     <a class="nav-link fs-4" th:href="@{/users/register}">Register</a>
                 </li>
-                <li class="nav-item ms-3" sec:authorize="isAuthenticated()">
-                    <a class="nav-link fs-4" th:href="@{/}">Some Tab</a>
-                </li>
+
                 <li class="nav-item ms-3" sec:authorize="isAuthenticated()">
                     <form th:action="@{/users/logout}" th:method="POST">
                         <input type="submit" class="nav nav-link fs-4 bg-transparent border-0 text-danger"

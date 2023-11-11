@@ -3,7 +3,6 @@ package bg.softuni.autho_moto_manager.model.entity;
 import jakarta.persistence.*;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -22,7 +21,7 @@ public class MakeEntity extends BaseEntity {
     Set<ModelEntity> models;
 
     public MakeEntity() {
-        this.models = new TreeSet<>(Comparator.comparing(ModelEntity::getModel));
+        this.models = new TreeSet<>(Comparator.comparing(ModelEntity::getName));
     }
 
     public MakeEntity(String name) {

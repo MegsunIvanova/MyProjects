@@ -10,23 +10,23 @@ public class CreateModelDTO {
     @NotEmpty(message = "Model cannot be empty!")
     @Size(max = 30, message = "Model length must be maximum 30 symbols!")
     @UniqueModelName
-    private String model;
+    private String name;
 
     @NotNull(message = "Please, select a type!")
     private VehicleTypeEnum type;
 
     @NotEmpty(message = "Please, fill in maker!")
-    private String maker;
+    private String make;
 
     public CreateModelDTO() {
     }
 
-    public String getModel() {
-        return model;
+    public String getName() {
+        return name;
     }
 
-    public CreateModelDTO setModel(String model) {
-        this.model = model;
+    public CreateModelDTO setName(String name) {
+        this.name = name;
         return this;
     }
 
@@ -39,12 +39,12 @@ public class CreateModelDTO {
         return this;
     }
 
-    public String getMaker() {
-        return maker;
+    public String getMake() {
+        return make;
     }
 
-    public CreateModelDTO setMaker(String maker) {
-        this.maker = maker;
+    public CreateModelDTO setMake(String make) {
+        this.make = make;
         return this;
     }
 }

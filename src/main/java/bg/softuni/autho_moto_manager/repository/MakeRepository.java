@@ -15,8 +15,7 @@ public interface MakeRepository extends JpaRepository<MakeEntity, Long> {
     @EntityGraph(value = "makeWithModels",
             attributePaths = "models")
     @Query("SELECT m FROM MakeEntity m " +
-            "ORDER BY size(m.models) DESC," +
-            "m.name ASC ")
+            "ORDER BY m.name ASC ")
     List<MakeEntity> findAllOrdered();
 
     Optional<MakeEntity> findByName(String name);

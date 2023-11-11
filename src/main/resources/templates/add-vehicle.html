@@ -52,44 +52,50 @@
                 <div>
                     <input th:field="*{vin}"
                            th:errorclass="'is-invalid bg-danger'"
-                            id="vin"
+                           id="vin"
                            name="vin"
                            type="text"
                            class="form-control fs-6"
                            placeholder="VIN">
                     <small id="vinError"
                            class="invalid-feedback rounded text-center"
-                           th:text="${#strings.listJoin(#fields.errors('vin'), ' ')}">>
+                           th:text="${#strings.listJoin(#fields.errors('vin'), ' ')}">
                         Invalid VIN!</small>
                 </div>
             </div>
         </div>
 
-
         <div class="form-group row mb-3">
             <div class="col-md-6">
                 <label for="year" class="col-form-label fs-6">Year: *</label>
                 <div>
-                    <input id="year"
+                    <input th:field="*{year}"
+                           th:errorclass="'is-invalid bg-danger'"
+                           id="year"
                            name="year"
                            type="number"
                            class="form-control fs-6"
-                           placeholder="YYYY">
+                           placeholder="YYYY"
+                           required>
                     <small id="yearError"
-                           class="invalid-feedback rounded text-center">>
-                        Invalid VIN!</small>
+                           class="invalid-feedback rounded text-center"
+                           th:text="${#strings.listJoin(#fields.errors('year'), ' ')}">
+                        Invalid year!</small>
                 </div>
             </div>
             <div class="col-md-6">
                 <label for="odometerInKm" class="col-form-label fs-6">Odometer (km):</label>
                 <div>
-                    <input id="odometerInKm"
+                    <input th:field="*{odometerInKm}"
+                           th:errorclass="'is-invalid bg-danger'"
+                           id="odometerInKm"
                            name="odometerInKm"
                            type="number"
                            class="form-control fs-6"
                            placeholder="NNN NNN">
                     <small id="odometerInKmError"
-                           class="invalid-feedback rounded text-center">>
+                           class="invalid-feedback rounded text-center"
+                           th:text="${#strings.listJoin(#fields.errors('odometerInKm'), ' ')}">
                         Invalid odometer!</small>
                 </div>
             </div>
@@ -100,7 +106,9 @@
             <div class="col-md-6">
                 <label for="engine" class="col-form-label fs-6">Engine Type: *</label>
                 <div>
-                    <select id="engine"
+                    <select th:field="*{engine}"
+                            th:errorclass="'is-invalid bg-danger'"
+                            id="engine"
                             name="engine"
                             class="form-select"
                             aria-label="Default select example">
@@ -111,15 +119,18 @@
                         </option>
                     </select>
                     <small id="engineError"
-                           class="invalid-feedback rounded text-center">
-                        Invalid model!</small>
+                           class="invalid-feedback rounded text-center"
+                           th:text="${#strings.listJoin(#fields.errors('engine'), ' ')}">
+                        Invalid engine type!</small>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <label for="transmission" class="col-form-label fs-6">Transmission: *</label>
                 <div>
-                    <select id="transmission"
+                    <select th:field="*{transmission}"
+                            th:errorclass="'is-invalid bg-danger'"
+                            id="transmission"
                             name="transmission"
                             class="form-select"
                             aria-label="Default select example">
@@ -130,12 +141,30 @@
                         </option>
                     </select>
                     <small id="transmissionError"
-                           class="invalid-feedback rounded text-center">
+                           class="invalid-feedback rounded text-center"
+                           th:text="${#strings.listJoin(#fields.errors('transmission'), ' ')}">
                         Invalid model!</small>
                 </div>
             </div>
         </div>
 
+        <div class="form-group row mb-3">
+
+            <label for="year" class="col-form-label fs-6">Notes:</label>
+            <div>
+                    <textarea th:field="*{notes}"
+                              th:errorclass="'is-invalid bg-danger'"
+                              id="description"
+                              name="description"
+                              class="form-control fs-6"
+                              placeholder="Some additional info ...">Notes</textarea>
+                <small id="descriptionError"
+                       class="invalid-feedback rounded text-center"
+                       th:text="${#strings.listJoin(#fields.errors('notes'), ' ')}">
+                    Invalid description!</small>
+            </div>
+
+        </div>
 
         <input type="submit" class="btn btn-danger mt-3 mb-3 fs-6" value="Submit"/>
     </form>

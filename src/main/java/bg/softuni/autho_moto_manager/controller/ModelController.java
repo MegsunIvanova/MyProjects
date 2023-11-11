@@ -35,8 +35,8 @@ public class ModelController {
     public String createModel(Model model) {
         model.addAttribute("vehicleTypes", VehicleTypeEnum.values());
 
-        List<String> makersNames = modelService.getAllMakersNamesOrdered();
-        model.addAttribute("makersNames", makersNames);
+        List<String> makesNames = modelService.getAllMakersNamesOrdered();
+        model.addAttribute("makesNames", makesNames);
 
         return "add-model";
     }

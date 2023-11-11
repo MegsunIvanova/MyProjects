@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head}"></head>
+
+<body>
+<header>
+    <nav th:replace="~{fragments/navigation}">Navigation</nav>
+</header>
+
+<section class="user_form_cards text-white d-flex flex-row px-3 py-4">
+    <div class="flex-content mx-2" th:each="vehicle : ${vehicles}">
+        <div class="card bg-dark text-light" style="width: 18rem;">
+            <img th:src="${vehicle.primaryImage}" class="card-img-top" alt="Vehicle Primary Image">
+            <div class="card-body">
+                <h5 th:text="${vehicle.getSummaryTitle()}" class="card-title">{year make model}</h5>
+            </div>
+            <ul class="list-group list-group-flush ">
+                <li class="list-group-item bg-dark text-light">Engine Type:
+                    <th:block th:text="${vehicle.engine}">{engine}</th:block></li>
+                <li class="list-group-item bg-dark text-light">Transmissions:
+                    <th:block th:text="${vehicle.transmission}">{transmissions}</th:block></li>
+                <li class="list-group-item bg-dark text-light">VIN:
+                <th:block th:text="${vehicle.vin}">{vin}</th:block></li>
+                <li class="list-group-item bg-dark text-light">Odometer in km:
+                    <th:block th:text="${vehicle.odometerInKm}">{odometer}</th:block></li>
+            </ul>
+            <div class="card-body d-grid gap-2">
+                <a th:href="@{/vehicles/details/{id}(id=${vehicle.id})}" class="btn btn-danger m-1">View Details</a>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+</body>
+</html>
+
+<script type="text/javascript" th:src="@{/js/passwordsMatch.js}"></script>

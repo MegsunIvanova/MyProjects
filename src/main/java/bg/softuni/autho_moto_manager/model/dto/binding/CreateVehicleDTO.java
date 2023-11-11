@@ -11,7 +11,7 @@ public class CreateVehicleDTO {
     @NotEmpty(message = "Please, select a model!")
     private String model;
 
-    @Pattern(regexp = "/(?=.*\\d|=.*[A-Z])(?=.*[A-Z])[A-Z0-9]{17}/ig", message = "Invalid VIN format!")
+    @Pattern(regexp = "^$|(^(?=.*[0-9])(?=.*[A-z])[0-9A-z-]{17}$)", message = "Invalid VIN format!")
     @UniqueVIN(message = "VIN must be unique!")
     private String vin;
 
@@ -21,7 +21,7 @@ public class CreateVehicleDTO {
     private Integer year;
 
     @Positive (message = "Odometer must be positive!")
-    @Max(value = 400000, message = "Odometer must up to 400000 km!")
+    @Max(value = 400000, message = "Odometer must  be 400000 km maximum!")
     private Integer odometerInKm;
 
     @NotNull(message = "Please, select engine type!")
@@ -29,6 +29,8 @@ public class CreateVehicleDTO {
 
     @NotNull(message = "Please, select transmission!")
     private TransmissionEnum transmission;
+
+    private String notes;
 
     public CreateVehicleDTO() {
     }
@@ -84,6 +86,15 @@ public class CreateVehicleDTO {
 
     public CreateVehicleDTO setTransmission(TransmissionEnum transmission) {
         this.transmission = transmission;
+        return this;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public CreateVehicleDTO setNotes(String notes) {
+        this.notes = notes;
         return this;
     }
 }

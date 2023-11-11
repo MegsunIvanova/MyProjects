@@ -4,9 +4,7 @@ import bg.softuni.autho_moto_manager.model.enums.EngineEnum;
 import bg.softuni.autho_moto_manager.model.enums.TransmissionEnum;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "vehicles")
@@ -21,7 +19,7 @@ public class VehicleEntity extends BaseEntity {
     @Column(nullable = false)
     private Integer year;
 
-    @Column(name="odometer_km")
+    @Column(name = "odometer_km")
     private Integer odometerInKm;
 
     @Column(nullable = false)
@@ -31,6 +29,14 @@ public class VehicleEntity extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TransmissionEnum transmission;
+
+    private String notes;
+
+    @OneToMany(mappedBy = "vehicle", targetEntity = PictureEntity.class)
+    private Set<PictureEntity> pictures;
+
+    @OneToOne
+    private PictureEntity primaryImage;
 
     @OneToMany(targetEntity = CostEntity.class, mappedBy = "vehicle")
     private Set<CostEntity> costCalculation;
@@ -44,6 +50,7 @@ public class VehicleEntity extends BaseEntity {
     public VehicleEntity() {
         this.costCalculation = new HashSet<>();
         this.owners = new HashSet<>();
+        this.pictures = new HashSet<>();
     }
 
     public ModelEntity getModel() {
@@ -59,7 +66,7 @@ public class VehicleEntity extends BaseEntity {
         return vin;
     }
 
-    public VehicleEntity setVinLotNumber(String vin) {
+    public VehicleEntity setVin(String vin) {
         this.vin = vin;
         return this;
     }
@@ -97,6 +104,33 @@ public class VehicleEntity extends BaseEntity {
 
     public VehicleEntity setTransmission(TransmissionEnum transmission) {
         this.transmission = transmission;
+        return this;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public VehicleEntity setNotes(String notes) {
+        this.notes = notes;
+        return this;
+    }
+
+    public Set<PictureEntity> getPictures() {
+        return pictures;
+    }
+
+    public VehicleEntity setPictures(Set<PictureEntity> pictures) {
+        this.pictures = pictures;
+        return this;
+    }
+
+    public PictureEntity getPrimaryImage() {
+        return primaryImage;
+    }
+
+    public VehicleEntity setPrimaryImage(PictureEntity primaryImage) {
+        this.primaryImage = primaryImage;
         return this;
     }
 

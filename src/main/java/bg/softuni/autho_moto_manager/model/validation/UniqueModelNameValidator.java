@@ -13,6 +13,6 @@ public class UniqueModelNameValidator implements ConstraintValidator<UniqueModel
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return this.modelRepository.findByModel(value).isEmpty();
+        return this.modelRepository.findByName(value).isEmpty();
     }
 }
