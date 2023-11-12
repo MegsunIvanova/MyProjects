@@ -40,8 +40,15 @@
 
     </div>
     <div class="user_subcontainer_cards">
-        <a th:href="@{/vehicles/all}" th:value="${vehicles.nextPageable()}"
-           class="btn btn-danger  bg-transparent border-0">Next Page >>></a>
+
+
+        <div><a th:if="${vehicles.hasPrevious()}"
+                th:href="@{/vehicles/all(page=${vehicles.number - 1})}"
+                class="btn btn-danger  bg-transparent border-0"><<< Prev Page</a>
+        </div>
+        <div><a th:if="${vehicles.hasNext()}"
+                th:href="@{/vehicles/all(page=${vehicles.number + 1})}"
+                class="btn btn-danger  bg-transparent border-0">Next Page >>></a></div>
     </div>
 </section>
 

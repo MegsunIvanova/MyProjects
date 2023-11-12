@@ -62,16 +62,14 @@ public class VehicleController {
 
     @GetMapping("/all")
     public String getAll(Model model,
+                         @RequestParam(value = "page", required = false, defaultValue = "0") int pageNumber,
                          @PageableDefault(size = 3, sort = "year", direction = Sort.Direction.DESC)
                          Pageable pageable) {
 
         Page<VehicleSummaryViewDTO> page =
-                vehicleService.getAllVehicles(pageable);
-
+                vehicleService.getAllVehicles(pageable.withPage(pageNumber));
 
         model.addAttribute("vehicles", page);
-
-        Pageable next = page.nextPageable();
 
         return "vehicles-all";
     }
