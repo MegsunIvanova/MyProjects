@@ -11,7 +11,9 @@ import bg.softuni.autho_moto_manager.service.VehicleService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
@@ -24,7 +26,9 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleRepository vehicleRepository;
     private final ModelMapper modelMapper;
 
-    public VehicleServiceImpl(MakeRepository makeRepository, VehicleRepository vehicleRepository, ModelMapper modelMapper) {
+    public VehicleServiceImpl(MakeRepository makeRepository,
+                              VehicleRepository vehicleRepository,
+                              ModelMapper modelMapper) {
         this.makeRepository = makeRepository;
         this.vehicleRepository = vehicleRepository;
         this.modelMapper = modelMapper;
@@ -43,9 +47,13 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     @Transactional
-    public Page<VehicleSummaryViewDTO> getAllVehicles(Pageable pageable) {
+    public Page<VehicleSummaryViewDTO> getAllVehicles(Pageable page) {
+
+//        Pageable page = PageRequest.of(0, 3,
+//                Sort.by(sortProperty).descending());
+
         return vehicleRepository
-                .findAll(pageable)
+                .findAll(page)
                 .map(VehicleServiceImpl::mapAsSummary);
     }
 
@@ -59,7 +67,9 @@ public class VehicleServiceImpl implements VehicleService {
                 .setOdometerInKm(vehicleEntity.getOdometerInKm())
                 .setEngine(vehicleEntity.getEngine().name())
                 .setTransmission(vehicleEntity.getTransmission().name())
-                .setPrimaryImage(vehicleEntity.getPrimaryImage().getUrl());
+                .setPrimaryImage(vehicleEntity.getPrimaryImage() == null
+                        ? null
+                        : vehicleEntity.getPrimaryImage().getUrl());
     }
 
     private Map<String, List<String>> getModelsByMake() {

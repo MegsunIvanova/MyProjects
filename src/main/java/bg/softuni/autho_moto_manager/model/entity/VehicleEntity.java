@@ -32,6 +32,8 @@ public class VehicleEntity extends BaseEntity {
 
     private String notes;
 
+    private boolean sold;
+
     @OneToMany(mappedBy = "vehicle", targetEntity = PictureEntity.class)
     private Set<PictureEntity> pictures;
 

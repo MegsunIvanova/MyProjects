@@ -7,14 +7,12 @@ import bg.softuni.autho_moto_manager.service.VehicleService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static bg.softuni.autho_moto_manager.util.Constants.BINDING_RESULT_PACKAGE;
@@ -64,12 +62,16 @@ public class VehicleController {
 
     @GetMapping("/all")
     public String getAll(Model model,
-                         @PageableDefault(size = 3, sort = "id")
+                         @PageableDefault(size = 3, sort = "year", direction = Sort.Direction.DESC)
                          Pageable pageable) {
 
-        Page<VehicleSummaryViewDTO> allVehicles = vehicleService.getAllVehicles(pageable);
+        Page<VehicleSummaryViewDTO> page =
+                vehicleService.getAllVehicles(pageable);
 
-        model.addAttribute("vehicles", allVehicles);
+
+        model.addAttribute("vehicles", page);
+
+        Pageable next = page.nextPageable();
 
         return "vehicles-all";
     }

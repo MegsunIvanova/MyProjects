@@ -12,4 +12,5 @@ public interface VehicleService {
     void create(CreateVehicleDTO createVehicleDTO);
 
     Page<VehicleSummaryViewDTO> getAllVehicles(Pageable pageable);
+//    Page<VehicleSummaryViewDTO> getAllVehicles(int pageNumber, int pageSize, String sortProperty);
 }
