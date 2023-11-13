@@ -27,4 +27,13 @@ public class CurrencyEntity {
         this.id = id;
         return this;
     }
+
+    public BigDecimal getRateToBGN() {
+        return rateToBGN;
+    }
+
+    public CurrencyEntity setRateToBGN(BigDecimal rateToBGN) {
+        this.rateToBGN = rateToBGN;
+        return this;
+    }
 }

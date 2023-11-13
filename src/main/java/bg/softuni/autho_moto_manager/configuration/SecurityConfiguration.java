@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                             .permitAll()
                             .requestMatchers("/error/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "vehicles/all").permitAll()
+                            .requestMatchers(HttpMethod.GET, "vehicle/details/**").permitAll()
                             .requestMatchers("/models/add").hasRole(UserRoleEnum.ADMIN.name())
                             .anyRequest().authenticated();
                 })

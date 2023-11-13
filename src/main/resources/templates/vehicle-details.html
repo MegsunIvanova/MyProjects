@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head}"></head>
+
+<body>
+<header>
+    <nav th:replace="~{fragments/navigation}">Navigation</nav>
+</header>
+
+<section class="user_mainContainer_details">
+
+    <section class="user_container_details">
+        <div id="carouselExample" class="carousel slide ">
+            <div class="carousel-inner">
+                <div th:if="${vehicle.pictures.size() > 0}" class="carousel-item"
+                     th:each="picture, iStat : ${vehicle.pictures}"
+                     th:classappend="${iStat.first} ? 'active'">
+                    <img th:src="${picture.url}" class="d-block w-100" alt="Vehicle Picture">
+                </div>
+                <div th:if="${vehicle.pictures.size() == 0}" class="carousel-item active">
+                    <img th:if="${#strings.equals(vehicle.type, automobileType)}"
+                         th:src="@{/images/carBlackBasic.png}" class="d-block w-100" alt="Vehicle Picture">
+                    <img th:unless="${#strings.equals(vehicle.type, automobileType)}"
+                         th:src="@{/images/carBlackBasic.png}" class="d-block w-100" alt="Vehicle Picture">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <div class="user_subcontainer_details bg-dark text-light">
+            <h4 th:text="${vehicle.getSummaryTitle()}">{year make model}</h4>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-dark text-light">Engine Type:
+                    <th:block th:text="${vehicle.engine}">{engine}</th:block>
+                </li>
+                <li class="list-group-item bg-dark text-light">Transmissions:
+                    <th:block th:text="${vehicle.transmission}">{transmissions}</th:block>
+                </li>
+                <li class="list-group-item bg-dark text-light">VIN:
+                    <th:block th:text="${vehicle.vin}">{vin}</th:block>
+                </li>
+                <li class="list-group-item bg-dark text-light">Odometer in km:
+                    <th:block th:text="${vehicle.odometerInKm}">{odometer}</th:block>
+                </li>
+                <li class="list-group-item bg-dark text-light">Notes:
+                    <th:block th:text="${vehicle.notes}">{odometer}</th:block>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section class="user_container_details">
+        <div class="user_subcontainer_details bg-dark text-light">
+            COSTS CONTAINER
+        </div>
+
+        <div class="user_subcontainer_details bg-dark text-light">
+<!--            <form>-->
+<!--                <div class="form-group row mb-3">-->
+<!--                    <label for="url" class="col-sm-4 col-form-label fs-6">Picture url:</label>-->
+<!--                    <div class="col-sm-8">-->
+<!--                        <input id="url" name="url"-->
+<!--                               type="url"-->
+<!--                               class="form-control fs-6"-->
+<!--                               placeholder="image url"-->
+<!--                               required>-->
+<!--                        <small id="nameError"-->
+<!--                               class="invalid-feedback rounded text-center"-->
+<!--                               th:text="${#strings.listJoin(#fields.errors('name'), ' ')}">-->
+<!--                            Invalid name!</small>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <input type="submit" class="btn btn-danger mt-3 mb-3 fs-6" value="Submit"/>-->
+<!--            </form>-->
+        </div>
+    </section>
+</section>
+
+</body>
+</html>
+

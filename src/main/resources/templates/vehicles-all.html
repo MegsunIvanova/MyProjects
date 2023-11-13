@@ -13,7 +13,11 @@
     <div class="user_subcontainer_cards">
         <article class="custom_card text-center bg-dark text-light" th:each="vehicle : ${vehicles}">
             <img th:if="${vehicle.primaryImage} !=null" th:src="${vehicle.primaryImage}" alt="Vehicle Primary Image">
-            <img th:if="${vehicle.primaryImage} == null" th:src="@{/images/carBlackBasic.png}"
+            <img th:if="${vehicle.primaryImage == null and #strings.equals(vehicle.type, automobileType)}"
+                 th:src="@{/images/carBlackBasic.png}"
+                 alt="Vehicle Primary Image">
+            <img th:if="${vehicle.primaryImage == null and !#strings.equals(vehicle.type, automobileType)}"
+                 th:src="@{/images/motoBlackBasic.png}"
                  alt="Vehicle Primary Image">
 
 
@@ -34,7 +38,7 @@
                 </li>
             </ul>
 
-            <a th:href="@{/vehicles/details/{id}(id=${vehicle.id})}" class="btn btn-danger m-4">View Details</a>
+            <a th:href="@{/vehicle/details/{id}(id=${vehicle.id})}" class="btn btn-danger m-4">View Details</a>
 
         </article>
 
@@ -56,4 +60,3 @@
 </body>
 </html>
 
-<script type="text/javascript" th:src="@{/js/passwordsMatch.js}"></script>

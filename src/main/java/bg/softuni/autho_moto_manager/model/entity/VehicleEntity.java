@@ -154,6 +154,15 @@ public class VehicleEntity extends BaseEntity {
         return this;
     }
 
+    public boolean isSold() {
+        return sold;
+    }
+
+    public VehicleEntity setSold(boolean sold) {
+        this.sold = sold;
+        return this;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(getId());

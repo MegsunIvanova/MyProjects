@@ -2,12 +2,14 @@ package bg.softuni.autho_moto_manager.service.impl;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.CreateVehicleDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.AddVehicleViewDTO;
+import bg.softuni.autho_moto_manager.model.dto.view.VehicleDetailsViewDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.VehicleSummaryViewDTO;
 import bg.softuni.autho_moto_manager.model.entity.ModelEntity;
 import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
 import bg.softuni.autho_moto_manager.repository.MakeRepository;
 import bg.softuni.autho_moto_manager.repository.VehicleRepository;
 import bg.softuni.autho_moto_manager.service.VehicleService;
+import bg.softuni.autho_moto_manager.service.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -48,29 +50,35 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     @Transactional
     public Page<VehicleSummaryViewDTO> getAllVehicles(Pageable page) {
-
-//        Pageable page = PageRequest.of(0, 3,
-//                Sort.by(sortProperty).descending());
-
         return vehicleRepository
                 .findAll(page)
-                .map(VehicleServiceImpl::mapAsSummary);
+                .map(VehicleSummaryViewDTO::new);
     }
 
-    private static VehicleSummaryViewDTO mapAsSummary(VehicleEntity vehicleEntity) {
-        return new VehicleSummaryViewDTO()
-                .setId(vehicleEntity.getId())
-                .setModelName(vehicleEntity.getModel().getName())
-                .setMakeName(vehicleEntity.getModel().getMake().getName())
-                .setVin(vehicleEntity.getVin())
-                .setYear(vehicleEntity.getYear())
-                .setOdometerInKm(vehicleEntity.getOdometerInKm())
-                .setEngine(vehicleEntity.getEngine().name())
-                .setTransmission(vehicleEntity.getTransmission().name())
-                .setPrimaryImage(vehicleEntity.getPrimaryImage() == null
-                        ? null
-                        : vehicleEntity.getPrimaryImage().getUrl());
+    @Override
+    @Transactional
+    public VehicleDetailsViewDTO getDetailsById(Long id) {
+        return vehicleRepository
+                .findById(id)
+                .map(VehicleDetailsViewDTO::new)
+                .orElseThrow(() -> new ObjectNotFoundException("Vehicle with id " + id + " can not be found!"));
     }
+
+//    private static VehicleSummaryViewDTO mapAsSummary(VehicleEntity vehicleEntity) {
+//        return new VehicleSummaryViewDTO()
+//                .setId(vehicleEntity.getId())
+//                .setType(vehicleEntity.getModel().getType().name())
+//                .setModelName(vehicleEntity.getModel().getName())
+//                .setMakeName(vehicleEntity.getModel().getMake().getName())
+//                .setVin(vehicleEntity.getVin())
+//                .setYear(vehicleEntity.getYear())
+//                .setOdometerInKm(vehicleEntity.getOdometerInKm())
+//                .setEngine(vehicleEntity.getEngine().name())
+//                .setTransmission(vehicleEntity.getTransmission().name())
+//                .setPrimaryImage(vehicleEntity.getPrimaryImage() == null
+//                        ? null
+//                        : vehicleEntity.getPrimaryImage().getUrl());
+//    }
 
     private Map<String, List<String>> getModelsByMake() {
         Map<String, List<String>> modelsByMake = new LinkedHashMap<>();
