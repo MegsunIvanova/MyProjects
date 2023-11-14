@@ -1,4 +1,4 @@
-package bg.softuni.autho_moto_manager.controller;
+package bg.softuni.autho_moto_manager.web;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.CreateModelDTO;
 import bg.softuni.autho_moto_manager.model.enums.VehicleTypeEnum;

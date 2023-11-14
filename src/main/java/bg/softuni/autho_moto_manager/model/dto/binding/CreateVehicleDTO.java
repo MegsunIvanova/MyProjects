@@ -6,6 +6,8 @@ import bg.softuni.autho_moto_manager.model.validation.PresentOrPastYear;
 import bg.softuni.autho_moto_manager.model.validation.UniqueVIN;
 import jakarta.validation.constraints.*;
 
+import java.util.UUID;
+
 public class CreateVehicleDTO {
 
     @NotEmpty(message = "Please, select a model!")
@@ -31,6 +33,9 @@ public class CreateVehicleDTO {
     private TransmissionEnum transmission;
 
     private String notes;
+
+    private UUID uuid;
+
 
     public CreateVehicleDTO() {
     }
@@ -95,6 +100,15 @@ public class CreateVehicleDTO {
 
     public CreateVehicleDTO setNotes(String notes) {
         this.notes = notes;
+        return this;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public CreateVehicleDTO setUuid(UUID uuid) {
+        this.uuid = uuid;
         return this;
     }
 }

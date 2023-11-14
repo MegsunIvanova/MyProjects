@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
@@ -57,28 +58,12 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     @Transactional
-    public VehicleDetailsViewDTO getDetailsById(Long id) {
+    public VehicleDetailsViewDTO getDetailsByUuid(String uuid) {
         return vehicleRepository
-                .findById(id)
+                .findByUuid(uuid)
                 .map(VehicleDetailsViewDTO::new)
-                .orElseThrow(() -> new ObjectNotFoundException("Vehicle with id " + id + " can not be found!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Vehicle with uuid " + uuid + " can not be found!"));
     }
-
-//    private static VehicleSummaryViewDTO mapAsSummary(VehicleEntity vehicleEntity) {
-//        return new VehicleSummaryViewDTO()
-//                .setId(vehicleEntity.getId())
-//                .setType(vehicleEntity.getModel().getType().name())
-//                .setModelName(vehicleEntity.getModel().getName())
-//                .setMakeName(vehicleEntity.getModel().getMake().getName())
-//                .setVin(vehicleEntity.getVin())
-//                .setYear(vehicleEntity.getYear())
-//                .setOdometerInKm(vehicleEntity.getOdometerInKm())
-//                .setEngine(vehicleEntity.getEngine().name())
-//                .setTransmission(vehicleEntity.getTransmission().name())
-//                .setPrimaryImage(vehicleEntity.getPrimaryImage() == null
-//                        ? null
-//                        : vehicleEntity.getPrimaryImage().getUrl());
-//    }
 
     private Map<String, List<String>> getModelsByMake() {
         Map<String, List<String>> modelsByMake = new LinkedHashMap<>();

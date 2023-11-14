@@ -7,6 +7,8 @@ import bg.softuni.autho_moto_manager.model.dto.view.VehicleSummaryViewDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 public interface VehicleService {
     AddVehicleViewDTO getAddVehicleView ();
 
@@ -14,5 +16,5 @@ public interface VehicleService {
 
     Page<VehicleSummaryViewDTO> getAllVehicles(Pageable pageable);
 
-    VehicleDetailsViewDTO getDetailsById(Long id);
+    VehicleDetailsViewDTO getDetailsByUuid(String uuid);
 }

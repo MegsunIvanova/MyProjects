@@ -49,6 +49,9 @@ public class VehicleEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private Set<UserEntity> owners;
 
+    @Column(unique = true)
+    private String uuid;
+
     public VehicleEntity() {
         this.costCalculation = new HashSet<>();
         this.owners = new HashSet<>();
@@ -161,6 +164,19 @@ public class VehicleEntity extends BaseEntity {
     public VehicleEntity setSold(boolean sold) {
         this.sold = sold;
         return this;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public VehicleEntity setUuid(String uuid) {
+        this.uuid = uuid;
+        return this;
+    }
+
+    public int countPictures () {
+        return this.pictures.size();
     }
 
     @Override

@@ -18,7 +18,7 @@ VALUES (1, 'S 1000', 'MOTORCYCLE', 1),
        (4, 'Q5', 'AUTOMOBILE', 3),
        (5, 'YZFR1', 'MOTORCYCLE', 2);
 
-INSERT INTO vehicles (id, engine, transmission, year, model_id, vin, odometer_km, notes)
+INSERT INTO vehicles (id, uuid, engine, transmission, year, model_id, vin, odometer_km, notes)
 VALUES (1, 'PETROL', 'AUTOMATIC', 2012, 3, 'WBAGN83493D479736', 180000, '...'),
        (2, 'PETROL', 'MANUAL', 2022, 1, 'WBADM6334XB728241', 10000, 'Crashed'),
        (3, 'PETROL', 'AUTOMATIC', 2018, 4, 'WA1WFDFPXDA095665', 215000, 'Run and Drive'),

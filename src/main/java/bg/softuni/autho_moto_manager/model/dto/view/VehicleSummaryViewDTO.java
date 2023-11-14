@@ -2,8 +2,10 @@ package bg.softuni.autho_moto_manager.model.dto.view;
 
 import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
 
+import java.util.UUID;
+
 public class VehicleSummaryViewDTO {
-    private Long id;
+    private String uuid;
     private String type;
     private String modelName;
     private String makeName;
@@ -15,7 +17,7 @@ public class VehicleSummaryViewDTO {
     private String primaryImage;
 
     public VehicleSummaryViewDTO(VehicleEntity vehicleEntity) {
-        this.id = vehicleEntity.getId();
+        this.uuid = vehicleEntity.getUuid();
         this.type = vehicleEntity.getModel().getType().name();
         this.modelName = vehicleEntity.getModel().getName();
         this.makeName = vehicleEntity.getModel().getMake().getName();
@@ -29,8 +31,8 @@ public class VehicleSummaryViewDTO {
                 : vehicleEntity.getPrimaryImage().getUrl();
     }
 
-    public Long getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
     public String getType() {

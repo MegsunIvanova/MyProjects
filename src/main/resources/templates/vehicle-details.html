@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{fragments/head}"></head>
 
@@ -23,7 +24,7 @@
                     <img th:if="${#strings.equals(vehicle.type, automobileType)}"
                          th:src="@{/images/carBlackBasic.png}" class="d-block w-100" alt="Vehicle Picture">
                     <img th:unless="${#strings.equals(vehicle.type, automobileType)}"
-                         th:src="@{/images/carBlackBasic.png}" class="d-block w-100" alt="Vehicle Picture">
+                         th:src="@{/images/motoBlackBasic.png}" class="d-block w-100" alt="Vehicle Picture">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -62,24 +63,16 @@
             COSTS CONTAINER
         </div>
 
-        <div class="user_subcontainer_details bg-dark text-light">
-<!--            <form>-->
-<!--                <div class="form-group row mb-3">-->
-<!--                    <label for="url" class="col-sm-4 col-form-label fs-6">Picture url:</label>-->
-<!--                    <div class="col-sm-8">-->
-<!--                        <input id="url" name="url"-->
-<!--                               type="url"-->
-<!--                               class="form-control fs-6"-->
-<!--                               placeholder="image url"-->
-<!--                               required>-->
-<!--                        <small id="nameError"-->
-<!--                               class="invalid-feedback rounded text-center"-->
-<!--                               th:text="${#strings.listJoin(#fields.errors('name'), ' ')}">-->
-<!--                            Invalid name!</small>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <input type="submit" class="btn btn-danger mt-3 mb-3 fs-6" value="Submit"/>-->
-<!--            </form>-->
+        <div class="user_subcontainer_details bg-dark text-light" sec:authorize="isAuthenticated()">
+            <a th:href="@{/pictures/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
+                Add picture</a>
+
+            <a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
+                Add cost</a>
+
+            <a th:href="@{/vehicle/sell/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
+                Sell</a>
+
         </div>
     </section>
 </section>

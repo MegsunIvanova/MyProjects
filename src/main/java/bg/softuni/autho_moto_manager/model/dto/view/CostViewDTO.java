@@ -4,7 +4,7 @@ import bg.softuni.autho_moto_manager.model.entity.CostEntity;
 
 import java.math.BigDecimal;
 
-public class CostDTO {
+public class CostViewDTO {
 
     private Long id;
     private String costType;
@@ -13,7 +13,7 @@ public class CostDTO {
     private String currencyId;
     private BigDecimal currencyRateToBGN;
 
-    public CostDTO(CostEntity costEntity) {
+    public CostViewDTO(CostEntity costEntity) {
         this.id = costEntity.getId();
         this.costType = costEntity.getType().name();
         this.description = costEntity.getDescription();

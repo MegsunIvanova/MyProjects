@@ -1,4 +1,4 @@
-package bg.softuni.autho_moto_manager.controller;
+package bg.softuni.autho_moto_manager.web;
 
 import bg.softuni.autho_moto_manager.model.dto.view.VehicleDetailsViewDTO;
 import bg.softuni.autho_moto_manager.model.enums.VehicleTypeEnum;
@@ -19,9 +19,9 @@ public class VehicleController {
         this.vehicleService = vehicleService;
     }
 
-    @GetMapping("/details/{id}")
-    public String details(Model model, @PathVariable("id") Long id) {
-        VehicleDetailsViewDTO vehicle = vehicleService.getDetailsById(id);
+    @GetMapping("/details/{uuid}")
+    public String details(Model model, @PathVariable("uuid") String uuid) {
+        VehicleDetailsViewDTO vehicle = vehicleService.getDetailsByUuid(uuid);
         model.addAttribute("vehicle", vehicle);
         model.addAttribute("automobileType", VehicleTypeEnum.AUTOMOBILE);
 

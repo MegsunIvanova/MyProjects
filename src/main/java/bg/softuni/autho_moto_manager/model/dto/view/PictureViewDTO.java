@@ -2,10 +2,10 @@ package bg.softuni.autho_moto_manager.model.dto.view;
 
 import bg.softuni.autho_moto_manager.model.entity.PictureEntity;
 
-public class PictureDTO {
+public class PictureViewDTO {
     private String url;
 
-    public PictureDTO(PictureEntity pictureEntity) {
+    public PictureViewDTO(PictureEntity pictureEntity) {
         this.url = pictureEntity.getUrl();
     }
 
