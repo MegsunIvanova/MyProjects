@@ -59,10 +59,6 @@
         </div>
     </section>
     <section class="user_container_details">
-        <div class="user_subcontainer_details bg-dark text-light">
-            COSTS CONTAINER
-        </div>
-
         <div class="user_subcontainer_details bg-dark text-light" sec:authorize="isAuthenticated()">
             <a th:href="@{/pictures/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
                 Add picture</a>
@@ -73,6 +69,10 @@
             <a th:href="@{/vehicle/sell/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
                 Sell</a>
 
+        </div>
+
+        <div class="user_subcontainer_details bg-dark text-light">
+            COSTS CONTAINER
         </div>
     </section>
 </section>

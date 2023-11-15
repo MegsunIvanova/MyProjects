@@ -19,11 +19,11 @@ VALUES (1, 'S 1000', 'MOTORCYCLE', 1),
        (5, 'YZFR1', 'MOTORCYCLE', 2);
 
 INSERT INTO vehicles (id, uuid, engine, transmission, year, model_id, vin, odometer_km, notes)
-VALUES (1, 'PETROL', 'AUTOMATIC', 2012, 3, 'WBAGN83493D479736', 180000, '...'),
-       (2, 'PETROL', 'MANUAL', 2022, 1, 'WBADM6334XB728241', 10000, 'Crashed'),
-       (3, 'PETROL', 'AUTOMATIC', 2018, 4, 'WA1WFDFPXDA095665', 215000, 'Run and Drive'),
-       (4, 'PETROL', 'AUTOMATIC', 2013, 2, 'WAUKFBFM4BA119967', 130000, 'Run and Drive'),
-       (5, 'PETROL', 'MANUAL', 2023, 5, 'JY41YW003HC005055', 35000, 'Crashed');
+VALUES (1, '45c4011d-5bc7-4047-a3c4-3eaf126102d9', 'PETROL', 'AUTOMATIC', 2012, 3, 'WBAGN83493D479736', 180000, '...'),
+       (2, 'c5f130a2-a7c3-4e01-abae-e3cf860d42a9', 'PETROL', 'MANUAL', 2022, 1, 'WBADM6334XB728241', 10000, 'Crashed'),
+       (3, 'cf5667f3-de59-4c9a-821a-8a2dd0e2a897', 'PETROL', 'AUTOMATIC', 2018, 4, 'WA1WFDFPXDA095665', 215000, 'Run and Drive'),
+       (4, '6df5b107-a342-48b9-a899-252e5a1f1e25', 'PETROL', 'AUTOMATIC', 2013, 2, 'WAUKFBFM4BA119967', 130000, 'Run and Drive'),
+       (5, 'c5c9f8b5-f9a1-4b4e-82d1-4ba3290d94da', 'PETROL', 'MANUAL', 2023, 5, 'JY41YW003HC005055', 35000, 'Crashed');
 
 INSERT INTO pictures (id, vehicle_id, url)
 VALUES (1, 1, 'https://cs.copart.com/v1/AUTH_svc.pdoc00001/lpp/0623/ab4232eed57e493eb2ed4464ec770428_ful.jpg'),
@@ -45,3 +45,4 @@ UPDATE vehicles SET primary_image_id = 4 WHERE id = 2;
 UPDATE vehicles SET primary_image_id = 7 WHERE id = 3;
 UPDATE vehicles SET primary_image_id = 9 WHERE id = 4;
 UPDATE vehicles SET primary_image_id = 12 WHERE id = 5;
+

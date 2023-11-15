@@ -13,7 +13,7 @@ public class CurrencyEntity {
 
     @Id
     private String id;
-    @Column(name = "rate_to_BGN")
+    @Column(name = "rate_to_BGN", scale = 5)
     private BigDecimal rateToBGN;
 
     public CurrencyEntity() {

@@ -9,6 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static bg.softuni.autho_moto_manager.util.Constants.BINDING_RESULT_PACKAGE;
+
 @Controller
 @RequestMapping("pictures")
 public class PictureController {
@@ -38,7 +40,8 @@ public class PictureController {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addPictureDTO", addPictureDTO);
-            redirectAttributes.addFlashAttribute(addPictureDTO + "addPictureDTO", bindingResult);
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_PACKAGE + "addPictureDTO",
+                    bindingResult);
 
             return "redirect:/pictures/add/" + addPictureDTO.getVehicle();
         }
