@@ -17,11 +17,11 @@ public class CostEntity extends BaseEntity {
 
     @Column(nullable = false)
     private BigDecimal amount;
-    @ManyToOne (optional = false)
+    @ManyToOne(optional = false)
     private CurrencyEntity currency;
-    @Column(name = "fixed_transaction_rate")
-    private BigDecimal fixedTransactionRate;
-    private boolean isCompleted;
+    @Column(name = "transaction_rate", scale = 5)
+    private BigDecimal transactionRate;
+    private boolean completed;
     @ManyToOne
     private VehicleEntity vehicle;
 
@@ -64,21 +64,21 @@ public class CostEntity extends BaseEntity {
         return this;
     }
 
-    public BigDecimal getFixedTransactionRate() {
-        return fixedTransactionRate;
+    public BigDecimal getTransactionRate() {
+        return transactionRate;
     }
 
-    public CostEntity setFixedTransactionRate(BigDecimal fixedTransactionRate) {
-        this.fixedTransactionRate = fixedTransactionRate;
+    public CostEntity setTransactionRate(BigDecimal fixedTransactionRate) {
+        this.transactionRate = fixedTransactionRate;
         return this;
     }
 
     public boolean isCompleted() {
-        return isCompleted;
+        return completed;
     }
 
     public CostEntity setCompleted(boolean completed) {
-        isCompleted = completed;
+        completed = completed;
         return this;
     }
 
@@ -100,6 +100,6 @@ public class CostEntity extends BaseEntity {
     public boolean equals(Object other) {
         if (this == other) return true;
         if (!(other instanceof CostEntity that)) return false;
-        return Objects.equals(getId(),that.getId());
+        return Objects.equals(getId(), that.getId());
     }
 }

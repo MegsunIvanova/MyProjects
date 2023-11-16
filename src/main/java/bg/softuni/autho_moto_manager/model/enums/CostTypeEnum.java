@@ -1,16 +1,26 @@
 package bg.softuni.autho_moto_manager.model.enums;
 
 public enum CostTypeEnum {
-    VEHICLE_AUCTION_PRICE,
-    CONTAINER,
-    AGENT_COMMISSION,
-    AUCTION_COMMISSION,
-    TRANSPORT_EXTERNAL,
-    TRANSPORT_INTERNAL,
-    VAT_DUTY,
-    BANK_FEES,
-    TECHNICAL_INSPECTION,
-    REPAIRMENT_SERVICES,
-    REPAIRMENT_PARTS,
-    OTHER_COSTS
+    VEHICLE_AUCTION_PRICE("Veficle auction price"),
+    CONTAINER("Container"),
+    AGENT_COMMISSION("Agent's' commission"),
+    AUCTION_COMMISSION("Auction's' commission"),
+    TRANSPORT_EXTERNAL("External transport"),
+    TRANSPORT_INTERNAL("Internal transport"),
+    VAT_DUTY("VAT, Duty"),
+    BANK_FEES("Bank fees"),
+    TECHNICAL_INSPECTION("Technical inspection fee"),
+    REPAIRMENT_SERVICES("Repairment services"),
+    REPAIRMENT_PARTS("Repairment parts"),
+    OTHER_COSTS("Other costs");
+
+    String formattedName;
+
+    CostTypeEnum(String formattedName) {
+        this.formattedName = formattedName;
+    }
+
+    public String getFormattedName() {
+        return formattedName;
+    }
 }

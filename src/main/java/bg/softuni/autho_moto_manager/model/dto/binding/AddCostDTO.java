@@ -1,29 +1,33 @@
 package bg.softuni.autho_moto_manager.model.dto.binding;
 
-import bg.softuni.autho_moto_manager.model.entity.CurrencyEntity;
 import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public class AddCostDTO {
 
-    @NotNull
+    @NotNull (message = "Select a type!")
     private CostTypeEnum type;
 
+    @Size (max = 200, message = "Description max length is 200 characters!")
     private String description;
 
-    @Positive
-    @NotNull
+    @Positive (message = "Amount must be positive!")
+    @NotNull(message = "Fill out an amount!")
     private BigDecimal amount;
 
-    @NotNull
-    private CurrencyEntity currency;
+    @NotEmpty(message = "Select a currency!")
+    private String currency;
 
-    private BigDecimal fixedTransactionRate;
+    @Positive(message = "Rate must be positive number!")
+    private BigDecimal transactionRate;
 
-    private boolean isCompleted;
+    private boolean completed;
 
     private String vehicle;
 
@@ -57,30 +61,30 @@ public class AddCostDTO {
         return this;
     }
 
-    public CurrencyEntity getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public AddCostDTO setCurrency(CurrencyEntity currency) {
+    public AddCostDTO setCurrency(String currency) {
         this.currency = currency;
         return this;
     }
 
-    public BigDecimal getFixedTransactionRate() {
-        return fixedTransactionRate;
+    public BigDecimal getTransactionRate() {
+        return transactionRate;
     }
 
-    public AddCostDTO setFixedTransactionRate(BigDecimal fixedTransactionRate) {
-        this.fixedTransactionRate = fixedTransactionRate;
+    public AddCostDTO setTransactionRate(BigDecimal transactionRate) {
+        this.transactionRate = transactionRate;
         return this;
     }
 
     public boolean isCompleted() {
-        return isCompleted;
+        return completed;
     }
 
     public AddCostDTO setCompleted(boolean completed) {
-        isCompleted = completed;
+        this.completed = completed;
         return this;
     }
 
@@ -92,4 +96,13 @@ public class AddCostDTO {
         this.vehicle = vehicle;
         return this;
     }
-}
+
+    public BigDecimal getTotalPrice() {
+        return amount.multiply(transactionRate);
+    }
+
+    public BigDecimal getFixRate(Map<String, BigDecimal> currencies) {
+        return currencies != null && currencies.containsKey(this.currency)
+                ? currencies.get(this.currency)
+                : BigDecimal.ZERO;
+    }}

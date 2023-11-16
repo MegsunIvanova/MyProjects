@@ -1,15 +1,9 @@
 package bg.softuni.autho_moto_manager.configuration;
 
-import bg.softuni.autho_moto_manager.model.dto.binding.AddPictureDTO;
-import bg.softuni.autho_moto_manager.model.dto.binding.CreateModelDTO;
-import bg.softuni.autho_moto_manager.model.dto.binding.CreateVehicleDTO;
-import bg.softuni.autho_moto_manager.model.dto.binding.UserRegisterDTO;
+import bg.softuni.autho_moto_manager.model.dto.binding.*;
 import bg.softuni.autho_moto_manager.model.entity.*;
 import bg.softuni.autho_moto_manager.model.enums.UserRoleEnum;
-import bg.softuni.autho_moto_manager.repository.MakeRepository;
-import bg.softuni.autho_moto_manager.repository.ModelRepository;
-import bg.softuni.autho_moto_manager.repository.RoleRepository;
-import bg.softuni.autho_moto_manager.repository.VehicleRepository;
+import bg.softuni.autho_moto_manager.repository.*;
 import bg.softuni.autho_moto_manager.service.exceptions.DatabaseException;
 import bg.softuni.autho_moto_manager.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.Converter;
@@ -19,6 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,17 +25,19 @@ public class ApplicationConfiguration {
     private final MakeRepository makeRepository;
     private final ModelRepository modelRepository;
     private final VehicleRepository vehicleRepository;
+    private final CurrencyRepository currencyRepository;
 
     public ApplicationConfiguration(RoleRepository roleRepository,
                                     PasswordEncoder passwordEncoder,
                                     MakeRepository makeRepository,
                                     ModelRepository modelRepository,
-                                    VehicleRepository vehicleRepository) {
+                                    VehicleRepository vehicleRepository, CurrencyRepository currencyRepository) {
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.makeRepository = makeRepository;
         this.modelRepository = modelRepository;
         this.vehicleRepository = vehicleRepository;
+        this.currencyRepository = currencyRepository;
     }
 
     @Bean
@@ -50,23 +48,43 @@ public class ApplicationConfiguration {
         configMapCreateModelDTOToModelEntity(modelMapper);
         configMapCreateVehicleDTOToVehicleEntity(modelMapper);
         configMapAddPictureDTOToPictureEntity(modelMapper);
+        configMapAddCostDTOToCostEntity(modelMapper);
 
         return modelMapper;
     }
 
+    private void configMapAddCostDTOToCostEntity(ModelMapper modelMapper) {
+        //AddCostDTO -> CostEntity
+        Converter<String, CurrencyEntity> currencyConverter = ctx -> ctx.getSource() == null
+                ? null
+                :currencyRepository.findById(ctx.getSource())
+                        .orElseThrow(() ->
+                                new ObjectNotFoundException("Currency " + ctx.getSource() + "was not found!"));
+
+        modelMapper.createTypeMap(AddCostDTO.class, CostEntity.class)
+                .addMappings(mapper -> mapper.skip(CostEntity::setVehicle))
+                .addMappings(mapper -> mapper
+                        .using((getStringVehicleEntityConverter()))
+                        .map(AddCostDTO::getVehicle, CostEntity::setVehicle))
+                .addMappings(mapping -> mapping
+                        .using(currencyConverter)
+                        .map(AddCostDTO::getCurrency, CostEntity::setCurrency));
+    }
+
     private void configMapAddPictureDTOToPictureEntity(ModelMapper modelMapper) {
         //AddPictureDTO -> PictureEntity
-        Converter<String, VehicleEntity> vehicleConverter =
-                ctx -> ctx.getSource() == null
-                        ? null
-                        : vehicleRepository.findByUuid(ctx.getSource())
-                        .orElseThrow(() -> new ObjectNotFoundException("Vehicle with id:" + ctx.getSource() + "was not found!"));
-
         modelMapper.createTypeMap(AddPictureDTO.class, PictureEntity.class)
                 .addMappings(mapper -> mapper.skip(PictureEntity::setVehicle))
                 .addMappings((mapper -> mapper
-                        .using(vehicleConverter)
+                        .using(getStringVehicleEntityConverter())
                         .map(AddPictureDTO::getVehicle, PictureEntity::setVehicle)));
+    }
+
+    private Converter<String, VehicleEntity> getStringVehicleEntityConverter() {
+        return ctx -> ctx.getSource() == null
+                ? null
+                : vehicleRepository.findByUuid(ctx.getSource())
+                .orElseThrow(() -> new ObjectNotFoundException("Vehicle with id:" + ctx.getSource() + "was not found!"));
     }
 
     private void configMapCreateVehicleDTOToVehicleEntity(ModelMapper modelMapper) {

@@ -14,7 +14,7 @@
         <img th:src="@{/images/motorcycle_art.png}" class="img-fluid">
         Add Cost:</h3>
 
-    <form th:action="@{/cost/add}"
+    <form th:action="@{/costs/add}"
           th:method="POST"
           th:object="${addCostDTO}">
 
@@ -25,28 +25,103 @@
                th:value="${vehicle}"
                required>
 
-        <div class="form-group mb-3">
-            <label for="type" class="form-label fs-6">Type: *</label>
-            <select th:field="*{type}"
-                    th:errorclass="'is-invalid bg-danger'"
-                    id="type"
-                    name="type"
-                    class="form-select"
-                    aria-label="Select a type:"
-                    required>
-                <option value="" selected>Select a type:</option>
-                <option th:each="type : ${costTypes}"
-                        th:text="${type}"
-                        th:value="${type}">Type of cost
-                </option>
-            </select>
-            <small id="typeError"
-                   class="invalid-feedback rounded text-center"
-                   th:text="${#strings.listJoin(#fields.errors('type'), ' ')}">
-                Invalid type!</small>
+        <!--  First Row  -->
+        <div class="d-flex justify-content-between">
+            <div class="form-group mb-3 me-5 flex-grow-1">
+                <label for="type" class="form-label fs-6">Type: *</label>
+                <select th:field="*{type}"
+                        th:errorclass="'is-invalid bg-danger'"
+                        id="type"
+                        name="type"
+                        class="form-select"
+                        aria-label="Type:"
+                        required>
+                    <option value="" selected>Select cost type:</option>
+                    <option th:each="type : ${costTypes}"
+                            th:text="${type.getFormattedName()}"
+                            th:value="${type}">Type of cost
+                    </option>
+                </select>
+                <small id="typeError"
+                       class="invalid-feedback rounded text-center"
+                       th:text="${#strings.listJoin(#fields.errors('type'), ' ')}">
+                    Invalid type!</small>
+            </div>
+
+            <div class="form-check  align-self-center">
+                <input class="form-check-input"
+                       type="checkbox"
+                       id="completed"
+                       name="completed"
+                       th:field="*{completed}"
+                       th:value="*{completed}">
+                <label class="form-check-label" for="completed">
+                    Completed
+                </label>
+            </div>
 
         </div>
 
+        <!--  Second Row  -->
+        <div class="d-flex justify-content-between">
+
+            <div class="form-group mb-3 ">
+                <label for="amount" class="form-label fs-6">Amount: *</label>
+                <input th:field="*{amount}"
+                       th:errorclass="'is-invalid bg-danger'"
+                       type="number"
+                       step="0.01"
+                       min="0.01"
+                       class="form-control"
+                       id="amount"
+                       placeholder="0.00"
+                       required>
+                <small id="amountError"
+                       class="invalid-feedback rounded text-center"
+                       th:text="${#strings.listJoin(#fields.errors('amount'), ' ')}">
+                    Invalid amount!</small>
+
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="currency" class="form-label fs-6">Currency: *</label>
+                <select th:field="*{currency}"
+                        th:errorclass="'is-invalid bg-danger'"
+                        id="currency"
+                        name="currency"
+                        class="form-select"
+                        aria-label="Default select example"
+                        required>
+                    <option value="" selected>Select a currency:</option>
+                    <option th:each="currency : ${currencies}"
+                            th:text="${currency}"
+                            th:value="${currency}">Currency: *
+                    </option>
+                </select>
+                <small id="currencyError"
+                       class="invalid-feedback rounded text-center"
+                       th:text="${#strings.listJoin(#fields.errors('currency'), ' ')}">
+                    Invalid currency!</small>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="transactionRate" class="form-label fs-6">Rate to BGN:</label>
+                <input th:field="*{transactionRate}"
+                       th:errorclass="'is-invalid bg-danger'"
+                       type="number"
+                       step="0.00001"
+                       min="0.00001"
+                       class="form-control"
+                       id="transactionRate"
+                       placeholder="#.#####">
+                <small id="transactionRateError"
+                       class="invalid-feedback rounded text-center"
+                       th:text="${#strings.listJoin(#fields.errors('transactionRate'), ' ')}">
+                    Invalid rate!</small>
+            </div>
+        </div>
+
+        <!--  Third Row  -->
         <div class="form-group mb-3">
             <label for="description" class="form-label fs-6">Description:</label>
             <textarea class="form-control"
@@ -58,49 +133,11 @@
                    class="invalid-feedback rounded text-center"
                    th:text="${#strings.listJoin(#fields.errors('description'), ' ')}">
                 Invalid description!</small>
-
         </div>
 
-        <div class="form-group mb-3">
-            <label for="amount" class="form-label fs-6">Amount: *</label>
-            <input th:field="*{amount}"
-                   th:errorclass="'is-invalid bg-danger'"
-                   type="number"
-                   class="form-control"
-                   id="amount"
-                   placeholder="0.00"
-                   min="0.01">
-            <small id="amountError"
-                   class="invalid-feedback rounded text-center"
-                   th:text="${#strings.listJoin(#fields.errors('amount'), ' ')}">
-                Invalid amount!</small>
-
+        <div class="d-flex justify-content-center">
+            <input type="submit" class="btn btn-danger mt-3 mb-3 fs-6 flex-fill" value="Add cost"/>
         </div>
-
-        <div class="form-group mb-3">
-            <label for="currency" class="form-label fs-6">Currency: *</label>
-            <select th:field="*{currency}"
-                    th:errorclass="'is-invalid bg-danger'"
-                    id="currency"
-                    name="currency"
-                    class="form-select"
-                    aria-label="Default select example"
-                    required>
-                <option value="" selected>Select a type:</option>
-                <option th:each="currency : ${currencies}"
-                        th:text="${currency}"
-                        th:value="${currency}">Type of cost
-                </option>
-            </select>
-            <small id="currencyError"
-                   class="invalid-feedback rounded text-center"
-                   th:text="${#strings.listJoin(#fields.errors('currency'), ' ')}">
-                Invalid amount!</small>
-
-        </div>
-
-
-        <input type="submit" class="btn btn-danger mt-3 mb-3 fs-6 align-self " value="Add cost"/>
 
     </form>
 </section>
