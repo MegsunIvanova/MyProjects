@@ -60,35 +60,49 @@
                     <th:block th:text="${vehicle.notes}">{odometer}</th:block>
                 </li>
             </ul>
-        </div>
 
-        <div class="user_subcontainer_details bg-dark text-light" sec:authorize="isAuthenticated()">
-            <div class="stretch d-grid"><a th:href="@{/pictures/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
-                Add picture</a></div>
+            <div class="user_subcontainer_details bg-dark text-light" sec:authorize="isAuthenticated()">
+                <div class="stretch d-grid"><a th:href="@{/pictures/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
+                                               class="btn btn-danger m-4">
+                    Add picture</a></div>
 
-            <div class="stretch d-grid"><a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
-                Add cost</a></div>
+                <div class="stretch d-grid"><a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
+                                               class="btn btn-danger m-4">
+                    Add cost</a></div>
 
-            <div class="stretch d-grid"><a th:href="@{/vehicle/sell/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
-                Sell</a></div>
 
+                <div class="stretch d-grid"><a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
+                                               class="btn btn-danger m-4">
+                    View Costs</a></div>
+
+
+                <div class="stretch d-grid"><a th:href="@{/vehicle/sell/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
+                                               class="btn btn-danger m-4">
+                    Sell</a></div>
+
+            </div>
         </div>
 
         <div class="user_subcontainer_details bg-dark text-light">
-            <table>
+            <table class="table table-dark table-striped ">
                 <thead>
-                <th>Cost Type</th>
-                <th>Total Amount in BGN</th>
+                <th scope="col">#</th>
+                <th scope="col">Cost Type</th>
+                <th class="text-end" scope="col">Total Amount in BGN</th>
                 </thead>
-                <tbody>
+
+                <tbody class="table-group-divider">
                 <tr th:each="costEntry : ${vehicle.getTotalCostsByType()}">
+                    <th scope="row" th:text="${costEntry.getKey().ordinal()+1}"></th>
                     <td th:text="${costEntry.getKey().getFormattedName()}"></td>
-                    <td th:text="${#numbers.formatDecimal(costEntry.getValue(), 2, 2)}"></td>
+                    <td class="text-end" th:text="${#numbers.formatDecimal(costEntry.getValue(), 2,  'WHITESPACE', 2, 'POINT')}"></td>
                 </tr>
                 </tbody>
-                <tfoot>
+
+                <tfoot class="table-group-divider">
+                <th></th>
                 <td>Total costs in BGN:</td>
-                <td th:text="${#numbers.formatDecimal(vehicle.getTotalCostsInBGN(),2,2)}"></td>
+                <td class="text-end" th:text="${#numbers.formatDecimal(vehicle.getTotalCostsInBGN(),2,'WHITESPACE', 2, 'POINT')}"></td>
                 </tfoot>
             </table>
         </div>
