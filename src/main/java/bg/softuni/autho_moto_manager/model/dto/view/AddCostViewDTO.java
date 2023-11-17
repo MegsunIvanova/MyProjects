@@ -9,9 +9,11 @@ public class AddCostViewDTO {
     private CostTypeEnum[] costTypes;
     private List<String> currencies;
 
+
     public AddCostViewDTO() {
         this.costTypes = CostTypeEnum.values();
         this.currencies = new ArrayList<>();
+
     }
 
     public AddCostViewDTO(List<String> currencies) {

@@ -9,6 +9,8 @@ import bg.softuni.autho_moto_manager.service.CostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class CostServiceImpl implements CostService {
     private final CostRepository costRepository;
@@ -32,19 +34,11 @@ public class CostServiceImpl implements CostService {
     public void addCost(AddCostDTO addCostDTO) {
         CostEntity costEntity = modelMapper.map(addCostDTO, CostEntity.class);
 
-//        if (costEntity.getTransactionRate() == null) {
-//            BigDecimal fixRate = costEntity.getCurrency().getRateToBGN();
-//            costEntity.setTransactionRate(fixRate);
-//        }
+        if (costEntity.isCompleted() && costEntity.getTransactionRate() == null) {
+            BigDecimal fixRate = costEntity.getCurrency().getRateToBGN();
+            costEntity.setTransactionRate(fixRate);
+        }
 
         costRepository.save(costEntity);
     }
-
-//    private Map<String, BigDecimal> getCurrenciesWithRates() {
-//        return currencyRepository.findAll()
-//                .stream()
-//                .collect(Collectors.toUnmodifiableMap(
-//                        CurrencyEntity::getId,
-//                        CurrencyEntity::getRateToBGN));
-//    }
 }

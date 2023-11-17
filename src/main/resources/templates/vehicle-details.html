@@ -36,6 +36,10 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
+    </section>
+
+    <section class="user_container_details">
+
         <div class="user_subcontainer_details bg-dark text-light">
             <h4 th:text="${vehicle.getSummaryTitle()}">{year make model}</h4>
 
@@ -57,23 +61,38 @@
                 </li>
             </ul>
         </div>
-    </section>
-    <section class="user_container_details">
+
         <div class="user_subcontainer_details bg-dark text-light" sec:authorize="isAuthenticated()">
-            <a th:href="@{/pictures/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
-                Add picture</a>
+            <div class="stretch d-grid"><a th:href="@{/pictures/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
+                Add picture</a></div>
 
-            <a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
-                Add cost</a>
+            <div class="stretch d-grid"><a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
+                Add cost</a></div>
 
-            <a th:href="@{/vehicle/sell/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
-                Sell</a>
+            <div class="stretch d-grid"><a th:href="@{/vehicle/sell/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}" class="btn btn-danger m-4">
+                Sell</a></div>
 
         </div>
 
         <div class="user_subcontainer_details bg-dark text-light">
-            COSTS CONTAINER
+            <table>
+                <thead>
+                <th>Cost Type</th>
+                <th>Total Amount in BGN</th>
+                </thead>
+                <tbody>
+                <tr th:each="costEntry : ${vehicle.getTotalCostsByType()}">
+                    <td th:text="${costEntry.getKey().getFormattedName()}"></td>
+                    <td th:text="${#numbers.formatDecimal(costEntry.getValue(), 2, 2)}"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <td>Total costs in BGN:</td>
+                <td th:text="${#numbers.formatDecimal(vehicle.getTotalCostsInBGN(),2,2)}"></td>
+                </tfoot>
+            </table>
         </div>
+
     </section>
 </section>
 

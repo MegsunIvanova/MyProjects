@@ -57,11 +57,12 @@ div.jumbotron {
 .user_mainContainer_details {
     display: flex;
     gap: 16px;
+    flex-direction: column;
 }
 
 .user_container_cards, .user_container_details {
     display: flex;
-    flex-direction: column;
+    /*flex-direction: column;*/
     gap: 16px;
     align-content: stretch;
 }
@@ -105,6 +106,10 @@ div.jumbotron {
     max-width: 100%;
     height: 50%;
     object-fit: cover;
+}
+
+div.stretch {
+    width: 100%;
 }
 
 

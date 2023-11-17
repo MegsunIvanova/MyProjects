@@ -1,6 +1,7 @@
 package bg.softuni.autho_moto_manager.web;
 
 import bg.softuni.autho_moto_manager.model.dto.view.VehicleDetailsViewDTO;
+import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.autho_moto_manager.model.enums.VehicleTypeEnum;
 import bg.softuni.autho_moto_manager.service.VehicleService;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ public class VehicleController {
         VehicleDetailsViewDTO vehicle = vehicleService.getDetailsByUuid(uuid);
         model.addAttribute("vehicle", vehicle);
         model.addAttribute("automobileType", VehicleTypeEnum.AUTOMOBILE);
+        model.addAttribute("costTypes", CostTypeEnum.values());
 
         return "vehicle-details";
     }

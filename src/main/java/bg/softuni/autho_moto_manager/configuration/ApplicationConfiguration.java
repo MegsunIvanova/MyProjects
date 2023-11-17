@@ -8,6 +8,7 @@ import bg.softuni.autho_moto_manager.service.exceptions.DatabaseException;
 import bg.softuni.autho_moto_manager.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.modelmapper.Provider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,9 +58,9 @@ public class ApplicationConfiguration {
         //AddCostDTO -> CostEntity
         Converter<String, CurrencyEntity> currencyConverter = ctx -> ctx.getSource() == null
                 ? null
-                :currencyRepository.findById(ctx.getSource())
-                        .orElseThrow(() ->
-                                new ObjectNotFoundException("Currency " + ctx.getSource() + "was not found!"));
+                : currencyRepository.findById(ctx.getSource())
+                .orElseThrow(() ->
+                        new ObjectNotFoundException("Currency " + ctx.getSource() + "was not found!"));
 
         modelMapper.createTypeMap(AddCostDTO.class, CostEntity.class)
                 .addMappings(mapper -> mapper.skip(CostEntity::setVehicle))

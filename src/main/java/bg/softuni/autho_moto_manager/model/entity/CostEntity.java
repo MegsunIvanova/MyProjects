@@ -78,7 +78,7 @@ public class CostEntity extends BaseEntity {
     }
 
     public CostEntity setCompleted(boolean completed) {
-        completed = completed;
+        this.completed = completed;
         return this;
     }
 
@@ -89,6 +89,14 @@ public class CostEntity extends BaseEntity {
     public CostEntity setVehicle(VehicleEntity vehicle) {
         this.vehicle = vehicle;
         return this;
+    }
+
+    public BigDecimal getAmountInBGN () {
+        BigDecimal rate = this.transactionRate !=null
+                ? this.transactionRate
+                : this.currency.getRateToBGN();
+
+        return this.amount.multiply(rate);
     }
 
     @Override

@@ -2,8 +2,6 @@ package bg.softuni.autho_moto_manager.model.dto.view;
 
 import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
 
-import java.util.UUID;
-
 public class VehicleSummaryViewDTO {
     private String uuid;
     private String type;
