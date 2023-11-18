@@ -131,9 +131,13 @@ div.stretch {
 
 
 @media screen and (max-width: 900px) {
-    .user_subcontainer_cards {
+    .user_subcontainer_cards, .user_container_details {
         flex-direction: column;
         justify-content: center;
+    }
+
+    div.stretch {
+        width: 100%;
     }
 
     .custom_card {
@@ -146,6 +150,8 @@ div.stretch {
         width: 640px;
         height: 350px;
     }
+
+
 
 }
 

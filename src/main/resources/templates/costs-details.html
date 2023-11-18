@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head}"></head>
+
+<body>
+<header>
+    <nav th:replace="~{fragments/navigation}">Navigation</nav>
+</header>
+
+<section class="user_mainContainer_details">
+
+    <section class="user_container_details">
+        <div class="user_subcontainer_details">
+
+            <table class="table table-dark table-striped ">
+                <thead>
+                <th scope="col">#</th>
+                <th scope="col">Cost Type</th>
+                <th class="text-end" scope="col">Completed - Amount in BGN</th>
+                <th class="text-end" scope="col">Planned Amount in BGN</th>
+                <th class="text-end" scope="col">Total Amount in BGN</th>
+                </thead>
+
+                <tbody class="table-group-divider">
+                <tr th:if="${detailedCostsView.contains(costType)}"
+                    th:each="costType : ${detailedCostsView.getCostTypes()}">
+                    <th scope="row" th:text="${costType.ordinal()+1}"></th>
+                    <td th:text="${costType.getFormattedName()}"></td>
+                    <td class="text-end"
+                        th:text="${#numbers.formatDecimal(detailedCostsView.getTotalInBGNByTypeAndStatus(costType, true), 2,  'WHITESPACE', 2, 'POINT')}"></td>
+                    <td class="text-end"
+                        th:text="${#numbers.formatDecimal(detailedCostsView.getTotalInBGNByTypeAndStatus(costType, false), 2, 'WHITESPACE', 2, 'POINT')}"></td>
+                    <td class="text-end"
+                        th:text="${#numbers.formatDecimal(
+                    detailedCostsView.getTotalInBGNByType(costType)
+                    , 2,  'WHITESPACE', 2, 'POINT')}"></td>
+                </tr>
+                </tbody>
+
+                <!--            <tfoot class="table-group-divider">-->
+                <!--            <th></th>-->
+                <!--            <td>Total costs in BGN:</td>-->
+                <!--            <td class="text-end"-->
+                <!--                th:text="${#numbers.formatDecimal(vehicle.getTotalCostsInBGN(),2,'WHITESPACE', 2, 'POINT')}"></td>-->
+                <!--            </tfoot>-->
+            </table>
+
+            <div class="d-flex justify-content-between"
+                 sec:authorize="isAuthenticated()">
+                <a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle})}"
+                   class="btn btn-danger m-4">
+                    Add cost</a>
+            </div>
+        </div>
+    </section>
+</section>
+
+</body>
+</html>
+

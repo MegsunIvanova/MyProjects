@@ -2,6 +2,7 @@ package bg.softuni.autho_moto_manager.web;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.AddCostDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.AddCostViewDTO;
+import bg.softuni.autho_moto_manager.model.dto.view.DetailedCostsView;
 import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.autho_moto_manager.service.CostService;
 import jakarta.validation.Valid;
@@ -56,5 +57,18 @@ public class CostController {
 
         return "redirect:/vehicle/details/" + addCostDTO.getVehicle();
     }
+
+    @GetMapping("/more/{vehicle}")
+    public String costsDetails(@PathVariable("vehicle") String vehicle,
+                               Model model) {
+
+        DetailedCostsView detailedCostsView = this.costService.getDetailedCostsView(vehicle);
+
+        model.addAttribute("detailedCostsView", detailedCostsView);
+
+        return "costs-details";
+    }
+
+
 
 }

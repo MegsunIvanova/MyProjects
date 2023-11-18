@@ -10,4 +10,5 @@ import java.util.List;
 public interface CostRepository extends JpaRepository<CostEntity, Long> {
 
     List<CostEntity> findAllByVehicle_Uuid (String uuid);
+    List<CostEntity> findAllByVehicle_UuidAndCompleted (String uuid, boolean completed);
 }
