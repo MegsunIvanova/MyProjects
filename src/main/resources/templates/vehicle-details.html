@@ -40,47 +40,39 @@
 
     <section class="user_container_details">
 
-        <div class="user_subcontainer_details bg-dark text-light">
-            <h4 th:text="${vehicle.getSummaryTitle()}">{year make model}</h4>
+        <div class="user_subcontainer_details bg-dark text-light stretch" >
+            <div >
+                <h4 class="me-3" th:text="${vehicle.getSummaryTitle()}">{year make model}</h4>
 
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item bg-dark text-light">Engine Type:
-                    <th:block th:text="${vehicle.engine}">{engine}</th:block>
-                </li>
-                <li class="list-group-item bg-dark text-light">Transmissions:
-                    <th:block th:text="${vehicle.transmission}">{transmissions}</th:block>
-                </li>
-                <li class="list-group-item bg-dark text-light">VIN:
-                    <th:block th:text="${vehicle.vin}">{vin}</th:block>
-                </li>
-                <li class="list-group-item bg-dark text-light">Odometer in km:
-                    <th:block th:text="${vehicle.odometerInKm}">{odometer}</th:block>
-                </li>
-                <li class="list-group-item bg-dark text-light">Notes:
-                    <th:block th:text="${vehicle.notes}">{odometer}</th:block>
-                </li>
-            </ul>
-
-            <div class="user_subcontainer_details bg-dark text-light" sec:authorize="isAuthenticated()">
-                <div class="stretch d-grid"><a th:href="@{/pictures/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
-                                               class="btn btn-danger m-4">
-                    Add picture</a></div>
-
-                <div class="stretch d-grid"><a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
-                                               class="btn btn-danger m-4">
-                    Add cost</a></div>
-
-
-                <div class="stretch d-grid"><a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
-                                               class="btn btn-danger m-4">
-                    View Costs</a></div>
-
-
-                <div class="stretch d-grid"><a th:href="@{/vehicle/sell/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
-                                               class="btn btn-danger m-4">
-                    Sell</a></div>
-
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-dark text-light">Engine Type:
+                        <th:block th:text="${vehicle.engine}">{engine}</th:block>
+                    </li>
+                    <li class="list-group-item bg-dark text-light">Transmissions:
+                        <th:block th:text="${vehicle.transmission}">{transmissions}</th:block>
+                    </li>
+                    <li class="list-group-item bg-dark text-light">VIN:
+                        <th:block th:text="${vehicle.vin}">{vin}</th:block>
+                    </li>
+                    <li class="list-group-item bg-dark text-light">Odometer in km:
+                        <th:block th:text="${vehicle.odometerInKm}">{odometer}</th:block>
+                    </li>
+                    <li class="list-group-item bg-dark text-light">Notes:
+                        <th:block th:text="${vehicle.notes}">{odometer}</th:block>
+                    </li>
+                </ul>
             </div>
+
+            <div class="d-grid">
+                <a th:href="@{/pictures/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
+                   sec:authorize="isAuthenticated()"
+                   class="btn btn-danger m-4">Add picture </a>
+
+                <a th:href="@{/vehicle/sell/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
+                   sec:authorize="isAuthenticated()"
+                   class="btn btn-warning m-4"> Sell</a>
+            </div>
+
         </div>
 
         <div class="user_subcontainer_details bg-dark text-light">
@@ -92,19 +84,31 @@
                 </thead>
 
                 <tbody class="table-group-divider">
-                <tr th:each="costEntry : ${vehicle.getTotalCostsByType()}">
+                <tr th:if="${costEntry.getValue() > 0}" th:each="costEntry : ${vehicle.getTotalCostsByType()}">
                     <th scope="row" th:text="${costEntry.getKey().ordinal()+1}"></th>
                     <td th:text="${costEntry.getKey().getFormattedName()}"></td>
-                    <td class="text-end" th:text="${#numbers.formatDecimal(costEntry.getValue(), 2,  'WHITESPACE', 2, 'POINT')}"></td>
+                    <td class="text-end"
+                        th:text="${#numbers.formatDecimal(costEntry.getValue(), 2,  'WHITESPACE', 2, 'POINT')}"></td>
                 </tr>
                 </tbody>
 
                 <tfoot class="table-group-divider">
                 <th></th>
                 <td>Total costs in BGN:</td>
-                <td class="text-end" th:text="${#numbers.formatDecimal(vehicle.getTotalCostsInBGN(),2,'WHITESPACE', 2, 'POINT')}"></td>
+                <td class="text-end"
+                    th:text="${#numbers.formatDecimal(vehicle.getTotalCostsInBGN(),2,'WHITESPACE', 2, 'POINT')}"></td>
                 </tfoot>
             </table>
+
+            <div class="d-flex justify-content-between"
+                 sec:authorize="isAuthenticated()">
+                <a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
+                   class="btn btn-danger m-4">
+                    Add cost</a>
+                <a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
+                   class="btn btn-danger m-4">
+                    View more</a>
+            </div>
         </div>
 
     </section>
