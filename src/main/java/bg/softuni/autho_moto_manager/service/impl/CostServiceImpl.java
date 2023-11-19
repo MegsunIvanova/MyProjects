@@ -52,13 +52,18 @@ public class CostServiceImpl implements CostService {
     @Override
     public DetailedCostsView getDetailedCostsView(String vehicleUuid) {
 
-        Map<CostTypeEnum, List<CostViewDTO>> completedCosts =
-                createMapByType(costRepository.findAllByVehicle_UuidAndCompleted(vehicleUuid, true));
+        Map<CostTypeEnum, List<CostViewDTO>> costsByType =
+                createMapByType(costRepository.findAllByVehicle_Uuid(vehicleUuid));
 
-        Map<CostTypeEnum, List<CostViewDTO>> plannedCosts =
-                createMapByType(costRepository.findAllByVehicle_UuidAndCompleted(vehicleUuid, false));
 
-        return new DetailedCostsView(completedCosts, plannedCosts);
+        Map<CostTypeEnum, BigDecimal> completedCostsAmount = amountInBGNByCostType(costRepository
+                .findAllByVehicle_UuidAndCompleted(vehicleUuid, true));
+
+
+        Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount = amountInBGNByCostType(costRepository
+                .findAllByVehicle_UuidAndCompleted(vehicleUuid, false));
+
+        return new DetailedCostsView(completedCostsAmount, uncompletedCostsAmount, costsByType);
     }
 
     private Map<CostTypeEnum, List<CostViewDTO>> createMapByType(List<CostEntity> costEntities) {
@@ -67,5 +72,13 @@ public class CostServiceImpl implements CostService {
                 .collect(groupingBy(
                         CostViewDTO::getType,
                         Collectors.toList()));
+    }
+
+    private Map<CostTypeEnum, BigDecimal> amountInBGNByCostType(List<CostEntity> costs) {
+        return costs.stream().collect(Collectors.groupingBy(
+                CostEntity::getType,
+                Collectors.reducing(BigDecimal.ZERO,
+                        CostEntity::getAmountInBGN,
+                        BigDecimal::add)));
     }
 }

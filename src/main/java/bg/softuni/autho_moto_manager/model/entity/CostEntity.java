@@ -91,12 +91,14 @@ public class CostEntity extends BaseEntity {
         return this;
     }
 
-    public BigDecimal getAmountInBGN () {
-        BigDecimal rate = this.transactionRate !=null
+    public BigDecimal getAmountInBGN() {
+        return this.amount.multiply(getRateToBGN());
+    }
+
+    public BigDecimal getRateToBGN() {
+        return this.transactionRate != null
                 ? this.transactionRate
                 : this.currency.getRateToBGN();
-
-        return this.amount.multiply(rate);
     }
 
     @Override

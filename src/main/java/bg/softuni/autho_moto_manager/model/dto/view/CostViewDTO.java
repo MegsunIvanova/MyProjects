@@ -11,7 +11,7 @@ public class CostViewDTO {
     private String description;
     private BigDecimal amount;
     private String currencyId;
-    private BigDecimal currencyRateToBGN;
+    private BigDecimal rateToBGN;
     private BigDecimal amountInBGN;
     private boolean completed;
 
@@ -21,7 +21,7 @@ public class CostViewDTO {
         this.description = costEntity.getDescription();
         this.amount = costEntity.getAmount();
         this.currencyId = costEntity.getCurrency().getId();
-        this.currencyRateToBGN = costEntity.getTransactionRate();
+        this.rateToBGN = costEntity.getRateToBGN();
         this.amountInBGN = costEntity.getAmountInBGN();
         this.completed = costEntity.isCompleted();
     }
@@ -46,8 +46,8 @@ public class CostViewDTO {
         return currencyId;
     }
 
-    public BigDecimal getCurrencyRateToBGN() {
-        return currencyRateToBGN;
+    public BigDecimal getRateToBGN() {
+        return rateToBGN;
     }
 
     public BigDecimal getAmountInBGN() {
@@ -56,5 +56,9 @@ public class CostViewDTO {
 
     public boolean isCompleted() {
         return completed;
+    }
+
+    public String info() {
+        return String.format("%.2f %s x %.5f %s ", amount, currencyId, rateToBGN, description);
     }
 }
