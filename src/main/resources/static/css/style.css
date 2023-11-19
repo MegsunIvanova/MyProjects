@@ -129,7 +129,6 @@ div.stretch {
     width: 40%;
 }
 
-
 @media screen and (max-width: 900px) {
     .user_subcontainer_cards, .user_container_details {
         flex-direction: column;

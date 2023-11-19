@@ -54,6 +54,20 @@ public class DetailedCostsView {
     public List<CostViewDTO> getCostsByType(CostTypeEnum costType) {
         return costsByType.getOrDefault(costType, new ArrayList<>());
     }
+
+    public BigDecimal getCompletedCostsSum() {
+        return completedCostsAmount.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getUncompletedCostsSum() {
+        return uncompletedCostsAmount.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getCostsSum() {
+        return getCompletedCostsSum().add(getUncompletedCostsSum());
+    }
+
+
 }
 
 

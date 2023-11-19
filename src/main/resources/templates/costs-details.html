@@ -12,62 +12,86 @@
 
 <section class="user_mainContainer_details container text-light ">
     <div class="container text-center rounded overflow-hidden">
-        <div class="row row-cols-5 bg-dark">
-            <div class="col-sm-1">#</div>
-            <div class="col-lg-5">Cost Type</div>
-            <div class="text-end col-md-2">Completed Amount in BGN</div>
-            <div class="text-end col-md-2">Planned Amount in BGN</div>
-            <div class="text-end col-md-2">Total Amount in BGN</div>
+        <div class="row row-cols-5 bg-dark border-bottom border-secondary">
+            <div class="col-sm-1 fs-5 py-2">#</div>
+            <div class="col-lg-5  fs-5 py-2 text-start">Cost Type</div>
+            <div class="text-end  fs-5 col-md-2 py-2 text-end">Actual Costs</div>
+            <div class="text-end  fs-5 col-md-2 py-2 text-end">Planned Costs</div>
+            <div class="text-end  fs-5 col-md-2 py-2 text-end">Total Costs</div>
         </div>
 
         <th:block th:each="costType : ${detailedCostsView.getCostTypes()}"
                   th:if="${detailedCostsView.getCostSumInBGN(costType) > 0}">
 
-            <div class="row row-cols-5 bg-dark">
-                <div class="col-sm-1 py-1" th:text="${costType.ordinal()+1}">{#}</div>
-                <div class="col-lg-5 py-1  text-start" th:text="${costType.getFormattedName()}">{Cost Type}</div>
-                <div class="text-end col-md-2 py-1"
+            <div class="row row-cols-5 bg-black border-bottom border-secondary">
+                <div class="col-sm-1 py-2" th:text="${costType.ordinal()+1}">{#}</div>
+                <div class="col-lg-5 py-2  text-start" th:text="${costType.getFormattedName()}">{Cost Type}</div>
+                <div class="text-end col-md-2 py-2"
                      th:text="${#numbers.formatDecimal(detailedCostsView.getCostSumInBGN(costType, true), 2,  'WHITESPACE', 2, 'POINT')}">
                     {Completed Amount in BGN}
                 </div>
-                <div class="text-end col-md-2 py-1"
+                <div class="text-end col-md-2 py-2"
                      th:text="${#numbers.formatDecimal(detailedCostsView.getCostSumInBGN(costType, false), 2, 'WHITESPACE', 2, 'POINT')}">
                     {Planned Amount in BGN}
                 </div>
-                <div class="text-end col-md-2 py-1"
+                <div class="text-end col-md-2 py-2"
                      th:text="${#numbers.formatDecimal(detailedCostsView.getCostSumInBGN(costType), 2,  'WHITESPACE', 2, 'POINT')}">
                     {Total Amount in BGN}
                 </div>
             </div>
 
-            <div class="row row-cols-5 bg-secondary"
-                 th:each="cost :${detailedCostsView.getCostsByType(costType)}">
-                <div class="col-sm-1 py-1"></div>
-                <div class="col-lg-5 py-1 text-start" th:text="'&emsp; &#10004 '+${cost.info()}">{Cost Info}</div>
+            <div class="row row-cols-5 bg-dark border-bottom border-secondary"
+                 th:each="cost :${detailedCostsView.getCostsByType(costType)}"
+                 th:classappend="${cost.completed} ? 'text-secondary' : 'text-warning'">
+                <div class="col-sm-1 py-2"></div>
+                <div class="col-lg-5 py-2 text-start" th:text="'&emsp; &#10004 '+${cost.info()}">{Cost Info}</div>
 
-                <div class="text-end col-md-2 py-1" th:text="${cost.completed
+                <div class="text-end col-md-2 py-2" th:text="${cost.completed
                 ? #numbers.formatDecimal(cost.amountInBGN, 2, 'WHITESPACE', 2, 'POINT') : ''}">
                     {Cost Amount in BGN}
                 </div>
 
-                <div class="text-end col-md-2 py-1" th:text="${!cost.completed
+                <div class="text-end col-md-2 py-2" th:text="${!cost.completed
                 ? #numbers.formatDecimal(cost.amountInBGN, 2, 'WHITESPACE', 2, 'POINT') : ''}">
                     {Cost Amount in BGN}
                 </div>
 
-                <div class="text-end col-md-2 py-1"
+                <div class="text-end col-md-2 py-2"
                      th:text="${#numbers.formatDecimal(cost.amountInBGN, 2, 'WHITESPACE', 2, 'POINT')}">
                     Total Amount in BGN
                 </div>
             </div>
         </th:block>
+
+        <div class="row row-cols-5 bg-dark border-top border-secondary-subtle ">
+            <div class="col-sm-1 fs-5 py-2"></div>
+            <div class="col-lg-5  fs-5 py-2 text-start">Total costs:</div>
+            <div class="text-end  fs-5 col-md-2 py-2 text-end"
+                 th:text="${#numbers.formatDecimal(detailedCostsView.getCompletedCostsSum(), 2, 'WHITESPACE', 2, 'POINT')}">
+                {Actual Costs Sum}
+            </div>
+            <div class="text-end  fs-5 col-md-2 py-2 text-end"
+                 th:text="${#numbers.formatDecimal(detailedCostsView.getUncompletedCostsSum(), 2, 'WHITESPACE', 2, 'POINT')}">
+                {Planned Costs Sum}
+            </div>
+            <div class="text-end  fs-5 col-md-2 py-2 text-end"
+                 th:text="${#numbers.formatDecimal(detailedCostsView.getCostsSum(), 2, 'WHITESPACE', 2, 'POINT')}"
+            >
+                {Total Costs Sum}
+            </div>
+        </div>
     </div>
 
-    <div class="d-flex justify-content-between"
-         sec:authorize="isAuthenticated()">
-        <a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle})}"
-           class="btn btn-danger m-4">
-            Add cost</a>
+    <div class="row row-cols-2">
+        <div class="d-grid">
+            <a th:href="@{/vehicle/details/{vihicleUuid}(vihicleUuid=${vehicle})}"
+               class="btn btn-danger">Back</a>
+        </div>
+        <div class="d-grid gap-2">
+            <a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle})}"
+               class="btn btn-danger"
+               sec:authorize="isAuthenticated()">Add cost</a>
+        </div>
     </div>
 
 
