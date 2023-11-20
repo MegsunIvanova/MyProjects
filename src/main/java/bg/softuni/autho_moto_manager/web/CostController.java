@@ -1,9 +1,9 @@
 package bg.softuni.autho_moto_manager.web;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.AddCostDTO;
+import bg.softuni.autho_moto_manager.model.dto.binding.UpdateCostDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.AddCostViewDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.DetailedCostsView;
-import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.autho_moto_manager.service.CostService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -23,10 +23,10 @@ public class CostController {
         this.costService = costService;
     }
 
-    @ModelAttribute
-    public AddCostDTO initAddCostDTO() {
-        return new AddCostDTO();
-    }
+//    @ModelAttribute("costDTO")
+//    public AddCostDTO initAddCostDTO() {
+//        return new AddCostDTO();
+//    }
 
     @GetMapping("/add/{vehicle}")
     public String addCost(@PathVariable("vehicle") String vehicle,
@@ -37,6 +37,10 @@ public class CostController {
         model.addAttribute("costTypes", addCostViewDTO.getCostTypes());
         model.addAttribute("currencies", addCostViewDTO.getCurrencies());
 
+        if (!model.containsAttribute("costDTO")) {
+            model.addAttribute("costDTO", new AddCostDTO());
+        }
+
         return "add-cost";
     }
 
@@ -46,8 +50,8 @@ public class CostController {
                           RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("addCostDTO", addCostDTO);
-            redirectAttributes.addFlashAttribute(BINDING_RESULT_PACKAGE + "addCostDTO",
+            redirectAttributes.addFlashAttribute("costDTO", addCostDTO);
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_PACKAGE + "costDTO",
                     bindingResult);
 
             return "redirect:/costs/add/" + addCostDTO.getVehicle();
@@ -69,6 +73,49 @@ public class CostController {
         return "costs-details";
     }
 
+    @DeleteMapping("/{vehicle}/{id}")
+    public String delete(@PathVariable("id") Long id, Model model) {
 
+        costService.delete(id);
+
+        return "redirect:/costs/more/{vehicle}";
+    }
+
+    @GetMapping("/update/{id}/{vehicle}")
+    public String updateCost(@PathVariable("id") Long id,
+                             @PathVariable("vehicle") String vehicle,
+                             Model model) {
+
+        AddCostViewDTO addCostViewDTO = costService.getAddCostViewDTO();
+        model.addAttribute("costTypes", addCostViewDTO.getCostTypes());
+        model.addAttribute("currencies", addCostViewDTO.getCurrencies());
+
+        if (!model.containsAttribute("costDTO")) {
+            UpdateCostDTO costDTO = costService.getUpdateCostDTO(id, vehicle);
+            model.addAttribute("costDTO", costDTO);
+        }
+
+        return "update-cost";
+    }
+
+    @PutMapping("/update/{id}/{vehicle}")
+    public String updateCost(@PathVariable("id") Long id,
+                             @PathVariable("vehicle") String vehicle,
+                             @Valid UpdateCostDTO costDTO,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("costDTO", costDTO);
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_PACKAGE + "costDTO",
+                    bindingResult);
+
+            return "redirect:/costs/update/" + id + "/" + vehicle;
+        }
+
+        costService.updateCost(costDTO);
+
+        return "redirect:/costs/more/" + vehicle;
+    }
 
 }

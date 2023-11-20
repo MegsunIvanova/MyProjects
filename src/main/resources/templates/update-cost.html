@@ -12,11 +12,18 @@
 <section class="user_form container text-white">
     <h3 class="mt-3 mb-5">
         <img th:src="@{/images/motorcycle_art.png}" class="img-fluid">
-        Add Cost:</h3>
+        Edit Cost:</h3>
 
-    <form th:action="@{/costs/add}"
-          th:method="POST"
+    <form th:action="@{/costs/update/{id}/{vehicle}(id=${id},vehicle=${vehicle})}"
+          th:method="PUT"
           th:object="${costDTO}">
+
+        <input id="id"
+               name="id"
+               type="hidden"
+               class="form-control"
+               th:value="${id}"
+               required>
 
         <input id="vehicle"
                name="vehicle"
@@ -135,8 +142,14 @@
                 Invalid description!</small>
         </div>
 
-        <div class="d-flex justify-content-center">
-            <input type="submit" class="btn btn-danger mt-3 mb-3 fs-6 flex-fill" value="Add cost"/>
+        <div class="row row-cols-2">
+            <div class="d-grid">
+                <input type="submit" class="btn btn-danger mt-3 mb-3" value="Update cost"/>
+            </div>
+            <div class="d-grid">
+                <a th:href="@{/costs/more/{vehicle}(vehicle=${vehicle})}"
+                   class="btn btn-secondary mt-3 mb-3" th:text="Back"/>
+            </div>
         </div>
 
     </form>

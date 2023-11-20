@@ -11,7 +11,10 @@
 </header>
 
 <section class="user_mainContainer_details container text-light ">
+    <!-- Table -->
     <div class="container text-center rounded overflow-hidden">
+
+        <!-- Table Header       -->
         <div class="row row-cols-5 bg-dark border-bottom border-secondary">
             <div class="col-sm-1 fs-5 py-2">#</div>
             <div class="col-lg-5  fs-5 py-2 text-start">Cost Type</div>
@@ -20,6 +23,7 @@
             <div class="text-end  fs-5 col-md-2 py-2 text-end">Total Costs</div>
         </div>
 
+        <!--Costs Summary By Type-->
         <th:block th:each="costType : ${detailedCostsView.getCostTypes()}"
                   th:if="${detailedCostsView.getCostSumInBGN(costType) > 0}">
 
@@ -40,19 +44,36 @@
                 </div>
             </div>
 
+            <!--Costs Detailed-->
             <div class="row row-cols-5 bg-dark border-bottom border-secondary"
                  th:each="cost :${detailedCostsView.getCostsByType(costType)}"
                  th:classappend="${cost.completed} ? 'text-secondary' : 'text-warning'">
                 <div class="col-sm-1 py-2"></div>
-                <div class="col-lg-5 py-2 text-start" th:text="'&emsp; &#10004 '+${cost.info()}">{Cost Info}</div>
+                <div class="col-lg-5 py-2 text-start">
+                    <div class="d-flex justify-content-between">
+                        <span th:text="'&emsp; &#10004 '+${cost.info()}"> {Cost Info}</span>
 
-                <div class="text-end col-md-2 py-2" th:text="${cost.completed
-                ? #numbers.formatDecimal(cost.amountInBGN, 2, 'WHITESPACE', 2, 'POINT') : ''}">
+                        <div class="d-inline-block">
+                            <a th:href="@{/costs/update/{id}/{vehicleUuid}(id = ${cost.id}, vehicleUuid=${vehicle})}"
+                               class="btn btn-sm btn-secondary mx-2">Edit</a>
+
+                            <form class="d-inline-block" th:method="delete"
+                                  th:action="@{/costs/{vehicleUuid}/{id}(vehicleUuid=${vehicle}, id = ${cost.id})}">
+                                <input type="submit" value="Delete" class="btn btn-sm btn-warning"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-end col-md-2 py-2"
+                     th:text="${cost.completed
+                     ? #numbers.formatDecimal(cost.amountInBGN, 2, 'WHITESPACE', 2, 'POINT') : ''}">
                     {Cost Amount in BGN}
                 </div>
 
-                <div class="text-end col-md-2 py-2" th:text="${!cost.completed
-                ? #numbers.formatDecimal(cost.amountInBGN, 2, 'WHITESPACE', 2, 'POINT') : ''}">
+                <div class="text-end col-md-2 py-2"
+                     th:text="${!cost.completed
+                     ? #numbers.formatDecimal(cost.amountInBGN, 2, 'WHITESPACE', 2, 'POINT') : ''}">
                     {Cost Amount in BGN}
                 </div>
 
@@ -63,6 +84,7 @@
             </div>
         </th:block>
 
+        <!--Table Total (Footer)-->
         <div class="row row-cols-5 bg-dark border-top border-secondary-subtle ">
             <div class="col-sm-1 fs-5 py-2"></div>
             <div class="col-lg-5  fs-5 py-2 text-start">Total costs:</div>
@@ -75,17 +97,17 @@
                 {Planned Costs Sum}
             </div>
             <div class="text-end  fs-5 col-md-2 py-2 text-end"
-                 th:text="${#numbers.formatDecimal(detailedCostsView.getCostsSum(), 2, 'WHITESPACE', 2, 'POINT')}"
-            >
+                 th:text="${#numbers.formatDecimal(detailedCostsView.getCostsSum(), 2, 'WHITESPACE', 2, 'POINT')}">
                 {Total Costs Sum}
             </div>
         </div>
     </div>
 
+    <!-- Buttons   -->
     <div class="row row-cols-2">
         <div class="d-grid">
             <a th:href="@{/vehicle/details/{vihicleUuid}(vihicleUuid=${vehicle})}"
-               class="btn btn-danger">Back</a>
+               class="btn btn-secondary">Back</a>
         </div>
         <div class="d-grid gap-2">
             <a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle})}"
