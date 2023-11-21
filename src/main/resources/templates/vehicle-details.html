@@ -42,7 +42,7 @@
 
         <div class="user_subcontainer_details bg-dark text-light stretch" >
             <div >
-                <h4 class="text-danger fw-bold me-3" th:text="${vehicle.getSummaryTitle()}">{year make model}</h4>
+                <h4 class="text-danger fw-bold me-3" th:text="${vehicle.title}">{year make model}</h4>
 
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item bg-dark text-light">Engine Type:
@@ -96,7 +96,7 @@
                 <th></th>
                 <td>Total costs in BGN:</td>
                 <td class="text-end"
-                    th:text="${#numbers.formatDecimal(vehicle.getTotalCostsInBGN(),2,'WHITESPACE', 2, 'POINT')}"></td>
+                    th:text="${#numbers.formatDecimal(vehicle.totalCostsInBGN,2,'WHITESPACE', 2, 'POINT')}"></td>
                 </tfoot>
             </table>
 

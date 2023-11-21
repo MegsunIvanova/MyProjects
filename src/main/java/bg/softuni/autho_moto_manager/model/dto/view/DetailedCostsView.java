@@ -14,7 +14,6 @@ public class DetailedCostsView {
     private Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount;
     private Map<CostTypeEnum, List<CostViewDTO>> costsByType;
 
-
     public DetailedCostsView(Map<CostTypeEnum, BigDecimal> completedCostsAmount,
                              Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount,
                              Map<CostTypeEnum, List<CostViewDTO>> costsByType) {

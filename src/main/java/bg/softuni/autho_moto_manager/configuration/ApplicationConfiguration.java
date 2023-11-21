@@ -13,6 +13,7 @@ import org.modelmapper.Provider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -50,30 +51,41 @@ public class ApplicationConfiguration {
         configMapCreateVehicleDTOToVehicleEntity(modelMapper);
         configMapAddPictureDTOToPictureEntity(modelMapper);
         configMapAddCostDTOToCostEntity(modelMapper);
+        configMapSaleDTOToSaleEntity(modelMapper);
 
         return modelMapper;
     }
 
+    private void configMapSaleDTOToSaleEntity(ModelMapper modelMapper) {
+        //SaleDTO -> SaleEntity
+        modelMapper.createTypeMap(SaleDTO.class, SaleEntity.class)
+                .addMappings(mapper -> mapper.skip(SaleEntity::setVehicle))
+                .addMappings(mapper -> mapper
+                        .using((getStringVehicleEntityConverter()))
+                        .map(SaleDTO::getVehicle, SaleEntity::setVehicle))
+                .addMappings(mapping -> mapping
+                        .using(getStringCurrencyEntityConverter())
+                        .map(SaleDTO::getCurrency, SaleEntity::setCurrency));
+
+    }
+
     private void configMapAddCostDTOToCostEntity(ModelMapper modelMapper) {
         //AddCostDTO -> CostEntity
-        Converter<String, CurrencyEntity> currencyConverter = ctx -> ctx.getSource() == null
-                ? null
-                : currencyRepository.findById(ctx.getSource())
-                .orElseThrow(() ->
-                        new ObjectNotFoundException("Currency " + ctx.getSource() + "was not found!"));
-
         modelMapper.createTypeMap(AddCostDTO.class, CostEntity.class)
                 .addMappings(mapper -> mapper.skip(CostEntity::setVehicle))
                 .addMappings(mapper -> mapper
                         .using((getStringVehicleEntityConverter()))
                         .map(AddCostDTO::getVehicle, CostEntity::setVehicle))
                 .addMappings(mapping -> mapping
-                        .using(currencyConverter)
+                        .using(getStringCurrencyEntityConverter())
                         .map(AddCostDTO::getCurrency, CostEntity::setCurrency));
     }
 
     private void configMapAddPictureDTOToPictureEntity(ModelMapper modelMapper) {
         //AddPictureDTO -> PictureEntity
+//        Converter<BigDecimal, BigDecimal> rateConverter =
+     //TODO
+
         modelMapper.createTypeMap(AddPictureDTO.class, PictureEntity.class)
                 .addMappings(mapper -> mapper.skip(PictureEntity::setVehicle))
                 .addMappings((mapper -> mapper
@@ -86,6 +98,14 @@ public class ApplicationConfiguration {
                 ? null
                 : vehicleRepository.findByUuid(ctx.getSource())
                 .orElseThrow(() -> new ObjectNotFoundException("Vehicle with id:" + ctx.getSource() + "was not found!"));
+    }
+
+    private Converter<String, CurrencyEntity> getStringCurrencyEntityConverter() {
+        return ctx -> ctx.getSource() == null
+                ? null
+                : currencyRepository.findById(ctx.getSource())
+                .orElseThrow(() ->
+                        new ObjectNotFoundException("Currency " + ctx.getSource() + " was not found!"));
     }
 
     private void configMapCreateVehicleDTOToVehicleEntity(ModelMapper modelMapper) {

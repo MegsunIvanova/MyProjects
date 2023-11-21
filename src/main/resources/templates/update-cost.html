@@ -144,12 +144,14 @@
 
         <div class="row row-cols-2">
             <div class="d-grid">
-                <input type="submit" class="btn btn-danger mt-3 mb-3" value="Update cost"/>
-            </div>
-            <div class="d-grid">
                 <a th:href="@{/costs/more/{vehicle}(vehicle=${vehicle})}"
                    class="btn btn-secondary mt-3 mb-3" th:text="Back"/>
             </div>
+
+            <div class="d-grid">
+                <input type="submit" class="btn btn-danger mt-3 mb-3" value="Update cost"/>
+            </div>
+
         </div>
 
     </form>

@@ -91,6 +91,8 @@
                            id="odometerInKm"
                            name="odometerInKm"
                            type="number"
+                           min="0"
+                           max="400000"
                            class="form-control fs-6"
                            placeholder="NNN NNN">
                     <small id="odometerInKmError"
@@ -101,7 +103,6 @@
             </div>
         </div>
 
-
         <div class="form-group row mb-3">
             <div class="col-md-6">
                 <label for="engine" class="col-form-label fs-6">Engine Type: *</label>
@@ -111,7 +112,8 @@
                             id="engine"
                             name="engine"
                             class="form-select"
-                            aria-label="Default select example">
+                            aria-label="Default select example"
+                            required>
                         <option value="" selected>Select engine type:</option>
                         <option th:each="engine : ${engineTypes}"
                                 th:value="${engine}"
@@ -133,7 +135,8 @@
                             id="transmission"
                             name="transmission"
                             class="form-select"
-                            aria-label="Default select example">
+                            aria-label="Default select example"
+                            required>
                         <option value="" selected>Select transmission:</option>
                         <option th:each="transmision : ${transmissions}"
                                 th:value="${transmision}"

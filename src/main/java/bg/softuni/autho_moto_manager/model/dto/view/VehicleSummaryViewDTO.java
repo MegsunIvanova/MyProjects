@@ -4,6 +4,7 @@ import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
 
 public class VehicleSummaryViewDTO {
     private String uuid;
+    private String title;
     private String type;
     private String modelName;
     private String makeName;
@@ -27,6 +28,7 @@ public class VehicleSummaryViewDTO {
         this.primaryImage = vehicleEntity.getPrimaryImage() == null
                 ? null
                 : vehicleEntity.getPrimaryImage().getUrl();
+        this.title = vehicleEntity.getSummaryTitle();
     }
 
     public String getUuid() {
@@ -69,8 +71,7 @@ public class VehicleSummaryViewDTO {
         return primaryImage;
     }
 
-    public String getSummaryTitle() {
-        return String.format("%d %s %s", year, makeName, modelName);
+    public String getTitle() {
+        return title;
     }
-
 }

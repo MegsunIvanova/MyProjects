@@ -15,4 +15,7 @@ public interface CostRepository extends JpaRepository<CostEntity, Long> {
     List<CostEntity> findAllByVehicle_UuidAndCompleted(String vehicleUuid, boolean completed);
 
     Optional<CostEntity> findByIdAndVehicle_Uuid(Long id, String vehicleUuid);
+
+    Optional<CostEntity> findFirsByVehicle_UuidAndCompleted(String vehicleUuid, boolean completed);
+    long countAllByVehicle_UuidAndCompleted (String vehicleUuid, boolean completed);
 }

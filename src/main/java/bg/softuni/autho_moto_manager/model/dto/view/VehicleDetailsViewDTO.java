@@ -11,6 +11,7 @@ public class VehicleDetailsViewDTO extends VehicleSummaryViewDTO {
     private String notes;
     private List<PictureViewDTO> pictures;
     private Map<CostTypeEnum, BigDecimal> totalCostsByType;
+    private BigDecimal totalCostsInBGN;
 
     public VehicleDetailsViewDTO(VehicleEntity vehicleEntity,
                                  List<PictureViewDTO> pictures,
@@ -20,45 +21,31 @@ public class VehicleDetailsViewDTO extends VehicleSummaryViewDTO {
         this.notes = vehicleEntity.getNotes();
         this.pictures = pictures;
         this.totalCostsByType = totalCostsByType;
+        this.totalCostsInBGN = vehicleEntity.getTotalCostsInBGN();
     }
 
     public List<PictureViewDTO> getPictures() {
         return pictures;
     }
 
-    public VehicleDetailsViewDTO setPictures(List<PictureViewDTO> pictures) {
-        this.pictures = pictures;
-        return this;
-    }
-
     public boolean isSold() {
         return sold;
-    }
-
-    public VehicleDetailsViewDTO setSold(boolean sold) {
-        this.sold = sold;
-        return this;
     }
 
     public String getNotes() {
         return notes;
     }
 
-    public VehicleDetailsViewDTO setNotes(String notes) {
-        this.notes = notes;
-        return this;
-    }
-
     public Map<CostTypeEnum, BigDecimal> getTotalCostsByType() {
         return totalCostsByType;
     }
 
-    public VehicleDetailsViewDTO setTotalCostsByType(Map<CostTypeEnum, BigDecimal> totalCostsByType) {
-        this.totalCostsByType = totalCostsByType;
-        return this;
+    public BigDecimal getTotalCostsInBGN() {
+        return totalCostsInBGN;
     }
 
-    public BigDecimal getTotalCostsInBGN () {
-        return totalCostsByType.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+    public VehicleDetailsViewDTO setTotalCostsInBGN(BigDecimal totalCostsInBGN) {
+        this.totalCostsInBGN = totalCostsInBGN;
+        return this;
     }
 }

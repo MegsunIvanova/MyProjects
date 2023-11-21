@@ -1,15 +1,15 @@
 package bg.softuni.autho_moto_manager.service.impl;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.CreateVehicleDTO;
-import bg.softuni.autho_moto_manager.model.dto.view.AddVehicleViewDTO;
-import bg.softuni.autho_moto_manager.model.dto.view.PictureViewDTO;
-import bg.softuni.autho_moto_manager.model.dto.view.VehicleDetailsViewDTO;
-import bg.softuni.autho_moto_manager.model.dto.view.VehicleSummaryViewDTO;
+import bg.softuni.autho_moto_manager.model.dto.binding.SaleDTO;
+import bg.softuni.autho_moto_manager.model.dto.view.*;
 import bg.softuni.autho_moto_manager.model.entity.CostEntity;
 import bg.softuni.autho_moto_manager.model.entity.ModelEntity;
+import bg.softuni.autho_moto_manager.model.entity.SaleEntity;
 import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
 import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.autho_moto_manager.repository.CostRepository;
+import bg.softuni.autho_moto_manager.repository.CurrencyRepository;
 import bg.softuni.autho_moto_manager.repository.MakeRepository;
 import bg.softuni.autho_moto_manager.repository.VehicleRepository;
 import bg.softuni.autho_moto_manager.service.VehicleService;
@@ -24,19 +24,24 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static bg.softuni.autho_moto_manager.util.Constants.BLANK_AUTOMOBILE_IMG_SRC;
+import static bg.softuni.autho_moto_manager.util.Constants.BLANK_MOTORCYCLE_IMG_SRC;
+
 @Service
 public class VehicleServiceImpl implements VehicleService {
     private final MakeRepository makeRepository;
     private final VehicleRepository vehicleRepository;
     private final CostRepository costRepository;
+    private final CurrencyRepository currencyRepository;
     private final ModelMapper modelMapper;
 
     public VehicleServiceImpl(MakeRepository makeRepository,
                               VehicleRepository vehicleRepository,
-                              CostRepository costRepository, ModelMapper modelMapper) {
+                              CostRepository costRepository, CurrencyRepository currencyRepository, ModelMapper modelMapper) {
         this.makeRepository = makeRepository;
         this.vehicleRepository = vehicleRepository;
         this.costRepository = costRepository;
+        this.currencyRepository = currencyRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -95,4 +100,17 @@ public class VehicleServiceImpl implements VehicleService {
 
         return modelsByMake;
     }
+
+    protected static  String primaryImgSrc(VehicleEntity vehicleEntity) {
+        if (vehicleEntity.getPrimaryImage() == null) {
+            return switch (vehicleEntity.getModel().getType()) {
+                case AUTOMOBILE -> BLANK_AUTOMOBILE_IMG_SRC;
+                case MOTORCYCLE -> BLANK_MOTORCYCLE_IMG_SRC;
+                default -> "";
+            };
+        }
+
+        return vehicleEntity.getPrimaryImage().getUrl();
+    }
 }
+

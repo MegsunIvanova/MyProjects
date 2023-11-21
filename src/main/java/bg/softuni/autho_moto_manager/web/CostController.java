@@ -23,15 +23,10 @@ public class CostController {
         this.costService = costService;
     }
 
-//    @ModelAttribute("costDTO")
-//    public AddCostDTO initAddCostDTO() {
-//        return new AddCostDTO();
-//    }
-
     @GetMapping("/add/{vehicle}")
     public String addCost(@PathVariable("vehicle") String vehicle,
                           Model model) {
-        model.addAttribute("vehicle", vehicle);
+//        model.addAttribute("vehicle", vehicle);
         AddCostViewDTO addCostViewDTO = costService.getAddCostViewDTO();
 
         model.addAttribute("costTypes", addCostViewDTO.getCostTypes());
@@ -44,8 +39,9 @@ public class CostController {
         return "add-cost";
     }
 
-    @PostMapping("/add")
-    public String addCost(@Valid AddCostDTO addCostDTO,
+    @PostMapping("/add/{vehicle}")
+    public String addCost(@PathVariable("vehicle") String vehicle,
+                          @Valid AddCostDTO addCostDTO,
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes) {
 
@@ -73,9 +69,10 @@ public class CostController {
         return "costs-details";
     }
 
-    @DeleteMapping("/{vehicle}/{id}")
-    public String delete(@PathVariable("id") Long id, Model model) {
-
+    @DeleteMapping("/{id}/{vehicle}")
+    public String delete(Model model,
+                         @PathVariable("id") Long id,
+                         @PathVariable ("vehicle") String vehicle) {
         costService.delete(id);
 
         return "redirect:/costs/more/{vehicle}";

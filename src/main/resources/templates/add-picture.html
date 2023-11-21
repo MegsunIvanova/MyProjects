@@ -14,7 +14,7 @@
         <img th:src="@{/images/motorcycle_art.png}" class="img-fluid">
         Add Picture:</h3>
 
-    <form th:action="@{/pictures/add}"
+    <form th:action="@{/pictures/add/{vehicle}(vehicle=${vehicle})}"
           th:method="POST"
           th:object="${addPictureDTO}">
 
@@ -59,7 +59,6 @@
         </div>
     </form>
 </section>
-
 
 </body>
 </html>

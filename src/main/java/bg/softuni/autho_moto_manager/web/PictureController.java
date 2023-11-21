@@ -28,13 +28,14 @@ public class PictureController {
     @GetMapping("/add/{vehicle}")
     public String addPicture(@PathVariable("vehicle") String vehicle,
                              Model model) {
+//        model.addAttribute("vehicle", vehicle);
 
-        model.addAttribute("vehicle", vehicle);
         return "add-picture";
     }
 
-    @PostMapping("/add")
-    public String addPicture(@Valid AddPictureDTO addPictureDTO,
+    @PostMapping("/add/{vehicle}")
+    public String addPicture(@PathVariable("vehicle") String vehicle,
+                             @Valid AddPictureDTO addPictureDTO,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
 

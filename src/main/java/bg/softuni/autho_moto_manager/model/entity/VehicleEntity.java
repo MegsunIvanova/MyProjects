@@ -3,11 +3,17 @@ package bg.softuni.autho_moto_manager.model.entity;
 import bg.softuni.autho_moto_manager.model.enums.EngineEnum;
 import bg.softuni.autho_moto_manager.model.enums.TransmissionEnum;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.repository.EntityGraph;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
 @Table(name = "vehicles")
+@NamedEntityGraph(
+        name= "vehicleWithCosts",
+        attributeNodes = @NamedAttributeNode("costCalculation")
+)
 public class VehicleEntity extends BaseEntity {
 
     @ManyToOne(optional = false)
@@ -175,8 +181,22 @@ public class VehicleEntity extends BaseEntity {
         return this;
     }
 
-    public int countPictures () {
+    public int countPictures() {
         return this.pictures.size();
+    }
+
+    public String getSummaryTitle() {
+        return String.format("%d %s %s", year, model.getMake().getName(), model.getName());
+    }
+
+    public BigDecimal getTotalCostsInBGN () {
+        return costCalculation.stream()
+                .map(CostEntity::getAmountInBGN)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public boolean allCostsCompleted () {
+        return costCalculation.stream().allMatch(CostEntity::isCompleted);
     }
 
     @Override

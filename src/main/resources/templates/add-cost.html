@@ -14,7 +14,7 @@
         <img th:src="@{/images/motorcycle_art.png}" class="img-fluid">
         Add Cost:</h3>
 
-    <form th:action="@{/costs/add}"
+    <form th:action="@{/costs/add/{vehicle}(vehicle=${vehicle})}"
           th:method="POST"
           th:object="${costDTO}">
 
@@ -135,8 +135,8 @@
                 Invalid description!</small>
         </div>
 
-        <div class="d-flex justify-content-center">
-            <input type="submit" class="btn btn-danger mt-3 mb-3 fs-6 flex-fill" value="Add cost"/>
+        <div class="d-grid">
+            <input type="submit" class="btn btn-danger mt-3 mb-3" value="Add cost"/>
         </div>
 
     </form>

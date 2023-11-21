@@ -1,23 +1,36 @@
 package bg.softuni.autho_moto_manager.web;
 
+import bg.softuni.autho_moto_manager.model.dto.binding.SaleDTO;
+import bg.softuni.autho_moto_manager.model.dto.view.SellVehicleView;
 import bg.softuni.autho_moto_manager.model.dto.view.VehicleDetailsViewDTO;
 import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.autho_moto_manager.model.enums.VehicleTypeEnum;
+import bg.softuni.autho_moto_manager.service.SaleService;
 import bg.softuni.autho_moto_manager.service.VehicleService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static bg.softuni.autho_moto_manager.util.Constants.BINDING_RESULT_PACKAGE;
 
 @Controller
 @RequestMapping(("/vehicle"))
 public class VehicleController {
 
     private final VehicleService vehicleService;
+    private final SaleService saleService;
 
-    public VehicleController(VehicleService vehicleService) {
+    public VehicleController(VehicleService vehicleService, SaleService saleService) {
         this.vehicleService = vehicleService;
+        this.saleService = saleService;
+    }
+
+    @ModelAttribute("saleDTO")
+    public SaleDTO initSaleDTO () {
+        return new SaleDTO();
     }
 
     @GetMapping("/details/{uuid}")
@@ -28,5 +41,34 @@ public class VehicleController {
         model.addAttribute("costTypes", CostTypeEnum.values());
 
         return "vehicle-details";
+    }
+
+    @GetMapping("/sell/{uuid}")
+    public String sell(Model model,
+                       @PathVariable("uuid") String uuid) {
+
+        SellVehicleView saleView = saleService.getSaleVehicleView(uuid);
+        model.addAttribute("saleView", saleView);
+
+        return "sell";
+    }
+
+    @PostMapping("/sell/{uuid}")
+    public String sell(@PathVariable("uuid") String vehicle,
+                       @Valid SaleDTO saleDTO,
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("saleDTO", saleDTO);
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_PACKAGE + "saleDTO", bindingResult);
+
+            return "redirect:/vehicle/sell/" + vehicle;
+        }
+
+        saleService.sell(saleDTO);
+
+        return "redirect:vehicle/details/" + vehicle;
+
     }
 }

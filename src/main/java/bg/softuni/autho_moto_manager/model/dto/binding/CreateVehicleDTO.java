@@ -22,7 +22,7 @@ public class CreateVehicleDTO {
     @PresentOrPastYear
     private Integer year;
 
-    @Positive (message = "Odometer must be positive!")
+    @PositiveOrZero (message = "Odometer must be positive or zero!")
     @Max(value = 400000, message = "Odometer must  be 400000 km maximum!")
     private Integer odometerInKm;
 
@@ -35,7 +35,6 @@ public class CreateVehicleDTO {
     private String notes;
 
     private UUID uuid;
-
 
     public CreateVehicleDTO() {
     }
