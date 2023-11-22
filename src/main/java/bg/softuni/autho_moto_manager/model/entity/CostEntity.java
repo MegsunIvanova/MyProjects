@@ -19,7 +19,7 @@ public class CostEntity extends BaseEntity {
     private BigDecimal amount;
     @ManyToOne(optional = false)
     private CurrencyEntity currency;
-    @Column(name = "transaction_rate", scale = 5)
+    @Column(name = "transaction_rate", precision = 11 ,scale = 5)
     private BigDecimal transactionRate;
     private boolean completed;
     @ManyToOne

@@ -1,7 +1,7 @@
 package bg.softuni.autho_moto_manager.service.impl;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.SaleDTO;
-import bg.softuni.autho_moto_manager.model.dto.view.SellVehicleView;
+import bg.softuni.autho_moto_manager.model.dto.view.SaleVehicleView;
 import bg.softuni.autho_moto_manager.model.entity.SaleEntity;
 import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
 import bg.softuni.autho_moto_manager.repository.CostRepository;
@@ -36,11 +36,11 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     @Transactional
-    public SellVehicleView getSaleVehicleView(String uuid) {
+    public SaleVehicleView getSaleVehicleView(String uuid) {
         VehicleEntity vehicleEntity = vehicleRepository.findByUuid(uuid)
                 .orElseThrow(() -> new ObjectNotFoundException("Vehicle with uuid " + uuid + " can not be found!"));
 
-        return new SellVehicleView()
+        return new SaleVehicleView()
                 .setUuid(vehicleEntity.getUuid())
                 .setTitle(vehicleEntity.getSummaryTitle())
                 .setPrimaryImage(VehicleServiceImpl.primaryImgSrc(vehicleEntity))

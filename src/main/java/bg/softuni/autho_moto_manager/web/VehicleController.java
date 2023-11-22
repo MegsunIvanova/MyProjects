@@ -1,7 +1,7 @@
 package bg.softuni.autho_moto_manager.web;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.SaleDTO;
-import bg.softuni.autho_moto_manager.model.dto.view.SellVehicleView;
+import bg.softuni.autho_moto_manager.model.dto.view.SaleVehicleView;
 import bg.softuni.autho_moto_manager.model.dto.view.VehicleDetailsViewDTO;
 import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.autho_moto_manager.model.enums.VehicleTypeEnum;
@@ -47,7 +47,7 @@ public class VehicleController {
     public String sell(Model model,
                        @PathVariable("uuid") String uuid) {
 
-        SellVehicleView saleView = saleService.getSaleVehicleView(uuid);
+        SaleVehicleView saleView = saleService.getSaleVehicleView(uuid);
         model.addAttribute("saleView", saleView);
 
         return "sell";
@@ -68,7 +68,7 @@ public class VehicleController {
 
         saleService.sell(saleDTO);
 
-        return "redirect:vehicle/details/" + vehicle;
+        return "redirect:/vehicle/details/" + vehicle;
 
     }
 }

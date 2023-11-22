@@ -1,9 +1,7 @@
 package bg.softuni.autho_moto_manager.service;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.CreateVehicleDTO;
-import bg.softuni.autho_moto_manager.model.dto.binding.SaleDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.AddVehicleViewDTO;
-import bg.softuni.autho_moto_manager.model.dto.view.SellVehicleView;
 import bg.softuni.autho_moto_manager.model.dto.view.VehicleDetailsViewDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.VehicleSummaryViewDTO;
 import org.springframework.data.domain.Page;

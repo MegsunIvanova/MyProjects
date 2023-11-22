@@ -3,7 +3,7 @@ package bg.softuni.autho_moto_manager.model.dto.view;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class SellVehicleView {
+public class SaleVehicleView {
     private String uuid;
     private String title;
 
@@ -11,16 +11,16 @@ public class SellVehicleView {
     private BigDecimal totalCostsInBGN;
     private boolean allCostsCompleted;
 
-    private List<String> curenciesIds;
+    private List<String> currenciesIds;
 
-    public SellVehicleView() {
+    public SaleVehicleView() {
     }
 
     public String getUuid() {
         return uuid;
     }
 
-    public SellVehicleView setUuid(String uuid) {
+    public SaleVehicleView setUuid(String uuid) {
         this.uuid = uuid;
         return this;
     }
@@ -29,7 +29,7 @@ public class SellVehicleView {
         return title;
     }
 
-    public SellVehicleView setTitle(String title) {
+    public SaleVehicleView setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -38,7 +38,7 @@ public class SellVehicleView {
         return totalCostsInBGN;
     }
 
-    public SellVehicleView setTotalCostsInBGN(BigDecimal totalCostsInBGN) {
+    public SaleVehicleView setTotalCostsInBGN(BigDecimal totalCostsInBGN) {
         this.totalCostsInBGN = totalCostsInBGN;
         return this;
     }
@@ -47,7 +47,7 @@ public class SellVehicleView {
         return allCostsCompleted;
     }
 
-    public SellVehicleView setAllCompleteCosts(boolean allCompleteCosts) {
+    public SaleVehicleView setAllCompleteCosts(boolean allCompleteCosts) {
         this.allCostsCompleted = allCompleteCosts;
         return this;
     }
@@ -56,7 +56,7 @@ public class SellVehicleView {
         return primaryImage;
     }
 
-    public SellVehicleView setPrimaryImage(String primaryImage) {
+    public SaleVehicleView setPrimaryImage(String primaryImage) {
         this.primaryImage = primaryImage;
         return this;
     }
@@ -65,17 +65,17 @@ public class SellVehicleView {
         return allCostsCompleted;
     }
 
-    public SellVehicleView setAllCostsCompleted(boolean allCostsCompleted) {
+    public SaleVehicleView setAllCostsCompleted(boolean allCostsCompleted) {
         this.allCostsCompleted = allCostsCompleted;
         return this;
     }
 
-    public List<String> getCurenciesIds() {
-        return curenciesIds;
+    public List<String> getCurrenciesIds() {
+        return currenciesIds;
     }
 
-    public SellVehicleView setCurrenciesIds(List<String> curenciesIds) {
-        this.curenciesIds = curenciesIds;
+    public SaleVehicleView setCurrenciesIds(List<String> curenciesIds) {
+        this.currenciesIds = curenciesIds;
         return this;
     }
 }

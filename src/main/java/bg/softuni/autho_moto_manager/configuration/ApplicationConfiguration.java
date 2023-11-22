@@ -8,15 +8,11 @@ import bg.softuni.autho_moto_manager.service.exceptions.DatabaseException;
 import bg.softuni.autho_moto_manager.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.modelmapper.Provider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.Set;
 import java.util.UUID;
 
@@ -46,6 +42,8 @@ public class ApplicationConfiguration {
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
 
+        modelMapper.getConfiguration().setPreferNestedProperties(false);
+
         configMapUserRegistrationDToToUserEntity(modelMapper);
         configMapCreateModelDTOToModelEntity(modelMapper);
         configMapCreateVehicleDTOToVehicleEntity(modelMapper);
@@ -63,10 +61,10 @@ public class ApplicationConfiguration {
                 .addMappings(mapper -> mapper
                         .using((getStringVehicleEntityConverter()))
                         .map(SaleDTO::getVehicle, SaleEntity::setVehicle))
+                .addMappings(mapper -> mapper.skip(SaleEntity::setCurrency))
                 .addMappings(mapping -> mapping
                         .using(getStringCurrencyEntityConverter())
                         .map(SaleDTO::getCurrency, SaleEntity::setCurrency));
-
     }
 
     private void configMapAddCostDTOToCostEntity(ModelMapper modelMapper) {
@@ -83,9 +81,6 @@ public class ApplicationConfiguration {
 
     private void configMapAddPictureDTOToPictureEntity(ModelMapper modelMapper) {
         //AddPictureDTO -> PictureEntity
-//        Converter<BigDecimal, BigDecimal> rateConverter =
-     //TODO
-
         modelMapper.createTypeMap(AddPictureDTO.class, PictureEntity.class)
                 .addMappings(mapper -> mapper.skip(PictureEntity::setVehicle))
                 .addMappings((mapper -> mapper
@@ -119,6 +114,7 @@ public class ApplicationConfiguration {
         Provider<String> uuidProvider = p -> String.valueOf(UUID.randomUUID());
 
         modelMapper.createTypeMap(CreateVehicleDTO.class, VehicleEntity.class)
+                .addMappings(mapper -> mapper.skip(VehicleEntity::setSale))
                 .addMappings(mapper -> mapper
                         .using(modelConverter)
                         .map(CreateVehicleDTO::getModel, VehicleEntity::setModel))

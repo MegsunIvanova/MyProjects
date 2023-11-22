@@ -11,7 +11,7 @@ import java.util.*;
 @Entity
 @Table(name = "vehicles")
 @NamedEntityGraph(
-        name= "vehicleWithCosts",
+        name = "vehicleWithCosts",
         attributeNodes = @NamedAttributeNode("costCalculation")
 )
 public class VehicleEntity extends BaseEntity {
@@ -38,7 +38,8 @@ public class VehicleEntity extends BaseEntity {
 
     private String notes;
 
-    private boolean sold;
+    @OneToOne(mappedBy = "vehicle")
+    private SaleEntity sale;
 
     @OneToMany(mappedBy = "vehicle", targetEntity = PictureEntity.class)
     private Set<PictureEntity> pictures;
@@ -163,12 +164,12 @@ public class VehicleEntity extends BaseEntity {
         return this;
     }
 
-    public boolean isSold() {
-        return sold;
+    public SaleEntity getSale() {
+        return sale;
     }
 
-    public VehicleEntity setSold(boolean sold) {
-        this.sold = sold;
+    public VehicleEntity setSale(SaleEntity sale) {
+        this.sale = sale;
         return this;
     }
 
@@ -189,13 +190,13 @@ public class VehicleEntity extends BaseEntity {
         return String.format("%d %s %s", year, model.getMake().getName(), model.getName());
     }
 
-    public BigDecimal getTotalCostsInBGN () {
+    public BigDecimal getTotalCostsInBGN() {
         return costCalculation.stream()
                 .map(CostEntity::getAmountInBGN)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public boolean allCostsCompleted () {
+    public boolean allCostsCompleted() {
         return costCalculation.stream().allMatch(CostEntity::isCompleted);
     }
 

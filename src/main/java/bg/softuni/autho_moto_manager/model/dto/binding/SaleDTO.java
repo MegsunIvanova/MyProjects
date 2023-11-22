@@ -20,7 +20,7 @@ public class SaleDTO {
     private BigDecimal price;
 
     @NotEmpty(message = "Currency must be selected!")
-    private String currency;//currencyId
+    private String currency; //currencyId
 
     @Positive(message = "Rate must be positive number")
     private BigDecimal transactionRate;

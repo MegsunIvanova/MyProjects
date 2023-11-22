@@ -87,7 +87,11 @@ public class VehicleServiceImpl implements VehicleService {
                                 CostEntity::getAmountInBGN,
                                 BigDecimal::add)));
 
-        return new VehicleDetailsViewDTO(vehicleEntity, pictureViewDTOS, totalCostsByType);
+        SaleViewDTO sale = vehicleEntity.getSale() == null
+                ? null
+                : modelMapper.map(vehicleEntity.getSale(), SaleViewDTO.class);
+
+        return new VehicleDetailsViewDTO(vehicleEntity, pictureViewDTOS, totalCostsByType, sale);
     }
 
     private Map<String, List<String>> getModelsByMake() {
@@ -101,7 +105,7 @@ public class VehicleServiceImpl implements VehicleService {
         return modelsByMake;
     }
 
-    protected static  String primaryImgSrc(VehicleEntity vehicleEntity) {
+    protected static String primaryImgSrc(VehicleEntity vehicleEntity) {
         if (vehicleEntity.getPrimaryImage() == null) {
             return switch (vehicleEntity.getModel().getType()) {
                 case AUTOMOBILE -> BLANK_AUTOMOBILE_IMG_SRC;

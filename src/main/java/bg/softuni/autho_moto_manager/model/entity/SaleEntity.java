@@ -15,9 +15,9 @@ public class SaleEntity extends BaseEntity {
     private BigDecimal price;
 
     @ManyToOne(optional = false)
-    private CostEntity currency;
+    private CurrencyEntity currency;
 
-    @Column(name = "transaction_rate", scale = 5, nullable = false)
+    @Column(name = "transaction_rate", precision = 11, scale = 5, nullable = false)
     private BigDecimal transactionRate;
 
     private String notes;
@@ -43,12 +43,15 @@ public class SaleEntity extends BaseEntity {
         return this;
     }
 
-    public CostEntity getCurrency() {
+    public CurrencyEntity getCurrency() {
         return currency;
     }
 
-    public SaleEntity setCurrency(CostEntity currency) {
+    public SaleEntity setCurrency(CurrencyEntity currency) {
         this.currency = currency;
+        if(transactionRate == null) {
+            setTransactionRate(currency.getRateToBGN());
+        }
         return this;
     }
 
@@ -57,7 +60,9 @@ public class SaleEntity extends BaseEntity {
     }
 
     public SaleEntity setTransactionRate(BigDecimal transactionRate) {
-        this.transactionRate = transactionRate;
+        if (transactionRate != null) {
+            this.transactionRate = transactionRate;
+        }
         return this;
     }
 
@@ -68,5 +73,10 @@ public class SaleEntity extends BaseEntity {
     public SaleEntity setNotes(String notes) {
         this.notes = notes;
         return this;
+    }
+
+    public BigDecimal getSalePriceInBGN() {
+        return this.price
+                .multiply(this.transactionRate);
     }
 }

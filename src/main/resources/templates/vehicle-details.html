@@ -63,7 +63,7 @@
                 </ul>
             </div>
 
-            <div class="d-grid">
+            <div class="d-grid" th:unless="${vehicle.isSold()}">
                 <a th:href="@{/pictures/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
                    sec:authorize="isAuthenticated()"
                    class="btn btn-danger m-4">Add picture</a>
@@ -71,6 +71,12 @@
                 <a th:href="@{/vehicle/sell/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
                    sec:authorize="isAuthenticated()"
                    class="btn btn-warning m-4">Sell</a>
+            </div>
+
+<!--            TODO:-->
+            <div class="d-grid" th:if="${vehicle.isSold()}">
+                <h5>Sold for: XXX USD * 1.xxxxx, total xxxx.xx BGN</h5>
+                <h6>Profit/Loss: xxxxx BGN</h6>
             </div>
 
         </div>
