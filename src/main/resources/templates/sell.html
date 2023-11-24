@@ -11,145 +11,150 @@
 </header>
 
 <section class="user_mainContainer_details container text-light">
-    <div class="user_container_details">
-        <div class="overflow-hidden ">
-            <h3 class="px-3 mb-5"> Sell Vehicle: </h3>
-
-            <div class="container-fluid overflow-hidden mb-5">
-                <img th:src="${saleView.primaryImage}" class=" img-fluid rounded ">
+    <div class="user_container_details ">
+        <div class="overflow-hidden bg-dark rounded p-3">
+            <div class="row row-cols-2 mb-5 justify-content-between">
+                <h3> Sell Vehicle: </h3>
+                <h3 th:text="${saleView.getTitle()}"
+                    class="text-danger text-end px-3 fw-semibold">{Vihicle Title}</h3>
             </div>
-
-            <div class="d-grid align-bottom">
-                <a th:href="@{/vehicle/details/{uuid}(uuid=${uuid})}"
-                   class="btn btn-secondary  mt-2">Back to vehicle</a>
+            <div class="container-fluid overflow-hidden p-0">
+                <img th:src="${saleView.primaryImage}" class=" img-fluid rounded ">
             </div>
         </div>
 
-        <div class="text-end align-bottom">
-            <h3 th:text="${saleView.getTitle()}" class="text-danger mb-5 px-3 fw-semibold">{Vihicle Title}</h3>
+        <div class="bg-dark rounded p-3">
+            <div class="row row-cols-2  justify-content-between">
+                <p class="text-start fs-4">Costs total amount: </p>
+                <p class="text-end px-3 fs-4">
+                    <th:block
+                            th:text="${#numbers.formatDecimal(saleView.getTotalCostsInBGN(), 2,  'WHITESPACE', 2, 'POINT')}">
+                    </th:block>
+                    BGN
+                </p>
+            </div>
 
-            <div class="bg-dark rounded p-3">
-                <div class="row row-cols-2">
-                    <p class="text-start fs-4">Costs total amount: </p>
-                    <p class="fs-4">
-                        <th:block
-                                th:text="${#numbers.formatDecimal(saleView.getTotalCostsInBGN(), 2,  'WHITESPACE', 2, 'POINT')}">
-                        </th:block>
-                        BGN
-                    </p>
+            <div class="row justify-content-between p-3 mt-5">
+                <p class="col-8 text-warning p-0 me-2 " th:unless="${saleView.allCostsCompleted}">
+                    To sell the vehicle all costs must be completed!</p>
+
+                <!--                     th:classappend="${saleView.allCostsCompleted} ? 'col-12 ' : 'col-4 justify-content-between'">-->
+
+                    <a th:href="@{/costs/more/{uuid}(uuid=${uuid})}"
+                       class="col btn btn-secondary">
+                        View Costs</a>
+
+            </div>
+
+            <form class="mt-5"
+                  th:method="POST"
+                  th:action="@{/vehicle/sell/{uuid}(uuid=${uuid})}"
+                  th:object="${saleDTO}">
+
+                <div class="form-group mb-3">
+                    <input id="vehicle"
+                           name="vehicle"
+                           type="hidden"
+                           class="form-control"
+                           th:value="${uuid}"
+                           required>
+                    <p id="vehicleError"
+                       class="rounded text-danger text-start"
+                       th:text="${#strings.listJoin(#fields.errors('vehicle'), ' ')}">
+                        Invalid vehicle!</p>
                 </div>
 
-                <div class="row row-cols-2 mt-5">
-
-                    <p class="text-start  col-8 text-warning" th:unless="${saleView.allCostsCompleted}">
-                        To sell the vehicle all costs must be completed!</p>
-
-                    <div th:classappend="${saleView.allCostsCompleted} ? 'col-12' : 'col-4'">
-                        <a th:href="@{/costs/more/{uuid}(uuid=${uuid})}" class="btn btn-secondary">
-                            View Costs</a>
-                    </div>
-
-                </div>
-
-                <form class="mt-5"
-                      th:method="POST"
-                      th:action="@{/vehicle/sell/{uuid}(uuid=${uuid})}"
-                      th:object="${saleDTO}">
-
-                    <div class="form-group mb-3">
-                        <input id="vehicle"
-                               name="vehicle"
-                               type="hidden"
+                <div class="d-flex  justify-content-between">
+                    <div class="form-group mb-3 me-3">
+                        <label for="price" class="form-label fs-6">Price: *</label>
+                        <input th:field="*{price}"
+                               th:errorclass="'is-invalid bg-danger'"
+                               id="price"
+                               name="price"
+                               placeholder="0.00"
                                class="form-control"
-                               th:value="${uuid}"
+                               type="number"
+                               step="0.01"
+                               min="0.01"
                                required>
-                        <p id="vehicleError"
-                               class="rounded text-danger text-start"
-                               th:text="${#strings.listJoin(#fields.errors('vehicle'), ' ')}">
-                            Invalid vehicle!</p>
+                        <small id="priceError"
+                               class="invalid-feedback rounded text-center"
+                               th:text="${#strings.listJoin(#fields.errors('price'), ' ')}">
+                            Invalid price!</small>
                     </div>
 
-                    <div class="d-flex  justify-content-between">
-                        <div class="form-group mb-3 me-3">
-                            <label for="price" class="form-label fs-6">Price: *</label>
-                            <input th:field="*{price}"
-                                   th:errorclass="'is-invalid bg-danger'"
-                                   id="price"
-                                   name="price"
-                                   placeholder="0.00"
-                                   class="form-control"
-                                   type="number"
-                                   step="0.01"
-                                   min="0.01"
-                                   required>
-                            <small id="priceError"
-                                   class="invalid-feedback rounded text-center"
-                                   th:text="${#strings.listJoin(#fields.errors('price'), ' ')}">
-                                Invalid price!</small>
-                        </div>
-
-                        <div class="form-group mb-3 me-3">
-                            <label for="currency" class="form-label fs-6">Currency: *</label>
-                            <select th:field="*{currency}"
-                                    th:errorclass="'is-invalid bg-danger'"
-                                    id="currency"
-                                    name="currency"
-                                    class="form-select"
-                                    aria-label="Default select example"
-                                    required>
-                                <option value="" selected>Select a currency:</option>
-                                <option th:each="currency : ${saleView.currenciesIds}"
-                                        th:text="${currency}"
-                                        th:value="${currency}">Currency: *
-                                </option>
-                            </select>
-                            <small th:text="${#strings.listJoin(#fields.errors('currency'), ' ')}"
-                                   id="currencyError"
-                                   class="invalid-feedback rounded text-center">
-                                Invalid currency!</small>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label for="transactionRate" class="form-label fs-6">Rate to BGN:</label>
-                            <input th:field="*{transactionRate}"
-                                   th:errorclass="'is-invalid bg-danger'"
-                                   type="number"
-                                   step="0.00001"
-                                   min="0.00001"
-                                   class="form-control"
-                                   id="transactionRate"
-                                   placeholder="#.#####">
-                            <small id="transactionRateError"
-                                   class="invalid-feedback rounded text-center"
-                                   th:text="${#strings.listJoin(#fields.errors('transactionRate'), ' ')}">
-                                Invalid rate!</small>
-                        </div>
+                    <div class="form-group mb-3 me-3">
+                        <label for="currency" class="form-label fs-6">Currency: *</label>
+                        <select th:field="*{currency}"
+                                th:errorclass="'is-invalid bg-danger'"
+                                id="currency"
+                                name="currency"
+                                class="form-select"
+                                aria-label="Default select example"
+                                required>
+                            <option value="" selected>Select a currency:</option>
+                            <option th:each="currency : ${saleView.currenciesIds}"
+                                    th:text="${currency}"
+                                    th:value="${currency}">Currency: *
+                            </option>
+                        </select>
+                        <small th:text="${#strings.listJoin(#fields.errors('currency'), ' ')}"
+                               id="currencyError"
+                               class="invalid-feedback rounded text-center">
+                            Invalid currency!</small>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="notes" class="form-label fs-6">Notes:</label>
-                        <textarea th:field="*{notes}"
-                                  th:errorclass="'is-invalid bg-danger'"
-                                  id="notes"
-                                  name="notes"
-                                  class="form-control"
-                                  rows="5"
-                                  maxlength="60">Notes</textarea>
-                        <small id="notesError"
+                        <label for="transactionRate" class="form-label fs-6">Rate to BGN:</label>
+                        <input th:field="*{transactionRate}"
+                               th:errorclass="'is-invalid bg-danger'"
+                               type="number"
+                               step="0.00001"
+                               min="0.00001"
+                               class="form-control"
+                               id="transactionRate"
+                               placeholder="#.#####">
+                        <small id="transactionRateError"
                                class="invalid-feedback rounded text-center"
-                               th:text="${#strings.listJoin(#fields.errors('notes'), ' ')}">
-                            Invalid notes!</small>
+                               th:text="${#strings.listJoin(#fields.errors('transactionRate'), ' ')}">
+                            Invalid rate!</small>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="notes" class="form-label fs-6">Notes:</label>
+                    <textarea th:field="*{notes}"
+                              th:errorclass="'is-invalid bg-danger'"
+                              id="notes"
+                              name="notes"
+                              class="form-control"
+                              rows="5"
+                              maxlength="60">Notes</textarea>
+                    <small id="notesError"
+                           class="invalid-feedback rounded text-center"
+                           th:text="${#strings.listJoin(#fields.errors('notes'), ' ')}">
+                        Invalid notes!</small>
+                </div>
+
+                <!--Buttons-->
+                <div class="row row-cols-2  mt-4">
+                    <div class="d-grid">
+                        <a th:href="@{/vehicle/details/{uuid}(uuid=${uuid})}"
+                           class="btn btn-secondary">Back to vehicle</a>
                     </div>
 
                     <div class="d-grid">
                         <input type="submit"
                                th:disabled="${!saleView.allCompleteCosts}"
-                               class="btn btn-danger mt-3 mb-3"
+                               class="btn btn-danger"
                                value="Submit"/>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
+
+
+    </div>
 </section>
 
 </body>

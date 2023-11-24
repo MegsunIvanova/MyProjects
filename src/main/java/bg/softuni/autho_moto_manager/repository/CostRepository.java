@@ -2,6 +2,7 @@ package bg.softuni.autho_moto_manager.repository;
 
 import bg.softuni.autho_moto_manager.model.entity.CostEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface CostRepository extends JpaRepository<CostEntity, Long> {
 
     Optional<CostEntity> findFirsByVehicle_UuidAndCompleted(String vehicleUuid, boolean completed);
     long countAllByVehicle_UuidAndCompleted (String vehicleUuid, boolean completed);
+
+    @Query("SELECT c.completed FROM CostEntity c WHERE c.id = :id")
+    boolean findIsCompletedById(Long id);
 }
