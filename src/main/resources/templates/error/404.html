@@ -14,10 +14,21 @@
 
 <div class="container-fluid">
     <h5 class="text-center">Upps, the thingy that you ar looking for is no here!</h5>
-    <div><img th:src="@{/images/parts.png}" alt="Parts"></div>
+<!--    <div><img th:src="@{/images/parts.png}" alt="Parts"></div>-->
     <br>
     <a th:href="@{/}">Go home ...</a>
 </div>
+
+
+<section class="user_form container text-light text-center">
+
+    <div><img th:src="@{/images/cartow.png}" alt="Parts" class="img-fluid"></div>
+    <h4 class="mt-3 text-danger">Upps, the thingy that you ar looking for is no here!</h4>
+<!--    <h5 th:text="${message}"></h5>-->
+
+    <a class="btn btn-danger mt-5" th:href="@{/}">Go home ...</a>
+
+</section>
 
 </body>
 

@@ -40,8 +40,8 @@
 
     <section class="user_container_details">
 
-        <div class="user_subcontainer_details bg-dark text-light stretch" >
-            <div >
+        <div class="user_subcontainer_details bg-dark text-light stretch">
+            <div>
                 <h4 class="text-danger fw-bold me-3" th:text="${vehicle.title}">{year make model}</h4>
 
                 <ul class="list-group list-group-flush">
@@ -73,10 +73,30 @@
                    class="btn btn-warning m-4">Sell</a>
             </div>
 
-<!--            TODO:-->
-            <div class="d-grid" th:if="${vehicle.isSold()}">
-                <h5>Sold for: XXX USD * 1.xxxxx, total xxxx.xx BGN</h5>
-                <h6>Profit/Loss: xxxxx BGN</h6>
+            <div class="list-group list-group-flush mt-3" th:if="${vehicle.isSold()}">
+                <p class="list-group-item bg-dark text-warning fs-5">
+                    <span>Sold for:</span>
+                    <span class="text-light"
+                          th:text="${#numbers.formatDecimal(vehicle.sale.getPrice(), 2,  'WHITESPACE', 2, 'POINT')}">{price}</span>
+                    <span class="text-light" th:text="${vehicle.sale.getCurrencyId()}">{currency}</span>
+                </p>
+                <p class="list-group-item bg-dark text-warning fs-5">
+                    <span>Rate:</span>
+                    <span class="text-light" th:text="${vehicle.sale.getTransactionRate()}">{rate}</span>
+                </p>
+
+                <p class="list-group-item bg-dark text-warning fs-5">
+                    <span>Total:</span>
+                    <span class="text-light" th:text="${#numbers.formatDecimal(vehicle.sale.getSalePriceInBGN(), 2,  'WHITESPACE', 2, 'POINT')}">{price}</span>
+                    <span class="text-light">BGN</span>
+                </p>
+
+                <p class="list-group-item bg-dark text-warning fs-5">
+                    <span th:text="${vehicle.saleResult >= 0 ? 'Profit' :'Loss:'}">{Profit:/Loss:}</span>
+                    <span class="text-light" th:text="${#numbers.formatDecimal(vehicle.sale.getSalePriceInBGN(), 2,  'WHITESPACE', 2, 'POINT')}">{price}</span>
+                    <span class="text-light">BGN</span>
+                </p>
+
             </div>
 
         </div>
@@ -106,11 +126,13 @@
                 </tfoot>
             </table>
 
-            <div class="d-flex justify-content-between"
+            <div th:classappend="${vehicle.isSold() ? 'd-grid' : 'd-flex justify-content-between'}"
                  sec:authorize="isAuthenticated()">
-                <a th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
+
+                <a th:unless="${vehicle.isSold()}" th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
                    class="btn btn-danger m-4">
                     Add cost</a>
+
                 <a th:href="@{/costs/more/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
                    class="btn btn-danger m-4">
                     View more</a>

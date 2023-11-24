@@ -44,4 +44,14 @@ public class VehicleDetailsViewDTO extends VehicleSummaryViewDTO {
     public boolean isSold() {
         return this.sale != null;
     }
+
+    public SaleViewDTO getSale() {
+        return sale;
+    }
+
+    public BigDecimal getSaleResult() {
+        return isSold()
+                ? this.sale.getSalePriceInBGN().subtract(this.totalCostsInBGN)
+                : null;
+    }
 }

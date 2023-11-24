@@ -46,4 +46,8 @@ public class SaleViewDTO {
         this.notes = notes;
         return this;
     }
+
+    public BigDecimal getSalePriceInBGN() {
+        return this.price.multiply(this.transactionRate);
+    }
 }

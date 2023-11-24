@@ -75,8 +75,4 @@ public class SaleEntity extends BaseEntity {
         return this;
     }
 
-    public BigDecimal getSalePriceInBGN() {
-        return this.price
-                .multiply(this.transactionRate);
-    }
 }

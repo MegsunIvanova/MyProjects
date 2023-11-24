@@ -10,6 +10,7 @@ import bg.softuni.autho_moto_manager.model.entity.CurrencyEntity;
 import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.autho_moto_manager.repository.CostRepository;
 import bg.softuni.autho_moto_manager.repository.CurrencyRepository;
+import bg.softuni.autho_moto_manager.repository.SaleRepository;
 import bg.softuni.autho_moto_manager.service.CostService;
 import bg.softuni.autho_moto_manager.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -26,13 +27,15 @@ public class CostServiceImpl implements CostService {
     private final CostRepository costRepository;
     private final CurrencyRepository currencyRepository;
     private final ModelMapper modelMapper;
+    private final SaleRepository saleRepository;
 
     public CostServiceImpl(CostRepository costRepository,
                            CurrencyRepository currencyRepository,
-                           ModelMapper modelMapper) {
+                           ModelMapper modelMapper, SaleRepository saleRepository) {
         this.costRepository = costRepository;
         this.currencyRepository = currencyRepository;
         this.modelMapper = modelMapper;
+        this.saleRepository = saleRepository;
     }
 
     @Override
@@ -66,7 +69,9 @@ public class CostServiceImpl implements CostService {
         Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount = amountInBGNByCostType(costRepository
                 .findAllByVehicle_UuidAndCompleted(vehicleUuid, false));
 
-        return new DetailedCostsView(completedCostsAmount, uncompletedCostsAmount, costsByType);
+        boolean sold = saleRepository.findByVehicle_Uuid(vehicleUuid).isPresent();
+
+        return new DetailedCostsView(completedCostsAmount, uncompletedCostsAmount, costsByType, sold);
     }
 
     @Override

@@ -38,7 +38,8 @@ public class SaleServiceImpl implements SaleService {
     @Transactional
     public SaleVehicleView getSaleVehicleView(String uuid) {
         VehicleEntity vehicleEntity = vehicleRepository.findByUuid(uuid)
-                .orElseThrow(() -> new ObjectNotFoundException("Vehicle with uuid " + uuid + " can not be found!"));
+                .orElseThrow(() ->
+                        new ObjectNotFoundException("Vehicle with uuid " + uuid + " can not be found!"));
 
         return new SaleVehicleView()
                 .setUuid(vehicleEntity.getUuid())
