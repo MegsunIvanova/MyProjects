@@ -1,7 +1,7 @@
 package bg.softuni.autho_moto_manager.model.enums;
 
 public enum CostTypeEnum {
-    VEHICLE_AUCTION_PRICE("Veficle auction price"),
+    VEHICLE_AUCTION_PRICE("Vehicle auction price"),
     CONTAINER("Container"),
     AGENT_COMMISSION("Agent's' commission"),
     AUCTION_COMMISSION("Auction's' commission"),

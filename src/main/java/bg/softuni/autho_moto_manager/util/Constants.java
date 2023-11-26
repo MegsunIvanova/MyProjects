@@ -6,6 +6,7 @@ public class Constants {
 
     public static final String BLANK_AUTOMOBILE_IMG_SRC = "/images/carBlackBasic.png";
     public static final String BLANK_MOTORCYCLE_IMG_SRC = "/images/motoBlackBasic.png";
+    public static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 
 
 }

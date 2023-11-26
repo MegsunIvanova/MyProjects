@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head}"></head>
+
+<body>
+<header>
+    <nav th:replace="~{fragments/navigation}">Navigation</nav>
+</header>
+
+<section class="user_form container text-white">
+    <img th:src="@{/images/motorcycle_art.png}" class="img-fluid">
+    <h3 class="mt-3 mb-5"> Edit Users Roles:</h3>
+    <form th:method="GET"
+          th:action="@{/users/edit/roles}"
+          class="row row-cols-2 g-3 align-items-center mb-5">
+        <div class="col-8">
+            <label class="visually-hidden" for="emailToFind">User email</label>
+            <div class="input-group">
+                <div class="input-group-text"><i class="fa-regular fa-envelope"></i></div>
+                <input th:name="emailToFind"
+                       type="email"
+                       class="form-control"
+                       id="emailToFind"
+                       placeholder="email@example.com">
+            </div>
+        </div>
+        <div class="col-4 d-grid">
+            <button type="submit" class="btn btn-secondary ">Find user</button>
+
+        </div>
+    </form>
+
+    <div>
+        <h4>Result:</h4>
+        <p class="text-danger fs-4" th:if="${error != null}" th:text="${error}"></p>
+
+        <form class="row gy-2 gx-3 align-items-center mb-5"
+              th:object="${userEditDTO}"
+              th:unless="${error != null}"
+              th:action="@{/users/edit/roles}"
+              th:method="POST">
+
+            <div class="col-8">
+                <label class="visually-hidden" for="name">Name</label>
+                <div class="input-group">
+                    <div class="input-group-text bg-dark text-light border-dark">
+                        <i class="fa-regular fa-user"></i></div>
+                    <input th:name="name"
+                           type="text"
+                           class="form-control bg-dark text-light border-dark"
+                           id="name"
+                           th:value="*{name}"
+                           readonly>
+                </div>
+            </div>
+
+            <div class="col-4">
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="checkbox" value=""
+                           id="admin"
+                           name="admin"
+                           th:value="*{admin}"
+                           th:field="*{admin}">
+                    <label class="form-check-label" for="admin">
+                        Admin role
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-8">
+                <label class="visually-hidden" for="name">Email</label>
+                <div class="input-group ">
+                    <div class="input-group-text bg-dark text-light border-dark"><i class="fa-regular fa-envelope"></i></div>
+                    <input th:name="email"
+                           type="text"
+                           class="form-control bg-dark text-light border-dark"
+                           id="email"
+                           th:value="*{email}"
+                           readonly>
+                </div>
+            </div>
+
+
+
+            <div class="col-4 d-grid">
+                <button type="submit" class="btn btn-danger">Submit</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+</body>
+</html>

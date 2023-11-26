@@ -1,17 +1,19 @@
 package bg.softuni.autho_moto_manager.web;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.UserRegisterDTO;
+import bg.softuni.autho_moto_manager.model.dto.binding.UserEditDTO;
 import bg.softuni.autho_moto_manager.service.UserService;
-import bg.softuni.autho_moto_manager.service.exceptions.DatabaseException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Optional;
+
 import static bg.softuni.autho_moto_manager.util.Constants.BINDING_RESULT_PACKAGE;
+import static bg.softuni.autho_moto_manager.util.Constants.EMAIL_REGEX;
 
 @Controller
 @RequestMapping("/users")
@@ -65,4 +67,33 @@ public class AuthController {
 
         return "login";
     }
+
+    @GetMapping("/edit/roles")
+    public String editRoles(@RequestParam(value = "emailToFind", required = false) String emailToFind,
+                            Model model) {
+
+
+        Optional<UserEditDTO> optionalUser = emailToFind != null && emailToFind.matches(EMAIL_REGEX)
+                ? userService.getUserForEdit(emailToFind)
+                : Optional.empty();
+
+        String errorMsg = emailToFind != null && optionalUser.isEmpty()
+                ? "User with email \"" + emailToFind + "\" was not found!"
+                : null;
+
+        UserEditDTO userEditDTO = optionalUser.orElseGet(UserEditDTO::new);
+
+        model.addAttribute("userEditDTO", userEditDTO);
+        model.addAttribute("error", errorMsg);
+
+        return "users-edit";
+    }
+
+    @PostMapping("/edit/roles")
+    public String editUserRoles(UserEditDTO userEditDTO) {
+        userService.editRoles(userEditDTO);
+        return "redirect:/";
+    }
+
+
 }

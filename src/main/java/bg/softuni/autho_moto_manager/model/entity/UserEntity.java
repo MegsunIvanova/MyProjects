@@ -77,6 +77,16 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
+    public UserEntity addRole (RoleEntity role) {
+        this.roles.add(role);
+        return this;
+    }
+
+    public UserEntity removeRole (RoleEntity role) {
+        this.roles.remove(role);
+        return this;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(getId());

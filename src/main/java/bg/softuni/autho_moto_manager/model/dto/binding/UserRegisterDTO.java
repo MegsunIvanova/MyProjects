@@ -8,13 +8,15 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import org.springframework.stereotype.Service;
 
+import static bg.softuni.autho_moto_manager.util.Constants.EMAIL_REGEX;
+
 @FieldsMatch(first = "password", second = "confirmPassword", message = "Passwords do not match!")
 public class UserRegisterDTO {
     @NotEmpty(message = "Name cannot be empty!")
     @Size(min = 5, max = 40, message = "Name length must be between 5 and 40 symbols!")
     private String name;
     @NotEmpty(message = "Email cannot be empty!")
-    @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Invalid email!")
+    @Email(regexp = EMAIL_REGEX, message = "Invalid email!")
     @UniqueUserEmail
     private String email;
     @NotEmpty(message = "Password cannot be empty!")
