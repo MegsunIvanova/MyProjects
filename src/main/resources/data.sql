@@ -1,10 +1,16 @@
 INSERT INTO users (id, name, email, password)
 VALUES (1, 'Admin Adminov', 'admin@mail.com',
-        'f8e08577b9bf38e1e7e06c19a6fba34a5b2a158b879e2c30f022f57c68b516f94aaf4f0f8d593fe9cadb3ca8206fb392');
+        'f8e08577b9bf38e1e7e06c19a6fba34a5b2a158b879e2c30f022f57c68b516f94aaf4f0f8d593fe9cadb3ca8206fb392'),
+       (2, 'User Userov', 'user@mail.com',
+        '28fae06a1aa1dcae1ce41a8073d7cbeaa2b14a6a0151dd27eda5921b873e92f6a0e0aa03dde212afb4f2e670734a39ad'),
+       (3, 'Peter Petrov', 'peter@mail.com',
+        '6a6339fefaa6ac861622cbd6fe38af316fe605e8d3425b8eca031e3baf948e7aad3acd3b48f7b6955f1c5f3c019689e1');
 
 INSERT INTO users_roles (users_id, roles_id)
 VALUES (1, 1),
-       (1, 2);
+       (1, 2),
+       (2, 2),
+       (3, 2);
 
 INSERT INTO makes (id, name)
 VALUES (1, 'BMW'),
@@ -19,16 +25,16 @@ VALUES (1, 'S 1000', 'MOTORCYCLE', 1),
        (4, 'Q5', 'AUTOMOBILE', 3),
        (5, 'YZFR1', 'MOTORCYCLE', 2);
 
-INSERT INTO vehicles (id, uuid, engine, transmission, year, model_id, vin, odometer_km, notes)
-VALUES (1, '45c4011d-5bc7-4047-a3c4-3eaf126102d9', 'PETROL', 'AUTOMATIC', 2012, 3, 'WBAGN83493D479736', 180000, '...'),
-       (2, 'c5f130a2-a7c3-4e01-abae-e3cf860d42a9', 'PETROL', 'MANUAL', 2022, 1, 'WBADM6334XB728241', 10000, 'Crashed'),
+INSERT INTO vehicles (id, uuid, engine, transmission, year, model_id, vin, odometer_km, notes, owner_id)
+VALUES (1, '45c4011d-5bc7-4047-a3c4-3eaf126102d9', 'PETROL', 'AUTOMATIC', 2012, 3, 'WBAGN83493D479736', 180000, '...', 2),
+       (2, 'c5f130a2-a7c3-4e01-abae-e3cf860d42a9', 'PETROL', 'MANUAL', 2022, 1, 'WBADM6334XB728241', 10000, 'Crashed', 2),
        (3, 'cf5667f3-de59-4c9a-821a-8a2dd0e2a897', 'PETROL', 'AUTOMATIC', 2018, 4, 'WA1WFDFPXDA095665', 215000,
-        'Run and Drive'),
+        'Run and Drive', 2),
        (4, '6df5b107-a342-48b9-a899-252e5a1f1e25', 'PETROL', 'AUTOMATIC', 2013, 2, 'WAUKFBFM4BA119967', 130000,
-        'Run and Drive'),
-       (5, 'c5c9f8b5-f9a1-4b4e-82d1-4ba3290d94da', 'PETROL', 'MANUAL', 2023, 5, 'JY41YW003HC005055', 35000, 'Crashed'),
-       (6, 'ee481fae-316e-4a09-a775-29cd48488afc', 'PETROL', 'AUTOMATIC', 2023, 2, 'WAUAF68E18A010612', 5000, ''),
-       (7, 'c8c4384e-2c6f-414c-9ba3-d7c91be5ea5b', 'PETROL', 'MANUAL', 2023, 1, '', 4100, '');
+        'Run and Drive', 3),
+       (5, 'c5c9f8b5-f9a1-4b4e-82d1-4ba3290d94da', 'PETROL', 'MANUAL', 2023, 5, 'JY41YW003HC005055', 35000, 'Crashed', 3),
+       (6, 'ee481fae-316e-4a09-a775-29cd48488afc', 'PETROL', 'AUTOMATIC', 2023, 2, 'WAUAF68E18A010612', 5000, '', 3),
+       (7, 'c8c4384e-2c6f-414c-9ba3-d7c91be5ea5b', 'PETROL', 'MANUAL', 2023, 1, '', 4100, '', 3);
 
 INSERT INTO pictures (id, vehicle_id, url)
 VALUES (1, 1, 'https://cs.copart.com/v1/AUTH_svc.pdoc00001/lpp/0623/ab4232eed57e493eb2ed4464ec770428_ful.jpg'),
@@ -45,11 +51,21 @@ VALUES (1, 1, 'https://cs.copart.com/v1/AUTH_svc.pdoc00001/lpp/0623/ab4232eed57e
        (12, 7, 'https://cs.copart.com/v1/AUTH_svc.pdoc00001/lpp/1023/c1f35df97fe84a318f18e8c7339ef9b2_ful.jpg'),
        (13, 7, 'https://cs.copart.com/v1/AUTH_svc.pdoc00001/lpp/1023/1896fa2af717442088beff9af3bb13d4_ful.jpg');
 
-UPDATE vehicles SET primary_image_id = 2 WHERE id = 1;
-UPDATE vehicles SET primary_image_id = 5 WHERE id = 3;
-UPDATE vehicles SET primary_image_id = 6 WHERE id = 5;
-UPDATE vehicles SET primary_image_id = 8 WHERE id = 6;
-UPDATE vehicles SET primary_image_id = 11 WHERE id = 7;
+UPDATE vehicles
+SET primary_image_id = 2
+WHERE id = 1;
+UPDATE vehicles
+SET primary_image_id = 5
+WHERE id = 3;
+UPDATE vehicles
+SET primary_image_id = 6
+WHERE id = 5;
+UPDATE vehicles
+SET primary_image_id = 8
+WHERE id = 6;
+UPDATE vehicles
+SET primary_image_id = 11
+WHERE id = 7;
 
 INSERT INTO currencies(id, rate_to_bgn)
 VALUES ('BGN', 1.00000),

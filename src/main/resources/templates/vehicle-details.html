@@ -63,7 +63,7 @@
                 </ul>
             </div>
 
-            <div class="d-grid" th:unless="${vehicle.isSold()}">
+            <div class="d-grid" th:if="${canModify}">
                 <a th:href="@{/pictures/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
                    sec:authorize="isAuthenticated()"
                    class="btn btn-danger m-4">Add picture</a>
@@ -92,8 +92,8 @@
                 </p>
 
                 <p class="list-group-item bg-dark text-warning fs-5">
-                    <span th:text="${vehicle.saleResult >= 0 ? 'Profit' :'Loss:'}">{Profit:/Loss:}</span>
-                    <span class="text-light" th:text="${#numbers.formatDecimal(vehicle.sale.getSalePriceInBGN(), 2,  'WHITESPACE', 2, 'POINT')}">{price}</span>
+                    <span th:text="${vehicle.saleResult >= 0 ? 'Profit:' :'Loss:'}">{Profit:/Loss:}</span>
+                    <span class="text-light" th:text="${#numbers.formatDecimal(vehicle.saleResult, 2,  'WHITESPACE', 2, 'POINT')}">{price}</span>
                     <span class="text-light">BGN</span>
                 </p>
 
@@ -129,7 +129,7 @@
             <div th:classappend="${vehicle.isSold() ? 'd-grid' : 'd-flex justify-content-between'}"
                  sec:authorize="isAuthenticated()">
 
-                <a th:unless="${vehicle.isSold()}" th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
+                <a  th:if="${canModify}" th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
                    class="btn btn-danger m-4">
                     Add cost</a>
 

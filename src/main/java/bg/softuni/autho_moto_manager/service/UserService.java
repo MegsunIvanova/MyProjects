@@ -12,4 +12,7 @@ public interface UserService {
     Optional<UserEditDTO> getUserForEdit(String email);
 
     void editRoles(UserEditDTO userEditDTO);
+
+    boolean hasPermissionToModify(String vehicleUuid);
+
 }

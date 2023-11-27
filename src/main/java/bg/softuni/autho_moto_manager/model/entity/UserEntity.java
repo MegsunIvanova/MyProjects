@@ -24,7 +24,7 @@ public class UserEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private Set<RoleEntity> roles;
 
-    @ManyToMany(targetEntity = VehicleEntity.class, mappedBy = "owners")
+    @OneToMany(targetEntity = VehicleEntity.class, mappedBy = "owner")
     private Set<VehicleEntity> vehicles;
 
     public UserEntity() {
@@ -77,12 +77,12 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    public UserEntity addRole (RoleEntity role) {
+    public UserEntity addRole(RoleEntity role) {
         this.roles.add(role);
         return this;
     }
 
-    public UserEntity removeRole (RoleEntity role) {
+    public UserEntity removeRole(RoleEntity role) {
         this.roles.remove(role);
         return this;
     }

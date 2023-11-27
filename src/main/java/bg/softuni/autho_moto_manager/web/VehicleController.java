@@ -6,6 +6,7 @@ import bg.softuni.autho_moto_manager.model.dto.view.VehicleDetailsViewDTO;
 import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.autho_moto_manager.model.enums.VehicleTypeEnum;
 import bg.softuni.autho_moto_manager.service.SaleService;
+import bg.softuni.autho_moto_manager.service.UserService;
 import bg.softuni.autho_moto_manager.service.VehicleService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -22,14 +23,18 @@ public class VehicleController {
 
     private final VehicleService vehicleService;
     private final SaleService saleService;
+    private final UserService userService;
 
-    public VehicleController(VehicleService vehicleService, SaleService saleService) {
+    public VehicleController(VehicleService vehicleService,
+                             SaleService saleService,
+                             UserService userService) {
         this.vehicleService = vehicleService;
         this.saleService = saleService;
+        this.userService = userService;
     }
 
     @ModelAttribute("saleDTO")
-    public SaleDTO initSaleDTO () {
+    public SaleDTO initSaleDTO() {
         return new SaleDTO();
     }
 
@@ -39,9 +44,10 @@ public class VehicleController {
         model.addAttribute("vehicle", vehicle);
         model.addAttribute("automobileType", VehicleTypeEnum.AUTOMOBILE);
         model.addAttribute("costTypes", CostTypeEnum.values());
-
+        model.addAttribute("canModify", userService.hasPermissionToModify(uuid));
         return "vehicle-details";
     }
+
 
     @GetMapping("/sell/{uuid}")
     public String sell(Model model,

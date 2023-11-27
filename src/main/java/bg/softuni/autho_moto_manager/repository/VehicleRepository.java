@@ -17,10 +17,13 @@ public interface VehicleRepository extends JpaRepository<VehicleEntity, Long> {
 
     Optional<VehicleEntity> findByUuid(String uuid);
 
-    @EntityGraph(value = "vehicleWithCosts",
-            attributePaths = "costCalculation")
-    @Query("SELECT v FROM VehicleEntity v WHERE v.uuid = :uuid")
-    Optional<VehicleEntity> findVehicleWithCostssByUuid(String uuid);
+//    @EntityGraph(value = "vehicleWithCosts",
+//            attributePaths = "costCalculation")
+//    @Query("SELECT v FROM VehicleEntity v WHERE v.uuid = :uuid")
+//    Optional<VehicleEntity> findVehicleWithCostsByUuid(String uuid);
+
+    long countByUuidAndOwner_EmailAndSaleIsNull (String uuid, String ownerEmail);
+    long countByUuidAndSaleIsNull (String uuid);
 
 
 

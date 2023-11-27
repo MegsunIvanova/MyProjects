@@ -12,6 +12,7 @@ public class VehicleDetailsViewDTO extends VehicleSummaryViewDTO {
     private Map<CostTypeEnum, BigDecimal> totalCostsByType;
     private BigDecimal totalCostsInBGN;
     private SaleViewDTO sale;
+    private String ownerEmail;
 
     public VehicleDetailsViewDTO(VehicleEntity vehicleEntity,
                                  List<PictureViewDTO> pictures,
@@ -23,6 +24,7 @@ public class VehicleDetailsViewDTO extends VehicleSummaryViewDTO {
         this.totalCostsByType = totalCostsByType;
         this.totalCostsInBGN = vehicleEntity.getTotalCostsInBGN();
         this.sale = sale;
+        this.ownerEmail = vehicleEntity.getOwner().getEmail();
     }
 
     public List<PictureViewDTO> getPictures() {
@@ -47,6 +49,10 @@ public class VehicleDetailsViewDTO extends VehicleSummaryViewDTO {
 
     public SaleViewDTO getSale() {
         return sale;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 
     public BigDecimal getSaleResult() {

@@ -7,11 +7,16 @@ import bg.softuni.autho_moto_manager.model.entity.UserEntity;
 import bg.softuni.autho_moto_manager.model.enums.UserRoleEnum;
 import bg.softuni.autho_moto_manager.repository.RoleRepository;
 import bg.softuni.autho_moto_manager.repository.UserRepository;
+import bg.softuni.autho_moto_manager.repository.VehicleRepository;
 import bg.softuni.autho_moto_manager.service.UserService;
 import bg.softuni.autho_moto_manager.service.exceptions.DatabaseException;
 import bg.softuni.autho_moto_manager.service.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,11 +27,16 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final RoleRepository roleRepository;
+    private final VehicleRepository vehicleRepository;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository,
+                           ModelMapper modelMapper,
+                           RoleRepository roleRepository,
+                           VehicleRepository vehicleRepository) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.roleRepository = roleRepository;
+        this.vehicleRepository = vehicleRepository;
     }
 
     @Override
@@ -58,6 +68,19 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.save(userEntity);
+    }
+
+    @Override
+    public boolean hasPermissionToModify(String vehicleUuid) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean hasAdminRole = authentication.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+
+        long count = hasAdminRole
+                ? vehicleRepository.countByUuidAndSaleIsNull(vehicleUuid)
+                : vehicleRepository.countByUuidAndOwner_EmailAndSaleIsNull(vehicleUuid, authentication.getName());
+
+       return count>0;
     }
 
     private UserEditDTO mapToUserEditDTO(UserEntity userEntity) {

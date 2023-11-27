@@ -50,18 +50,14 @@ public class VehicleEntity extends BaseEntity {
     @OneToMany(targetEntity = CostEntity.class, mappedBy = "vehicle")
     private Set<CostEntity> costCalculation;
 
-    @ManyToMany
-    @JoinTable(name = "vehicles_owners",
-            joinColumns = @JoinColumn(name = "vehicle_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-    private Set<UserEntity> owners;
+    @ManyToOne (optional = false)
+    private UserEntity owner;
 
     @Column(unique = true)
     private String uuid;
 
     public VehicleEntity() {
         this.costCalculation = new HashSet<>();
-        this.owners = new HashSet<>();
         this.pictures = new HashSet<>();
     }
 
@@ -155,12 +151,12 @@ public class VehicleEntity extends BaseEntity {
         return this;
     }
 
-    public Set<UserEntity> getOwners() {
-        return owners;
+    public UserEntity getOwner() {
+        return owner;
     }
 
-    public VehicleEntity setOwners(Set<UserEntity> owners) {
-        this.owners = owners;
+    public VehicleEntity setOwner(UserEntity owner) {
+        this.owner = owner;
         return this;
     }
 
@@ -198,18 +194,6 @@ public class VehicleEntity extends BaseEntity {
 
     public boolean allCostsCompleted() {
         return costCalculation.stream().allMatch(CostEntity::isCompleted);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) return true;
-        if (!(other instanceof VehicleEntity that)) return false;
-        return Objects.equals(getId(), that.getId());
     }
 
 }
