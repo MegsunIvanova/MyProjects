@@ -16,7 +16,20 @@ body::after {
 }
 
 nav.navbar {
-    z-index: 1;
+    z-index: 2;
+}
+
+#logo {
+    height: 48px;
+    display: inline-block;
+
+}
+
+#logo img {
+    max-height: 100%;
+    object-fit: cover;
+    display: inline-block;
+    vertical-align: center;
 }
 
 div.jumbotron, .user_form, .user_container_cards, .user_mainContainer_details {
@@ -61,7 +74,7 @@ div.jumbotron {
 
 }
 
-.user_container_cards{
+.user_container_cards {
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -97,7 +110,6 @@ div.jumbotron {
     width: 800px;
     height: 600px;
 }
-
 
 
 #carouselExample, .user_subcontainer_details {
@@ -149,7 +161,6 @@ div.stretch {
         width: 640px;
         height: 350px;
     }
-
 
 
 }

@@ -46,11 +46,11 @@
 
         <div><a th:if="${vehicles.hasPrevious()}"
                 th:href="@{/vehicles/all(page=${vehicles.number - 1})}"
-                class="btn btn-danger  bg-transparent border-0"><<< Prev Page</a>
+                class="btn btn-danger  bg-transparent border-0"><i class="fa-solid fa-angles-left"></i> Prev Page</a>
         </div>
         <div><a th:if="${vehicles.hasNext()}"
                 th:href="@{/vehicles/all(page=${vehicles.number + 1})}"
-                class="btn btn-danger  bg-transparent border-0">Next Page >>></a></div>
+                class="btn btn-danger  bg-transparent border-0">Next Page <i class="fa-solid fa-angles-right"></i></a></div>
     </div>
 </section>
 

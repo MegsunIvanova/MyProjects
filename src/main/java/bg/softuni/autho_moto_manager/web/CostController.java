@@ -5,6 +5,7 @@ import bg.softuni.autho_moto_manager.model.dto.binding.UpdateCostDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.AddCostViewDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.DetailedCostsView;
 import bg.softuni.autho_moto_manager.service.CostService;
+import bg.softuni.autho_moto_manager.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +19,11 @@ import static bg.softuni.autho_moto_manager.util.Constants.BINDING_RESULT_PACKAG
 @RequestMapping("/costs")
 public class CostController {
     private final CostService costService;
+    private final UserService userService;
 
-    public CostController(CostService costService) {
+    public CostController(CostService costService, UserService userService) {
         this.costService = costService;
+        this.userService = userService;
     }
 
     @GetMapping("/add/{vehicle}")
@@ -65,6 +68,7 @@ public class CostController {
         DetailedCostsView detailedCostsView = this.costService.getDetailedCostsView(vehicle);
 
         model.addAttribute("detailedCostsView", detailedCostsView);
+        model.addAttribute("canModify", userService.hasPermissionToModify(vehicle));
 
         return "costs-details";
     }

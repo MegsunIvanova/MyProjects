@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand-xl navbar-dark bg-dark fixed-top" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="container-fluid">
-        <a class="navbar-brand fs-3 my-2" th:href="@{/}">Auto Moto Manager
-            <!--            <img th:src="@{/images/motorcycle.png}" alt="o" height="64">-->
+        <a class="navbar-brand fs-3 my-2" th:href="@{/}" >
+            <div id="logo"><img th:src="@{/images/logo.png}" alt="logo"></div> Auto
+            Moto Manager
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,7 +17,7 @@
                        role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Admin
                     </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item fs-5"
                            th:href="@{models/add}">
                             Add Model</a>
