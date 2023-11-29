@@ -72,15 +72,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean hasPermissionToModify(String vehicleUuid) {
+        if (!vehicleRepository.existsByUuid(vehicleUuid)) {
+            throw new ObjectNotFoundException("Vehicle with UUID: " + vehicleUuid + " was not found!");
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean hasAdminRole = authentication.getAuthorities().stream()
                 .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
 
-        long count = hasAdminRole
-                ? vehicleRepository.countByUuidAndSaleIsNull(vehicleUuid)
-                : vehicleRepository.countByUuidAndOwner_EmailAndSaleIsNull(vehicleUuid, authentication.getName());
-
-       return count>0;
+        return hasAdminRole
+                ? vehicleRepository.existsByUuidAndSaleIsNull(vehicleUuid)
+                : vehicleRepository.existsByUuidAndOwner_EmailAndSaleIsNull(vehicleUuid, authentication.getName());
     }
 
     private UserEditDTO mapToUserEditDTO(UserEntity userEntity) {

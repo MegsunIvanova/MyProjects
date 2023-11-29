@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ObjectNotFoundException.class)
     public ModelAndView handleNotFound(ObjectNotFoundException exception) {
-        ModelAndView modelAndView = new ModelAndView("/error");
+        ModelAndView modelAndView = new ModelAndView("/error/404");
         modelAndView.addObject("message", exception.getMessage());
         return modelAndView;
     }
@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(DatabaseException.class)
     public ModelAndView handleDataBaseException(DatabaseException exception) {
-        ModelAndView modelAndView = new ModelAndView("/error");
+        ModelAndView modelAndView = new ModelAndView("/error/500");
         modelAndView.addObject("message", exception.getMessage());
         return modelAndView;
     }

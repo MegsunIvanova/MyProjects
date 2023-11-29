@@ -1,31 +1,29 @@
 package bg.softuni.autho_moto_manager.service.impl;
 
-import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
 import bg.softuni.autho_moto_manager.repository.CostRepository;
-import bg.softuni.autho_moto_manager.repository.SaleRepository;
 import bg.softuni.autho_moto_manager.repository.UserRepository;
 import bg.softuni.autho_moto_manager.repository.VehicleRepository;
+import bg.softuni.autho_moto_manager.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.List;
-import java.util.Optional;
 
 @Configuration
 public class ModifyingPermissionInterceptor implements HandlerInterceptor {
-    private final SaleRepository saleRepository;
     private final CostRepository costRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
     private final VehicleRepository vehicleRepository;
 
-    public ModifyingPermissionInterceptor(SaleRepository saleRepository,
-                                          CostRepository costRepository,
-                                          UserRepository userRepository, VehicleRepository vehicleRepository) {
-        this.saleRepository = saleRepository;
+    public ModifyingPermissionInterceptor(CostRepository costRepository,
+                                          UserRepository userRepository,
+                                          UserService userService, VehicleRepository vehicleRepository) {
         this.costRepository = costRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
         this.vehicleRepository = vehicleRepository;
     }
 
@@ -65,23 +63,31 @@ public class ModifyingPermissionInterceptor implements HandlerInterceptor {
     }
 
     private boolean isForbidden(String requestURI, boolean hasAdminRole, String userPrincipalEmail) {
-    //TODO: refactoring
         String[] params = requestURI.split("\\/");
         String vehicleUUID = params[params.length - 1];
 
-        long count = hasAdminRole
-                ? vehicleRepository.countByUuidAndSaleIsNull(vehicleUUID)
-                : vehicleRepository.countByUuidAndOwner_EmailAndSaleIsNull(vehicleUUID, userPrincipalEmail);
-
-        if (count == 0) {
+        if (!userService.hasPermissionToModify(vehicleUUID)) {
             return true;
-        }
-
-        if (params[0].equals("costs")) {
+        } else if (params[0].equals("costs")) {
             long costId = Long.parseLong(params[params.length - 2]);
             return costRepository.findIsCompletedById(costId);
+        } else {
+            return false;
         }
 
-        return false;
+//        long count = hasAdminRole
+//                ? vehicleRepository.countByUuidAndSaleIsNull(vehicleUUID)
+//                : vehicleRepository.countByUuidAndOwner_EmailAndSaleIsNull(vehicleUUID, userPrincipalEmail);
+//
+//        if (count == 0) {
+//            return true;
+//        }
+//
+//        if (params[0].equals("costs")) {
+//            long costId = Long.parseLong(params[params.length - 2]);
+//            return costRepository.findIsCompletedById(costId);
+//        }
+//
+//        return false;
     }
 }

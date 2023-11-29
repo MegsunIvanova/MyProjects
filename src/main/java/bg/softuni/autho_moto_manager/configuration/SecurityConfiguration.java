@@ -33,8 +33,7 @@ public class SecurityConfiguration {
         return httpSecurity
                 .authorizeHttpRequests(authorizeHttpRequests -> {
                     authorizeHttpRequests
-                            .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                            .permitAll()
+                            .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                             .requestMatchers("/", "/users/login", "/users/register", "users/login-error")
                             .permitAll()
                             .requestMatchers("/error/**").permitAll()

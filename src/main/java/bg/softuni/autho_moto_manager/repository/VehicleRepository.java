@@ -25,6 +25,8 @@ public interface VehicleRepository extends JpaRepository<VehicleEntity, Long> {
     long countByUuidAndOwner_EmailAndSaleIsNull (String uuid, String ownerEmail);
     long countByUuidAndSaleIsNull (String uuid);
 
-
+    boolean existsByUuid(String uuid);
+    boolean existsByUuidAndSaleIsNull (String uuid);
+    boolean existsByUuidAndOwner_EmailAndSaleIsNull (String uuid, String ownerEmail);
 
 }

@@ -26,16 +26,17 @@ import static java.util.stream.Collectors.groupingBy;
 public class CostServiceImpl implements CostService {
     private final CostRepository costRepository;
     private final CurrencyRepository currencyRepository;
-    private final ModelMapper modelMapper;
     private final SaleRepository saleRepository;
+    private final ModelMapper modelMapper;
 
     public CostServiceImpl(CostRepository costRepository,
                            CurrencyRepository currencyRepository,
-                           ModelMapper modelMapper, SaleRepository saleRepository) {
+                           SaleRepository saleRepository,
+                           ModelMapper modelMapper) {
         this.costRepository = costRepository;
         this.currencyRepository = currencyRepository;
-        this.modelMapper = modelMapper;
         this.saleRepository = saleRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
