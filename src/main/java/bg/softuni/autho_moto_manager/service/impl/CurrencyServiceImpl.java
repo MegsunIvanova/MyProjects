@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,31 +26,34 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void updateRates(ExchangeRatesDTO exchangeRatesDTO) {
         LOGGER.info("Exchange Rates received {}", exchangeRatesDTO);
 
-        List<CurrencyEntity> currencies = currencyRepository.findAll();
+        List<String> currencyIds = new ArrayList<>();
+        currencyIds.add(exchangeRatesDTO.base());
+        currencyIds.addAll(exchangeRatesDTO.rates().keySet());
 
-        currencies.forEach(c -> updateRate(c, exchangeRatesDTO));
+        currencyIds.forEach(c -> updateRates(c, exchangeRatesDTO));
     }
 
-    private void updateRate(CurrencyEntity currency, ExchangeRatesDTO exchangeRatesDTO) {
-        BigDecimal rateToBase = exchangeRatesDTO.rates().get(currency.getId());
+    private void updateRates(String currencyId, ExchangeRatesDTO exchangeRatesDTO) {
         BigDecimal baseToBGN = exchangeRatesDTO.rates().get("BGN");
+        BigDecimal rateToBase = exchangeRatesDTO.rates().get(currencyId);
+        CurrencyEntity currencyEntity = new CurrencyEntity().setId(currencyId);
 
         if (baseToBGN == null) {
-            LOGGER.error(currency.getId() + " exchange rate was NOT updated !!!");
+            LOGGER.error(currencyId + " exchange rate was NOT updated !!!");
             return;
         }
 
-        if (currency.getId().equals(exchangeRatesDTO.base())) {
-            currency.setRateToBGN(baseToBGN);
+        if (currencyId.equals(exchangeRatesDTO.base())) {
+            currencyEntity.setRateToBGN(baseToBGN);
         } else if (rateToBase == null) {
-            LOGGER.error(currency.getId() + " exchange rate was NOT updated !!!");
+            LOGGER.error(currencyId + " exchange rate was NOT updated !!!");
             return;
         } else {
-            BigDecimal newRate = baseToBGN.divide(rateToBase, RoundingMode.UP);
-            currency.setRateToBGN(newRate);
+            BigDecimal newRate = baseToBGN.divide(rateToBase, 5, RoundingMode.HALF_UP);
+            currencyEntity.setRateToBGN(newRate);
         }
 
-        currencyRepository.save(currency);
-        LOGGER.info(currency.getId() + " exchange rate was updated to " + currency.getRateToBGN());
+        currencyRepository.save(currencyEntity);
+        LOGGER.info(currencyEntity.getId() + " exchange rate was updated to " + currencyEntity.getRateToBGN());
     }
 }

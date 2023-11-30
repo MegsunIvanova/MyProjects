@@ -2,15 +2,13 @@ package bg.softuni.autho_moto_manager.configuration;
 
 import bg.softuni.autho_moto_manager.model.enums.UserRoleEnum;
 import bg.softuni.autho_moto_manager.repository.UserRepository;
-import bg.softuni.autho_moto_manager.service.impl.ApplicationUserDetailsServiceImpl;
+import bg.softuni.autho_moto_manager.service.impl.ApplicationUserDetailsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
@@ -68,7 +66,7 @@ public class SecurityConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new ApplicationUserDetailsServiceImpl(userRepository);
+        return new ApplicationUserDetailsService(userRepository);
     }
 
     @Bean

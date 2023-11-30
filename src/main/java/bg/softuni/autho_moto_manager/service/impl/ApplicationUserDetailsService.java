@@ -10,13 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public class ApplicationUserDetailsServiceImpl implements UserDetailsService {
+public class ApplicationUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
-    public ApplicationUserDetailsServiceImpl(UserRepository userRepository) {
+    public ApplicationUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -32,7 +31,7 @@ public class ApplicationUserDetailsServiceImpl implements UserDetailsService {
                 .password(userEntity.getPassword())
                 .authorities(userEntity.getRoles()
                         .stream()
-                        .map(ApplicationUserDetailsServiceImpl::mapToGrantedAuthority)
+                        .map(ApplicationUserDetailsService::mapToGrantedAuthority)
                         .toList())
                 .build();
     }
