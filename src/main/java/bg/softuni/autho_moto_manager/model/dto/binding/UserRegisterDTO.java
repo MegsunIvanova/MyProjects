@@ -6,7 +6,6 @@ import bg.softuni.autho_moto_manager.model.validation.UniqueUserEmail;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import org.springframework.stereotype.Service;
 
 import static bg.softuni.autho_moto_manager.util.Constants.EMAIL_REGEX;
 

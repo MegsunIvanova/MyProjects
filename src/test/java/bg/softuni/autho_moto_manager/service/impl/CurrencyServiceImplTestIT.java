@@ -70,6 +70,22 @@ class CurrencyServiceImplTestIT {
                 exchangeRate_EUR_BGN.get().getRateToBGN());
     }
 
+    @ParameterizedTest(name = "Conversion BGN/BGN exRate {0}, expected {1}")
+    @MethodSource("testDataBGN")
+    void test_BGN_TO_BGN(Double exchangeRate, Double expectedValue) {
+        ExchangeRatesDTO testExRate =
+                new ExchangeRatesDTO("USD",
+                        Map.of("BGN", BigDecimal.valueOf(exchangeRate)));
+
+        currencyServiceToTest.updateRates(testExRate);
+
+        Optional<CurrencyEntity> exchangeRate_BGN_BGN = currencyRepository.findById("BGN");
+
+        Assertions.assertTrue(exchangeRate_BGN_BGN.isPresent());
+        Assertions.assertEquals(BigDecimal.valueOf(expectedValue).setScale(5, RoundingMode.UP),
+                exchangeRate_BGN_BGN.get().getRateToBGN());
+    }
+
     private static Stream<Arguments> testDataUSD() {
         return Stream.of(
                 Arguments.of(1.78046, 1.78046),
@@ -90,5 +106,17 @@ class CurrencyServiceImplTestIT {
                 Arguments.of(1.0, 1.0, 1.00000)
         );
     }
+
+    private static Stream<Arguments> testDataBGN() {
+        return Stream.of(
+                Arguments.of(1.78046, 1.00000),
+                Arguments.of(1.854, 1.00000),
+                Arguments.of(1.84515, 1.00000),
+                Arguments.of(1.777515, 1.00000),
+                Arguments.of(1.0, 1.0, 1.00000)
+        );
+    }
+
+
 
 }

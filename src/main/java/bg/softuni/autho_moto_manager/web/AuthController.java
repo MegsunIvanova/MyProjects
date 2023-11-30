@@ -49,7 +49,7 @@ public class AuthController {
         //TODO: validation and errors handling
         userService.register(userRegisterDTO);
 
-        return "redirect:/login";
+        return "redirect:/users/login";
     }
 
     @GetMapping("/login")

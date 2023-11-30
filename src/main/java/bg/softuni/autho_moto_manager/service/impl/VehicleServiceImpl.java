@@ -1,11 +1,9 @@
 package bg.softuni.autho_moto_manager.service.impl;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.CreateVehicleDTO;
-import bg.softuni.autho_moto_manager.model.dto.binding.SaleDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.*;
 import bg.softuni.autho_moto_manager.model.entity.CostEntity;
 import bg.softuni.autho_moto_manager.model.entity.ModelEntity;
-import bg.softuni.autho_moto_manager.model.entity.SaleEntity;
 import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
 import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.autho_moto_manager.repository.CostRepository;

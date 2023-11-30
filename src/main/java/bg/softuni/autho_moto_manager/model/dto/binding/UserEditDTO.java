@@ -1,8 +1,6 @@
 package bg.softuni.autho_moto_manager.model.dto.binding;
 
 import bg.softuni.autho_moto_manager.model.enums.UserRoleEnum;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 
 import java.util.HashSet;
 import java.util.Set;

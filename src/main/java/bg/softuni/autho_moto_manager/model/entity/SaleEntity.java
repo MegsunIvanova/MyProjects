@@ -1,6 +1,5 @@
 package bg.softuni.autho_moto_manager.model.entity;
 
-import bg.softuni.autho_moto_manager.model.dto.view.VehicleSummaryViewDTO;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

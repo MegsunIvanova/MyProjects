@@ -3,7 +3,6 @@ package bg.softuni.autho_moto_manager.model.entity;
 import bg.softuni.autho_moto_manager.model.enums.EngineEnum;
 import bg.softuni.autho_moto_manager.model.enums.TransmissionEnum;
 import jakarta.persistence.*;
-import org.springframework.data.jpa.repository.EntityGraph;
 
 import java.math.BigDecimal;
 import java.util.*;
