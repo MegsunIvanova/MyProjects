@@ -26,16 +26,13 @@ import static java.util.stream.Collectors.groupingBy;
 public class CostServiceImpl implements CostService {
     private final CostRepository costRepository;
     private final CurrencyRepository currencyRepository;
-    private final SaleRepository saleRepository;
     private final ModelMapper modelMapper;
 
     public CostServiceImpl(CostRepository costRepository,
                            CurrencyRepository currencyRepository,
-                           SaleRepository saleRepository,
                            ModelMapper modelMapper) {
         this.costRepository = costRepository;
         this.currencyRepository = currencyRepository;
-        this.saleRepository = saleRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -62,17 +59,13 @@ public class CostServiceImpl implements CostService {
         Map<CostTypeEnum, List<CostViewDTO>> costsByType =
                 createMapByType(costRepository.findAllByVehicle_Uuid(vehicleUuid));
 
-
         Map<CostTypeEnum, BigDecimal> completedCostsAmount = amountInBGNByCostType(costRepository
                 .findAllByVehicle_UuidAndCompleted(vehicleUuid, true));
-
 
         Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount = amountInBGNByCostType(costRepository
                 .findAllByVehicle_UuidAndCompleted(vehicleUuid, false));
 
-        boolean sold = saleRepository.findByVehicle_Uuid(vehicleUuid).isPresent();
-
-        return new DetailedCostsView(completedCostsAmount, uncompletedCostsAmount, costsByType, sold);
+        return new DetailedCostsView(completedCostsAmount, uncompletedCostsAmount, costsByType);
     }
 
     @Override

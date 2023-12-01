@@ -14,17 +14,14 @@ public class DetailedCostsView {
     private Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount;
     private Map<CostTypeEnum, List<CostViewDTO>> costsByType;
 
-    private boolean sold;
 
     public DetailedCostsView(Map<CostTypeEnum, BigDecimal> completedCostsAmount,
                              Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount,
-                             Map<CostTypeEnum, List<CostViewDTO>> costsByType,
-                             boolean sold) {
+                             Map<CostTypeEnum, List<CostViewDTO>> costsByType) {
         this.costTypes = CostTypeEnum.values();
         this.completedCostsAmount = completedCostsAmount;
         this.uncompletedCostsAmount = uncompletedCostsAmount;
         this.costsByType = costsByType;
-        this.sold = sold;
     }
 
     public CostTypeEnum[] getCostTypes() {
@@ -70,9 +67,6 @@ public class DetailedCostsView {
         return getCompletedCostsSum().add(getUncompletedCostsSum());
     }
 
-    public boolean isSold() {
-        return sold;
-    }
 }
 
 
