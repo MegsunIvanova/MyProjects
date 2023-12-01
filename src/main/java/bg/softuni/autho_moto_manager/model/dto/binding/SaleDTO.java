@@ -21,7 +21,7 @@ public class SaleDTO {
     private String currency; //currencyId
 
     @Positive(message = "Rate must be positive number")
-    private BigDecimal transactionRate;
+    private BigDecimal transactionExRate;
 
     @Size(max = 60)
     private String notes;
@@ -56,12 +56,12 @@ public class SaleDTO {
         return this;
     }
 
-    public BigDecimal getTransactionRate() {
-        return transactionRate;
+    public BigDecimal getTransactionExRate() {
+        return transactionExRate;
     }
 
-    public SaleDTO setTransactionRate(BigDecimal transactionRate) {
-        this.transactionRate = transactionRate;
+    public SaleDTO setTransactionExRate(BigDecimal transactionExRate) {
+        this.transactionExRate = transactionExRate;
         return this;
     }
 

@@ -45,8 +45,8 @@ public class UpdateCostDTO extends AddCostDTO {
     }
 
     @Override
-    public UpdateCostDTO setTransactionRate(BigDecimal transactionRate) {
-        super.setTransactionRate(transactionRate);
+    public UpdateCostDTO setTransactionExRate(BigDecimal transactionExRate) {
+        super.setTransactionExRate(transactionExRate);
         return this;
     }
 

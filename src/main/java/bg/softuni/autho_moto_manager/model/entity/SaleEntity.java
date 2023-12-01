@@ -17,7 +17,7 @@ public class SaleEntity extends BaseEntity {
     private CurrencyEntity currency;
 
     @Column(name = "transaction_rate", precision = 11, scale = 5, nullable = false)
-    private BigDecimal transactionRate;
+    private BigDecimal transactionExRate;
 
     private String notes;
 
@@ -48,19 +48,19 @@ public class SaleEntity extends BaseEntity {
 
     public SaleEntity setCurrency(CurrencyEntity currency) {
         this.currency = currency;
-        if(transactionRate == null) {
-            setTransactionRate(currency.getRateToBGN());
+        if(transactionExRate == null) {
+            setTransactionExRate(currency.getRateToBGN());
         }
         return this;
     }
 
-    public BigDecimal getTransactionRate() {
-        return transactionRate;
+    public BigDecimal getTransactionExRate() {
+        return transactionExRate;
     }
 
-    public SaleEntity setTransactionRate(BigDecimal transactionRate) {
-        if (transactionRate != null) {
-            this.transactionRate = transactionRate;
+    public SaleEntity setTransactionExRate(BigDecimal transactionExRate) {
+        if (transactionExRate != null) {
+            this.transactionExRate = transactionExRate;
         }
         return this;
     }

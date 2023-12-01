@@ -105,18 +105,18 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="transactionRate" class="form-label fs-6">Rate to BGN:</label>
-                        <input th:field="*{transactionRate}"
+                        <label for="transactionExRate" class="form-label fs-6">Rate to BGN:</label>
+                        <input th:field="*{transactionExRate}"
                                th:errorclass="'is-invalid bg-danger'"
                                type="number"
                                step="0.00001"
                                min="0.00001"
                                class="form-control"
-                               id="transactionRate"
+                               id="transactionExRate"
                                placeholder="#.#####">
-                        <small id="transactionRateError"
+                        <small id="transactionExRateError"
                                class="invalid-feedback rounded text-center"
-                               th:text="${#strings.listJoin(#fields.errors('transactionRate'), ' ')}">
+                               th:text="${#strings.listJoin(#fields.errors('transactionExRate'), ' ')}">
                             Invalid rate!</small>
                     </div>
                 </div>

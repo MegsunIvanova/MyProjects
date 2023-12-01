@@ -25,7 +25,7 @@ public class AddCostDTO {
     private String currency;
 
     @Positive(message = "Rate must be positive number!")
-    private BigDecimal transactionRate;
+    private BigDecimal transactionExRate;
 
     private boolean completed;
 
@@ -70,12 +70,12 @@ public class AddCostDTO {
         return this;
     }
 
-    public BigDecimal getTransactionRate() {
-        return transactionRate;
+    public BigDecimal getTransactionExRate() {
+        return transactionExRate;
     }
 
-    public AddCostDTO setTransactionRate(BigDecimal transactionRate) {
-        this.transactionRate = transactionRate;
+    public AddCostDTO setTransactionExRate(BigDecimal transactionExRate) {
+        this.transactionExRate = transactionExRate;
         return this;
     }
 
@@ -98,7 +98,7 @@ public class AddCostDTO {
     }
 
     public BigDecimal getTotalPrice() {
-        return amount.multiply(transactionRate);
+        return amount.multiply(transactionExRate);
     }
 
     public BigDecimal getFixRate(Map<String, BigDecimal> currencies) {

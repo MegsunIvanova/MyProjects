@@ -48,9 +48,9 @@ public class CostServiceImpl implements CostService {
     public void addCost(AddCostDTO addCostDTO) {
         CostEntity costEntity = modelMapper.map(addCostDTO, CostEntity.class);
 
-        if (costEntity.isCompleted() && costEntity.getTransactionRate() == null) {
+        if (costEntity.isCompleted() && costEntity.getTransactionExRate() == null) {
             BigDecimal fixRate = costEntity.getCurrency().getRateToBGN();
-            costEntity.setTransactionRate(fixRate);
+            costEntity.setTransactionExRate(fixRate);
         }
 
         costRepository.save(costEntity);
@@ -92,7 +92,7 @@ public class CostServiceImpl implements CostService {
                 .setDescription(costToUpdate.getDescription())
                 .setAmount(costToUpdate.getAmount())
                 .setCurrency(costToUpdate.getCurrency().getId())
-                .setTransactionRate(costToUpdate.getTransactionRate())
+                .setTransactionExRate(costToUpdate.getTransactionExRate())
                 .setCompleted(costToUpdate.isCompleted())
                 .setVehicle(costToUpdate.getVehicle().getUuid());
     }
@@ -112,7 +112,7 @@ public class CostServiceImpl implements CostService {
                 .setDescription(updateCostDTO.getDescription())
                 .setAmount(updateCostDTO.getAmount())
                 .setCurrency(currencyEntity)
-                .setTransactionRate(updateCostDTO.getTransactionRate())
+                .setTransactionExRate(updateCostDTO.getTransactionExRate())
                 .setCompleted(updateCostDTO.isCompleted());
 
         costRepository.save(updatedCost);

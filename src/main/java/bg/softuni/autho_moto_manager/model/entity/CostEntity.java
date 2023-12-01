@@ -20,7 +20,7 @@ public class CostEntity extends BaseEntity {
     @ManyToOne(optional = false)
     private CurrencyEntity currency;
     @Column(name = "transaction_rate", precision = 11 ,scale = 5)
-    private BigDecimal transactionRate;
+    private BigDecimal transactionExRate;
     private boolean completed;
     @ManyToOne
     private VehicleEntity vehicle;
@@ -64,12 +64,12 @@ public class CostEntity extends BaseEntity {
         return this;
     }
 
-    public BigDecimal getTransactionRate() {
-        return transactionRate;
+    public BigDecimal getTransactionExRate() {
+        return transactionExRate;
     }
 
-    public CostEntity setTransactionRate(BigDecimal fixedTransactionRate) {
-        this.transactionRate = fixedTransactionRate;
+    public CostEntity setTransactionExRate(BigDecimal transactionExRate) {
+        this.transactionExRate = transactionExRate;
         return this;
     }
 
@@ -96,8 +96,8 @@ public class CostEntity extends BaseEntity {
     }
 
     public BigDecimal getRateToBGN() {
-        return this.transactionRate != null
-                ? this.transactionRate
+        return this.transactionExRate != null
+                ? this.transactionExRate
                 : this.currency.getRateToBGN();
     }
 

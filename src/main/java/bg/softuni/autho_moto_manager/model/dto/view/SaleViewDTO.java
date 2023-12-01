@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class SaleViewDTO {
     private BigDecimal price;
     private String currencyId;
-    private BigDecimal transactionRate;
+    private BigDecimal transactionExRate;
     private String notes;
 
     public SaleViewDTO() {
@@ -29,12 +29,12 @@ public class SaleViewDTO {
         return this;
     }
 
-    public BigDecimal getTransactionRate() {
-        return transactionRate;
+    public BigDecimal getTransactionExRate() {
+        return transactionExRate;
     }
 
-    public SaleViewDTO setTransactionRate(BigDecimal transactionRate) {
-        this.transactionRate = transactionRate;
+    public SaleViewDTO setTransactionExRate(BigDecimal transactionExRate) {
+        this.transactionExRate = transactionExRate;
         return this;
     }
 
@@ -48,6 +48,6 @@ public class SaleViewDTO {
     }
 
     public BigDecimal getSalePriceInBGN() {
-        return this.price.multiply(this.transactionRate);
+        return this.price.multiply(this.transactionExRate);
     }
 }
