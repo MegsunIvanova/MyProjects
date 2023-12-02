@@ -55,15 +55,24 @@ public class CostServiceImpl implements CostService {
 
     @Override
     public DetailedCostsView getDetailedCostsView(String vehicleUuid) {
+        //TODO: refactor it to optimize
+        List<CostEntity> costsByVehicleUuid =
+                costRepository.findAllByVehicle_Uuid(vehicleUuid);
 
-        Map<CostTypeEnum, List<CostViewDTO>> costsByType =
-                createMapByType(costRepository.findAllByVehicle_Uuid(vehicleUuid));
+//        Map<CostTypeEnum, List<CostViewDTO>> costsByType =
+//                createMapByType(costsByVehicleUuid);
+//
+//        Map<CostTypeEnum, BigDecimal> completedCostsAmount = amountInBGNByCostType(costRepository
+//                .findAllByVehicle_UuidAndCompleted(vehicleUuid, true));
+//
+//        Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount = amountInBGNByCostType(costRepository
+//                .findAllByVehicle_UuidAndCompleted(vehicleUuid, false));
 
-        Map<CostTypeEnum, BigDecimal> completedCostsAmount = amountInBGNByCostType(costRepository
-                .findAllByVehicle_UuidAndCompleted(vehicleUuid, true));
+        Map<CostTypeEnum, List<CostViewDTO>> costsByType = new HashMap<>();
+        Map<CostTypeEnum, BigDecimal> completedCostsAmount= new HashMap<>();
+        Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount = new HashMap<>();
 
-        Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount = amountInBGNByCostType(costRepository
-                .findAllByVehicle_UuidAndCompleted(vehicleUuid, false));
+        fillCostMaps(costsByVehicleUuid, costsByType, completedCostsAmount, uncompletedCostsAmount);
 
         return new DetailedCostsView(completedCostsAmount, uncompletedCostsAmount, costsByType);
     }
@@ -111,19 +120,44 @@ public class CostServiceImpl implements CostService {
         costRepository.save(updatedCost);
     }
 
-    private Map<CostTypeEnum, List<CostViewDTO>> createMapByType(List<CostEntity> costEntities) {
-        return costEntities.stream()
-                .map(CostViewDTO::new)
-                .collect(groupingBy(
-                        CostViewDTO::getType,
-                        Collectors.toList()));
-    }
+//    private Map<CostTypeEnum, List<CostViewDTO>> createMapByType(List<CostEntity> costEntities) {
+//        return costEntities.stream()
+//                .map(CostViewDTO::new)
+//                .collect(groupingBy(
+//                        CostViewDTO::getType,
+//                        Collectors.toList()));
+//    }
 
-    private Map<CostTypeEnum, BigDecimal> amountInBGNByCostType(List<CostEntity> costs) {
-        return costs.stream().collect(Collectors.groupingBy(
-                CostEntity::getType,
-                Collectors.reducing(BigDecimal.ZERO,
-                        CostEntity::getAmountInBGN,
-                        BigDecimal::add)));
+//    private Map<CostTypeEnum, BigDecimal> amountInBGNByCostType(List<CostEntity> costs) {
+//        return costs.stream().collect(Collectors.groupingBy(
+//                CostEntity::getType,
+//                Collectors.reducing(BigDecimal.ZERO,
+//                        CostEntity::getAmountInBGN,
+//                        BigDecimal::add)));
+//    }
+    private void fillCostMaps(List<CostEntity> costsByVehicleUuid,
+                              Map<CostTypeEnum, List<CostViewDTO>> costsByType,
+                              Map<CostTypeEnum, BigDecimal> completedCostsAmount,
+                              Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount) {
+        for (CostEntity cost : costsByVehicleUuid) {
+            CostViewDTO costViewDTO = new CostViewDTO(cost);
+
+            CostTypeEnum type = costViewDTO.getType();
+
+            costsByType.putIfAbsent(type, new ArrayList<>());
+            costsByType.get(type).add(costViewDTO);
+
+            if (costViewDTO.isCompleted()) {
+                completedCostsAmount.putIfAbsent(type, BigDecimal.ZERO);
+                BigDecimal sum = completedCostsAmount.get(type)
+                        .add(costViewDTO.getAmountInBGN());
+                completedCostsAmount.put(type, sum);
+            } else {
+                uncompletedCostsAmount.putIfAbsent(type, BigDecimal.ZERO);
+                BigDecimal sum = uncompletedCostsAmount.get(type)
+                        .add(costViewDTO.getAmountInBGN());
+                uncompletedCostsAmount.put(type, sum);
+            }
+        }
     }
 }
