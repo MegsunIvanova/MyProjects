@@ -4,7 +4,6 @@ import bg.softuni.autho_moto_manager.model.dto.view.CostViewDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.DetailedCostsView;
 import bg.softuni.autho_moto_manager.model.entity.CostEntity;
 import bg.softuni.autho_moto_manager.model.entity.CurrencyEntity;
-import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
 import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.autho_moto_manager.repository.CostRepository;
 import bg.softuni.autho_moto_manager.repository.CurrencyRepository;
@@ -21,13 +20,18 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CostServiceImplTest {
+    final BigDecimal EX_RATE1_COMPLETED = BigDecimal.valueOf(1.5000);
+    final BigDecimal EX_RATE2_COMPLETED = BigDecimal.valueOf(1.4000);
+    final BigDecimal EX_RATE_UNCOMPLETED = BigDecimal.valueOf(1.1000);
+    final BigDecimal EX_RATE_CURRENCY = BigDecimal.valueOf(2.00000);
+    final BigDecimal COST_AMOUNT = BigDecimal.valueOf(1000.00);
     private CostService serviceToTest;
-
     @Mock
     private CostRepository mockCostRepository;
     @Mock
@@ -48,9 +52,9 @@ class CostServiceImplTest {
         String vehicleUUID = UUID.randomUUID().toString();
 
         List<CostEntity> vehicleCosts = new ArrayList<>();
-        vehicleCosts.addAll(costList(vehicleUUID, true, BigDecimal.valueOf(1.5000)));
-        vehicleCosts.addAll(costList(vehicleUUID, true, BigDecimal.valueOf(1.4000)));
-        vehicleCosts.addAll(costList(vehicleUUID, false, BigDecimal.valueOf(1.1000)));
+        vehicleCosts.addAll(costList(vehicleUUID, true,EX_RATE1_COMPLETED));
+        vehicleCosts.addAll(costList(vehicleUUID, true, EX_RATE2_COMPLETED));
+        vehicleCosts.addAll(costList(vehicleUUID, false, EX_RATE_UNCOMPLETED));
         vehicleCosts.addAll(costList(vehicleUUID, false, null));
 
         when(mockCostRepository.findAllByVehicle_Uuid(vehicleUUID))
@@ -66,16 +70,16 @@ class CostServiceImplTest {
         }
 
         Map<CostTypeEnum, BigDecimal> completedCostsAmount = detailedCostsView.getCompletedCostsAmount();
-        BigDecimal cost1Amount = BigDecimal.valueOf(1000).multiply(BigDecimal.valueOf(1.5000));
-        BigDecimal cost2Amount = BigDecimal.valueOf(1000).multiply(BigDecimal.valueOf(1.4000));
+        BigDecimal cost1Amount = COST_AMOUNT.multiply(EX_RATE1_COMPLETED);
+        BigDecimal cost2Amount = COST_AMOUNT.multiply(EX_RATE2_COMPLETED);
         BigDecimal sum = cost1Amount.add(cost2Amount);
         for (CostTypeEnum key : completedCostsAmount.keySet()) {
             assertEquals(sum.setScale(2, RoundingMode.HALF_UP), completedCostsAmount.get(key));
         }
 
         Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount = detailedCostsView.getUncompletedCostsAmount();
-        BigDecimal unCost1Amount = BigDecimal.valueOf(1000).multiply(BigDecimal.valueOf(1.10000));
-        BigDecimal unCost2Amount = BigDecimal.valueOf(1000).multiply(BigDecimal.valueOf(2.00000));
+        BigDecimal unCost1Amount = COST_AMOUNT.multiply(EX_RATE_UNCOMPLETED);
+        BigDecimal unCost2Amount = COST_AMOUNT.multiply(EX_RATE_CURRENCY);
         BigDecimal unSum = unCost1Amount.add(unCost2Amount);
         for (CostTypeEnum key : uncompletedCostsAmount.keySet()) {
             assertEquals(unSum.setScale(2, RoundingMode.HALF_UP), uncompletedCostsAmount.get(key));
@@ -84,27 +88,19 @@ class CostServiceImplTest {
     }
 
     private List<CostEntity> costList(String vehicleUUID, boolean completed, BigDecimal transactionExRate) {
-
-        VehicleEntity vehicleEntity = new VehicleEntity()
-                .setUuid(vehicleUUID);
-
         return Arrays.stream(CostTypeEnum.values())
-                .map(type -> mapToCostEntity(type, completed, transactionExRate,vehicleEntity))
+                .map(type -> mapToCostEntity(type, completed, transactionExRate))
                 .collect(Collectors.toList());
     }
 
     private CostEntity mapToCostEntity(CostTypeEnum costType,
                                        boolean completed,
-                                       BigDecimal transactionExRate,
-                                       VehicleEntity vehicle) {
-
+                                       BigDecimal transactionExRate) {
         return new CostEntity()
                 .setType(costType)
                 .setCompleted(completed)
-                .setAmount(BigDecimal.valueOf(1000.00))
-                .setCurrency(new CurrencyEntity().setId("TEST").setRateToBGN(BigDecimal.valueOf(2.00000)))
-                .setTransactionExRate(transactionExRate)
-                .setVehicle(vehicle);
+                .setAmount(COST_AMOUNT)
+                .setCurrency(new CurrencyEntity().setId("TEST").setRateToBGN(EX_RATE_CURRENCY))
+                .setTransactionExRate(transactionExRate);
     }
-
 }
