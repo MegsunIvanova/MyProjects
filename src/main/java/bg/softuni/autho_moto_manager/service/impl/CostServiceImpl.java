@@ -10,17 +10,16 @@ import bg.softuni.autho_moto_manager.model.entity.CurrencyEntity;
 import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.autho_moto_manager.repository.CostRepository;
 import bg.softuni.autho_moto_manager.repository.CurrencyRepository;
-import bg.softuni.autho_moto_manager.repository.SaleRepository;
 import bg.softuni.autho_moto_manager.service.CostService;
 import bg.softuni.autho_moto_manager.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class CostServiceImpl implements CostService {
@@ -55,21 +54,11 @@ public class CostServiceImpl implements CostService {
 
     @Override
     public DetailedCostsView getDetailedCostsView(String vehicleUuid) {
-        //TODO: refactor it to optimize
         List<CostEntity> costsByVehicleUuid =
                 costRepository.findAllByVehicle_Uuid(vehicleUuid);
 
-//        Map<CostTypeEnum, List<CostViewDTO>> costsByType =
-//                createMapByType(costsByVehicleUuid);
-//
-//        Map<CostTypeEnum, BigDecimal> completedCostsAmount = amountInBGNByCostType(costRepository
-//                .findAllByVehicle_UuidAndCompleted(vehicleUuid, true));
-//
-//        Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount = amountInBGNByCostType(costRepository
-//                .findAllByVehicle_UuidAndCompleted(vehicleUuid, false));
-
         Map<CostTypeEnum, List<CostViewDTO>> costsByType = new HashMap<>();
-        Map<CostTypeEnum, BigDecimal> completedCostsAmount= new HashMap<>();
+        Map<CostTypeEnum, BigDecimal> completedCostsAmount = new HashMap<>();
         Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount = new HashMap<>();
 
         fillCostMaps(costsByVehicleUuid, costsByType, completedCostsAmount, uncompletedCostsAmount);
@@ -120,21 +109,6 @@ public class CostServiceImpl implements CostService {
         costRepository.save(updatedCost);
     }
 
-//    private Map<CostTypeEnum, List<CostViewDTO>> createMapByType(List<CostEntity> costEntities) {
-//        return costEntities.stream()
-//                .map(CostViewDTO::new)
-//                .collect(groupingBy(
-//                        CostViewDTO::getType,
-//                        Collectors.toList()));
-//    }
-
-//    private Map<CostTypeEnum, BigDecimal> amountInBGNByCostType(List<CostEntity> costs) {
-//        return costs.stream().collect(Collectors.groupingBy(
-//                CostEntity::getType,
-//                Collectors.reducing(BigDecimal.ZERO,
-//                        CostEntity::getAmountInBGN,
-//                        BigDecimal::add)));
-//    }
     private void fillCostMaps(List<CostEntity> costsByVehicleUuid,
                               Map<CostTypeEnum, List<CostViewDTO>> costsByType,
                               Map<CostTypeEnum, BigDecimal> completedCostsAmount,
