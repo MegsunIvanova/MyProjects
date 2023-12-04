@@ -1,6 +1,7 @@
 package bg.softuni.autho_moto_manager.model.dto.view;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class SaleVehicleView {
@@ -35,7 +36,7 @@ public class SaleVehicleView {
     }
 
     public BigDecimal getTotalCostsInBGN() {
-        return totalCostsInBGN;
+        return totalCostsInBGN.setScale(2, RoundingMode.HALF_UP);
     }
 
     public SaleVehicleView setTotalCostsInBGN(BigDecimal totalCostsInBGN) {
@@ -43,11 +44,11 @@ public class SaleVehicleView {
         return this;
     }
 
-    public boolean isAllCompleteCosts() {
+    public boolean isAllCostsCompleted() {
         return allCostsCompleted;
     }
 
-    public SaleVehicleView setAllCompleteCosts(boolean allCompleteCosts) {
+    public SaleVehicleView setAllCostsCompleted(boolean allCompleteCosts) {
         this.allCostsCompleted = allCompleteCosts;
         return this;
     }
@@ -61,21 +62,12 @@ public class SaleVehicleView {
         return this;
     }
 
-    public boolean isAllCostsCompleted() {
-        return allCostsCompleted;
-    }
-
-    public SaleVehicleView setAllCostsCompleted(boolean allCostsCompleted) {
-        this.allCostsCompleted = allCostsCompleted;
-        return this;
-    }
-
     public List<String> getCurrenciesIds() {
         return currenciesIds;
     }
 
-    public SaleVehicleView setCurrenciesIds(List<String> curenciesIds) {
-        this.currenciesIds = curenciesIds;
+    public SaleVehicleView setCurrenciesIds(List<String> currenciesIds) {
+        this.currenciesIds = currenciesIds;
         return this;
     }
 }

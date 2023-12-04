@@ -1,6 +1,7 @@
 package bg.softuni.autho_moto_manager.repository;
 
 import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,16 +14,18 @@ public interface VehicleRepository extends JpaRepository<VehicleEntity, Long> {
 
     Optional<VehicleEntity> findByUuid(String uuid);
 
-//    @EntityGraph(value = "vehicleWithCosts",
-//            attributePaths = "costCalculation")
-//    @Query("SELECT v FROM VehicleEntity v WHERE v.uuid = :uuid")
-//    Optional<VehicleEntity> findVehicleWithCostsByUuid(String uuid);
+    @EntityGraph(value = "vehicleWithCosts",
+            attributePaths = {"costCalculation", "model", "primaryImage"})
+    Optional<VehicleEntity> getByUuid(String uuid);
 
-    long countByUuidAndOwner_EmailAndSaleIsNull (String uuid, String ownerEmail);
-    long countByUuidAndSaleIsNull (String uuid);
+    long countByUuidAndOwner_EmailAndSaleIsNull(String uuid, String ownerEmail);
+
+    long countByUuidAndSaleIsNull(String uuid);
 
     boolean existsByUuid(String uuid);
-    boolean existsByUuidAndSaleIsNull (String uuid);
-    boolean existsByUuidAndOwner_EmailAndSaleIsNull (String uuid, String ownerEmail);
+
+    boolean existsByUuidAndSaleIsNull(String uuid);
+
+    boolean existsByUuidAndOwner_EmailAndSaleIsNull(String uuid, String ownerEmail);
 
 }

@@ -4,6 +4,7 @@ import bg.softuni.autho_moto_manager.model.entity.RoleEntity;
 import bg.softuni.autho_moto_manager.model.entity.UserEntity;
 import bg.softuni.autho_moto_manager.model.enums.UserRoleEnum;
 import bg.softuni.autho_moto_manager.repository.UserRepository;
+import bg.softuni.autho_moto_manager.util.EntityForTests;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,14 +61,9 @@ class ApplicationUserDetailsServiceTest {
     }
 
     private static UserEntity createTestUser() {
-        return new UserEntity()
-                .setName("name")
-                .setEmail("pesho@softuni.bg")
-                .setPassword("topsecret")
-                .setRoles(Set.of(
-                        createRole(UserRoleEnum.ADMIN),
-                        createRole(UserRoleEnum.USER)
-                ));
+        return EntityForTests.createTestUser(Set.of(
+                createRole(UserRoleEnum.ADMIN),
+                createRole(UserRoleEnum.USER)));
     }
 
     private static RoleEntity createRole(UserRoleEnum role) {

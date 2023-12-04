@@ -8,12 +8,11 @@ import java.util.Set;
 public class UserEditDTO {
     private String name;
     private String email;
-    private Set<UserRoleEnum> roles;
-
+//    private Set<UserRoleEnum> roles;
     private boolean admin;
 
     public UserEditDTO() {
-        this.roles = new HashSet<>();
+//        this.roles = new HashSet<>();
     }
 
     public String getName() {
@@ -34,15 +33,15 @@ public class UserEditDTO {
         return this;
     }
 
-    public Set<UserRoleEnum> getRoles() {
-        return roles;
-    }
+//    public Set<UserRoleEnum> getRoles() {
+//        return roles;
+//    }
 
-    public UserEditDTO setRoles(Set<UserRoleEnum> roles) {
-        this.roles = roles;
-        setAdmin(roles.contains(UserRoleEnum.ADMIN));
-        return this;
-    }
+//    public UserEditDTO setRoles(Set<UserRoleEnum> roles) {
+//        this.roles = roles;
+//        setAdmin(roles.contains(UserRoleEnum.ADMIN));
+//        return this;
+//    }
 
     public boolean isAdmin() {
         return admin;

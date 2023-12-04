@@ -18,23 +18,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
     private final RoleRepository roleRepository;
     private final VehicleRepository vehicleRepository;
+    private final ModelMapper modelMapper;
 
     public UserServiceImpl(UserRepository userRepository,
-                           ModelMapper modelMapper,
                            RoleRepository roleRepository,
-                           VehicleRepository vehicleRepository) {
+                           VehicleRepository vehicleRepository,
+                           ModelMapper modelMapper) {
         this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
         this.roleRepository = roleRepository;
         this.vehicleRepository = vehicleRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -87,10 +86,11 @@ public class UserServiceImpl implements UserService {
         return new UserEditDTO()
                 .setName(userEntity.getName())
                 .setEmail(userEntity.getEmail())
-                .setRoles(userEntity.getRoles()
-                        .stream()
-                        .map(RoleEntity::getRole)
-                        .collect(Collectors.toSet()));
+                .setAdmin(userEntity.getRoles().stream().anyMatch(r -> r.getRole().equals(UserRoleEnum.ADMIN)));
+//                .setRoles(userEntity.getRoles()
+//                        .stream()
+//                        .map(RoleEntity::getRole)
+//                        .collect(Collectors.toSet()));
     }
 
 

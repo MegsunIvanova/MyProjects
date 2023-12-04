@@ -39,48 +39,63 @@ class CostServiceImplTest {
     @Mock
     private ModelMapper mockModelMapper;
 
+    String vehicleUUID;
+
     @BeforeEach
     void setUp() {
         serviceToTest = new CostServiceImpl(
                 mockCostRepository,
                 mockCurrencyRepository,
                 mockModelMapper);
-    }
 
-    @Test
-    void testGetDetailedCostsView() {
-        String vehicleUUID = UUID.randomUUID().toString();
+        vehicleUUID = UUID.randomUUID().toString();
 
         List<CostEntity> vehicleCosts = new ArrayList<>();
-        vehicleCosts.addAll(costList(vehicleUUID, true,EX_RATE1_COMPLETED));
+        vehicleCosts.addAll(costList(vehicleUUID, true, EX_RATE1_COMPLETED));
         vehicleCosts.addAll(costList(vehicleUUID, true, EX_RATE2_COMPLETED));
         vehicleCosts.addAll(costList(vehicleUUID, false, EX_RATE_UNCOMPLETED));
         vehicleCosts.addAll(costList(vehicleUUID, false, null));
 
         when(mockCostRepository.findAllByVehicle_Uuid(vehicleUUID))
                 .thenReturn(vehicleCosts);
+    }
 
+    @Test
+    void testGetDetailedCostsViewShouldMapCostsByTypeProperly() {
         DetailedCostsView detailedCostsView = serviceToTest.getDetailedCostsView(vehicleUUID);
 
         Map<CostTypeEnum, List<CostViewDTO>> costsByType = detailedCostsView.getCostsByType();
+
         assertEquals(CostTypeEnum.values().length, costsByType.keySet().size());
         for (CostTypeEnum key : costsByType.keySet()) {
             assertEquals(4, costsByType.get(key).size());
             assertTrue(costsByType.get(key).stream().allMatch(c -> c.getType().equals(key)));
         }
+    }
+
+    @Test
+    void testGetDetailedCostsViewShouldMapCompletedCostsAmountProperly() {
+        DetailedCostsView detailedCostsView = serviceToTest.getDetailedCostsView(vehicleUUID);
 
         Map<CostTypeEnum, BigDecimal> completedCostsAmount = detailedCostsView.getCompletedCostsAmount();
         BigDecimal cost1Amount = COST_AMOUNT.multiply(EX_RATE1_COMPLETED);
         BigDecimal cost2Amount = COST_AMOUNT.multiply(EX_RATE2_COMPLETED);
         BigDecimal sum = cost1Amount.add(cost2Amount);
+
         for (CostTypeEnum key : completedCostsAmount.keySet()) {
             assertEquals(sum.setScale(2, RoundingMode.HALF_UP), completedCostsAmount.get(key));
         }
+    }
+
+    @Test
+    void testGetDetailedCostsViewShouldMapUncompletedCostsAmountProperly() {
+        DetailedCostsView detailedCostsView = serviceToTest.getDetailedCostsView(vehicleUUID);
 
         Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount = detailedCostsView.getUncompletedCostsAmount();
         BigDecimal unCost1Amount = COST_AMOUNT.multiply(EX_RATE_UNCOMPLETED);
         BigDecimal unCost2Amount = COST_AMOUNT.multiply(EX_RATE_CURRENCY);
         BigDecimal unSum = unCost1Amount.add(unCost2Amount);
+
         for (CostTypeEnum key : uncompletedCostsAmount.keySet()) {
             assertEquals(unSum.setScale(2, RoundingMode.HALF_UP), uncompletedCostsAmount.get(key));
         }

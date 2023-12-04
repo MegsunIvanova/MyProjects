@@ -72,7 +72,6 @@ public class AuthController {
     public String editRoles(@RequestParam(value = "emailToFind", required = false) String emailToFind,
                             Model model) {
 
-
         Optional<UserEditDTO> optionalUser = emailToFind != null && emailToFind.matches(EMAIL_REGEX)
                 ? userService.getUserForEdit(emailToFind)
                 : Optional.empty();

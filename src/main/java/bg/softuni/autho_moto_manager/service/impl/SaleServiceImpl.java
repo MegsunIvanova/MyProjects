@@ -2,6 +2,7 @@ package bg.softuni.autho_moto_manager.service.impl;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.SaleDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.SaleVehicleView;
+import bg.softuni.autho_moto_manager.model.entity.CostEntity;
 import bg.softuni.autho_moto_manager.model.entity.SaleEntity;
 import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
 import bg.softuni.autho_moto_manager.repository.CostRepository;
@@ -13,6 +14,8 @@ import bg.softuni.autho_moto_manager.service.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SaleServiceImpl implements SaleService {
@@ -37,17 +40,23 @@ public class SaleServiceImpl implements SaleService {
     @Override
     @Transactional
     public SaleVehicleView getSaleVehicleView(String uuid) {
-        VehicleEntity vehicleEntity = vehicleRepository.findByUuid(uuid)
+        VehicleEntity vehicleEntity = vehicleRepository.getByUuid(uuid)
                 .orElseThrow(() ->
                         new ObjectNotFoundException("Vehicle with uuid " + uuid + " can not be found!"));
+
+        boolean allCostsCompleted = vehicleEntity.getCostCalculation()
+                .stream()
+                .allMatch(CostEntity::isCompleted);
+
+        List<String> currencyIds = currencyRepository.findAllCurrencyIds();
 
         return new SaleVehicleView()
                 .setUuid(vehicleEntity.getUuid())
                 .setTitle(vehicleEntity.getSummaryTitle())
                 .setPrimaryImage(VehicleServiceImpl.primaryImgSrc(vehicleEntity))
                 .setTotalCostsInBGN(vehicleEntity.getTotalCostsInBGN())
-                .setAllCompleteCosts(costRepository.countAllByVehicle_UuidAndCompleted(uuid, false) == 0)
-                .setCurrenciesIds(currencyRepository.findAllCurrencyIds());
+                .setAllCostsCompleted(allCostsCompleted)
+                .setCurrenciesIds(currencyIds);
     }
 
     @Override

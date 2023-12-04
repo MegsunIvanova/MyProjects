@@ -11,7 +11,10 @@ import java.util.*;
 @Table(name = "vehicles")
 @NamedEntityGraph(
         name = "vehicleWithCosts",
-        attributeNodes = @NamedAttributeNode("costCalculation")
+        attributeNodes = {
+                @NamedAttributeNode("costCalculation"),
+                @NamedAttributeNode("model"),
+                @NamedAttributeNode("primaryImage")}
 )
 public class VehicleEntity extends BaseEntity {
 
@@ -49,7 +52,7 @@ public class VehicleEntity extends BaseEntity {
     @OneToMany(targetEntity = CostEntity.class, mappedBy = "vehicle")
     private Set<CostEntity> costCalculation;
 
-    @ManyToOne (optional = false)
+    @ManyToOne(optional = false)
     private UserEntity owner;
 
     @Column(unique = true)
