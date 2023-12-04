@@ -29,17 +29,13 @@ import static bg.softuni.autho_moto_manager.util.Constants.BLANK_MOTORCYCLE_IMG_
 public class VehicleServiceImpl implements VehicleService {
     private final MakeRepository makeRepository;
     private final VehicleRepository vehicleRepository;
-    private final CostRepository costRepository;
-    private final CurrencyRepository currencyRepository;
     private final ModelMapper modelMapper;
 
     public VehicleServiceImpl(MakeRepository makeRepository,
                               VehicleRepository vehicleRepository,
-                              CostRepository costRepository, CurrencyRepository currencyRepository, ModelMapper modelMapper) {
+                              ModelMapper modelMapper) {
         this.makeRepository = makeRepository;
         this.vehicleRepository = vehicleRepository;
-        this.costRepository = costRepository;
-        this.currencyRepository = currencyRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -66,7 +62,8 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     @Transactional
     public VehicleDetailsViewDTO getDetailsByUuid(String uuid) {
-        VehicleEntity vehicleEntity = vehicleRepository.findByUuid(uuid)
+        VehicleEntity vehicleEntity = vehicleRepository
+                .findByUuid(uuid)
                 .orElseThrow(() -> new ObjectNotFoundException(
                         "Vehicle with uuid " + uuid + " can not be found!"));
 
@@ -76,8 +73,7 @@ public class VehicleServiceImpl implements VehicleService {
                 .map(PictureViewDTO::new)
                 .toList();
 
-        Map<CostTypeEnum, BigDecimal> totalCostsByType = costRepository
-                .findAllByVehicle_Uuid(uuid)
+        Map<CostTypeEnum, BigDecimal> totalCostsByType = vehicleEntity.getCostCalculation()
                 .stream().collect(Collectors.groupingBy(
                         CostEntity::getType,
                         () -> new TreeMap<>(Comparator.comparingInt(CostTypeEnum::ordinal)),

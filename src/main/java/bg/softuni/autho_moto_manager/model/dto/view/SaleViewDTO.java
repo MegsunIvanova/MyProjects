@@ -1,6 +1,7 @@
 package bg.softuni.autho_moto_manager.model.dto.view;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class SaleViewDTO {
     private BigDecimal price;
@@ -48,6 +49,7 @@ public class SaleViewDTO {
     }
 
     public BigDecimal getSalePriceInBGN() {
-        return this.price.multiply(this.transactionExRate);
+        return this.price.multiply(this.transactionExRate)
+                .setScale(2, RoundingMode.HALF_UP);
     }
 }

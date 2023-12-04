@@ -7,12 +7,11 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class VehicleDetailsViewDTO extends VehicleSummaryViewDTO {
-    private String notes;
-    private List<PictureViewDTO> pictures;
-    private Map<CostTypeEnum, BigDecimal> totalCostsByType;
-    private BigDecimal totalCostsInBGN;
-    private SaleViewDTO sale;
-    private String ownerEmail;
+    private final String notes;
+    private final List<PictureViewDTO> pictures;
+    private final Map<CostTypeEnum, BigDecimal> totalCostsByType;
+    private final BigDecimal totalCostsInBGN;
+    private final SaleViewDTO sale;
 
     public VehicleDetailsViewDTO(VehicleEntity vehicleEntity,
                                  List<PictureViewDTO> pictures,
@@ -24,7 +23,6 @@ public class VehicleDetailsViewDTO extends VehicleSummaryViewDTO {
         this.totalCostsByType = totalCostsByType;
         this.totalCostsInBGN = vehicleEntity.getTotalCostsInBGN();
         this.sale = sale;
-        this.ownerEmail = vehicleEntity.getOwner().getEmail();
     }
 
     public List<PictureViewDTO> getPictures() {
@@ -49,10 +47,6 @@ public class VehicleDetailsViewDTO extends VehicleSummaryViewDTO {
 
     public SaleViewDTO getSale() {
         return sale;
-    }
-
-    public String getOwnerEmail() {
-        return ownerEmail;
     }
 
     public BigDecimal getSaleResult() {
