@@ -14,7 +14,7 @@
         <img th:src="@{/images/motorcycle_art.png}" class="img-fluid">
         Add Picture:</h3>
 
-    <form th:action="@{/pictures/add/{vehicle}(vehicle=${vehicle})}"
+    <form th:action="@{/pictures/add/{vehicle}(vehicle=${uuid})}"
           th:method="POST"
           th:object="${addPictureDTO}">
 
@@ -22,7 +22,7 @@
                name="vehicle"
                type="hidden"
                class="form-control"
-               th:value="${vehicle}"
+               th:value="${uuid}"
                required>
 
         <div class="d-flex flex-row mb-3 justify-content-between align-items-center">

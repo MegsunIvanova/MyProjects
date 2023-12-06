@@ -32,62 +32,47 @@ public class ModifyingPermissionInterceptor implements HandlerInterceptor {
                              HttpServletResponse response,
                              Object handler) throws Exception {
 
-        String requestURI = request.getRequestURI();
-
-        boolean hasAdminRole = request.isUserInRole("ROLE_ADMIN");
-        String userPrincipalEmail = request.getUserPrincipal() == null
-                ? null
-                : request.getUserPrincipal().getName();
-
-        if (isForModifyResources(requestURI, request.getMethod())
-                && isForbidden(requestURI, hasAdminRole, userPrincipalEmail)) {
-            response.sendError(403);
-            return false;
-        }
+//        String requestURI = request.getRequestURI();
+//
+//        boolean hasAdminRole = request.isUserInRole("ROLE_ADMIN");
+//        String userPrincipalEmail = request.getUserPrincipal() == null
+//                ? null
+//                : request.getUserPrincipal().getName();
+//
+//        if (isForModifyResources(requestURI, request.getMethod())
+//                && isForbidden(requestURI, hasAdminRole, userPrincipalEmail)) {
+//            response.sendError(403);
+//            return false;
+//        }
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
-    private boolean isForModifyResources(String uri, String method) {
-        if (uri.startsWith("/costs") && method.equals("DELETE")) {
-            return true;
-        }
-
-        List<String> modifyingURIs = List.of(
-                "/pictures/add/",
-                "/vehicle/sell/",
-                "/costs/add/",
-                "/costs/update/");
-
-        return modifyingURIs.stream().anyMatch(uri::startsWith);
-    }
-
-    private boolean isForbidden(String requestURI, boolean hasAdminRole, String userPrincipalEmail) {
-        String[] params = requestURI.split("\\/");
-        String vehicleUUID = params[params.length - 1];
-
-        if (!userService.hasPermissionToModify(vehicleUUID)) {
-            return true;
-        } else if (params[0].equals("costs")) {
-            long costId = Long.parseLong(params[params.length - 2]);
-            return costRepository.findIsCompletedById(costId);
-        } else {
-            return false;
-        }
-
-//        long count = hasAdminRole
-//                ? vehicleRepository.countByUuidAndSaleIsNull(vehicleUUID)
-//                : vehicleRepository.countByUuidAndOwner_EmailAndSaleIsNull(vehicleUUID, userPrincipalEmail);
-//
-//        if (count == 0) {
+//    private boolean isForModifyResources(String uri, String method) {
+//        if (uri.startsWith("/costs") && method.equals("DELETE")) {
 //            return true;
 //        }
 //
-//        if (params[0].equals("costs")) {
+//        List<String> modifyingURIs = List.of(
+//                "/pictures/add/",
+//                "/vehicle/sell/",
+//                "/costs/add/",
+//                "/costs/update/");
+//
+//        return modifyingURIs.stream().anyMatch(uri::startsWith);
+//    }
+
+//    private boolean isForbidden(String requestURI, boolean hasAdminRole, String userPrincipalEmail) {
+//        String[] params = requestURI.split("\\/");
+//        String vehicleUUID = params[params.length - 1];
+//
+//        if (!userService.hasPermissionToModify(vehicleUUID)) {
+//            return true;
+//        } else if (params[0].equals("costs")) {
 //            long costId = Long.parseLong(params[params.length - 2]);
 //            return costRepository.findIsCompletedById(costId);
+//        } else {
+//            return false;
 //        }
-//
-//        return false;
-    }
+//    }
 }

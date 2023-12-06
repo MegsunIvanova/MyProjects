@@ -13,6 +13,6 @@ public interface UserService {
 
     void editRoles(UserEditDTO userEditDTO);
 
-    boolean hasPermissionToModify(String vehicleUuid);
+//    boolean hasPermissionToModify(String vehicleUuid);
 
 }

@@ -26,4 +26,12 @@ public class GlobalExceptionHandler {
         modelAndView.addObject("message", exception.getMessage());
         return modelAndView;
     }
+
+//    @ResponseStatus(HttpStatus.FORBIDDEN)
+//    @ExceptionHandler(ObjectNotFoundException.class)
+//    public ModelAndView handleForbidden(ObjectNotFoundException exception) {
+//        ModelAndView modelAndView = new ModelAndView("/error/403");
+//        modelAndView.addObject("message", exception.getMessage());
+//        return modelAndView;
+//    }
 }

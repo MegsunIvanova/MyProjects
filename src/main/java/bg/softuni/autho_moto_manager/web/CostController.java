@@ -5,8 +5,11 @@ import bg.softuni.autho_moto_manager.model.dto.binding.UpdateCostDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.AddCostViewDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.DetailedCostsView;
 import bg.softuni.autho_moto_manager.service.CostService;
-import bg.softuni.autho_moto_manager.service.UserService;
+import bg.softuni.autho_moto_manager.service.ModifyAuthorizeService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,17 +22,19 @@ import static bg.softuni.autho_moto_manager.util.Constants.BINDING_RESULT_PACKAG
 @RequestMapping("/costs")
 public class CostController {
     private final CostService costService;
-    private final UserService userService;
+    private final ModifyAuthorizeService modifyAuthorizeService;
 
-    public CostController(CostService costService, UserService userService) {
+    public CostController(CostService costService, ModifyAuthorizeService modifyAuthorizeService) {
         this.costService = costService;
-        this.userService = userService;
+        this.modifyAuthorizeService = modifyAuthorizeService;
     }
 
-    @GetMapping("/add/{vehicle}")
-    public String addCost(@PathVariable("vehicle") String vehicle,
+    @PreAuthorize("@modifyAuthorizeServiceImpl.isPermitted(#uuid, #principal)")
+    @GetMapping("/add/{uuid}")
+    public String addCost(@PathVariable("uuid") String uuid,
+                          @AuthenticationPrincipal UserDetails principal,
                           Model model) {
-//        model.addAttribute("vehicle", vehicle);
+
         AddCostViewDTO addCostViewDTO = costService.getAddCostViewDTO();
 
         model.addAttribute("costTypes", addCostViewDTO.getCostTypes());
@@ -42,8 +47,10 @@ public class CostController {
         return "add-cost";
     }
 
-    @PostMapping("/add/{vehicle}")
-    public String addCost(@PathVariable("vehicle") String vehicle,
+    @PreAuthorize("@modifyAuthorizeServiceImpl.isPermitted(#uuid, #principal)")
+    @PostMapping("/add/{uuid}")
+    public String addCost(@PathVariable("uuid") String uuid,
+                          @AuthenticationPrincipal UserDetails principal,
                           @Valid AddCostDTO addCostDTO,
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes) {
@@ -58,33 +65,38 @@ public class CostController {
 
         costService.addCost(addCostDTO);
 
-        return "redirect:/vehicle/details/" + addCostDTO.getVehicle();
+        return "redirect:/vehicle/details/" + uuid;
     }
 
-    @GetMapping("/more/{vehicle}")
-    public String costsDetails(@PathVariable("vehicle") String vehicle,
+    @GetMapping("/more/{uuid}")
+    public String costsDetails(@PathVariable("uuid") String uuid,
+                               @AuthenticationPrincipal UserDetails principal,
                                Model model) {
 
-        DetailedCostsView detailedCostsView = this.costService.getDetailedCostsView(vehicle);
+        DetailedCostsView detailedCostsView = this.costService.getDetailedCostsView(uuid);
 
         model.addAttribute("detailedCostsView", detailedCostsView);
-        model.addAttribute("canModify", userService.hasPermissionToModify(vehicle));
+        model.addAttribute("canModify", modifyAuthorizeService.isPermitted(uuid, principal));
 
         return "costs-details";
     }
 
-    @DeleteMapping("/{id}/{vehicle}")
-    public String delete(Model model,
-                         @PathVariable("id") Long id,
-                         @PathVariable ("vehicle") String vehicle) {
+    @PreAuthorize("@modifyAuthorizeServiceImpl.isPermitted(#uuid, #principal, #id)")
+    @DeleteMapping("/{id}/{uuid}")
+    public String delete(@PathVariable("id") Long id,
+                         @PathVariable("uuid") String uuid,
+                         @AuthenticationPrincipal UserDetails principal) {
+
         costService.delete(id);
 
-        return "redirect:/costs/more/{vehicle}";
+        return "redirect:/costs/more/{uuid}";
     }
 
-    @GetMapping("/update/{id}/{vehicle}")
+    @PreAuthorize("@modifyAuthorizeServiceImpl.isPermitted(#uuid, #principal, #id)")
+    @GetMapping("/update/{id}/{uuid}")
     public String updateCost(@PathVariable("id") Long id,
-                             @PathVariable("vehicle") String vehicle,
+                             @PathVariable("uuid") String uuid,
+                             @AuthenticationPrincipal UserDetails principal,
                              Model model) {
 
         AddCostViewDTO addCostViewDTO = costService.getAddCostViewDTO();
@@ -92,16 +104,18 @@ public class CostController {
         model.addAttribute("currencies", addCostViewDTO.getCurrencies());
 
         if (!model.containsAttribute("costDTO")) {
-            UpdateCostDTO costDTO = costService.getUpdateCostDTO(id, vehicle);
+            UpdateCostDTO costDTO = costService.getUpdateCostDTO(id, uuid);
             model.addAttribute("costDTO", costDTO);
         }
 
         return "update-cost";
     }
 
-    @PutMapping("/update/{id}/{vehicle}")
+    @PreAuthorize("@modifyAuthorizeServiceImpl.isPermitted(#uuid, #principal, #id)")
+    @PutMapping("/update/{id}/{uuid}")
     public String updateCost(@PathVariable("id") Long id,
-                             @PathVariable("vehicle") String vehicle,
+                             @PathVariable("uuid") String uuid,
+                             @AuthenticationPrincipal UserDetails principal,
                              @Valid UpdateCostDTO costDTO,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
@@ -111,12 +125,12 @@ public class CostController {
             redirectAttributes.addFlashAttribute(BINDING_RESULT_PACKAGE + "costDTO",
                     bindingResult);
 
-            return "redirect:/costs/update/" + id + "/" + vehicle;
+            return String.format("%s%d%s%s",
+                    "redirect:/costs/update/", id, "/", uuid);
         }
 
         costService.updateCost(costDTO);
 
-        return "redirect:/costs/more/" + vehicle;
+        return "redirect:/costs/more/" + uuid;
     }
-
 }

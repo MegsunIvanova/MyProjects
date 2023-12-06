@@ -70,4 +70,6 @@ public class SaleVehicleView {
         this.currenciesIds = currenciesIds;
         return this;
     }
+
+
 }

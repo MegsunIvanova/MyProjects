@@ -14,7 +14,7 @@
         <img th:src="@{/images/motorcycle_art.png}" class="img-fluid">
         Edit Cost:</h3>
 
-    <form th:action="@{/costs/update/{id}/{vehicle}(id=${id},vehicle=${vehicle})}"
+    <form th:action="@{/costs/update/{id}/{vehicle}(id=${id},vehicle=${uuid})}"
           th:method="PUT"
           th:object="${costDTO}">
 
@@ -29,7 +29,7 @@
                name="vehicle"
                type="hidden"
                class="form-control"
-               th:value="${vehicle}"
+               th:value="${uuid}"
                required>
 
         <!--  First Row  -->
@@ -144,7 +144,7 @@
 
         <div class="row row-cols-2">
             <div class="d-grid">
-                <a th:href="@{/costs/more/{vehicle}(vehicle=${vehicle})}"
+                <a th:href="@{/costs/more/{vehicle}(vehicle=${uuid})}"
                    class="btn btn-secondary mt-3 mb-3">Back to costs</a>
             </div>
 

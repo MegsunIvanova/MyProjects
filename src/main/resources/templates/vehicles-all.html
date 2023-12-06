@@ -35,6 +35,9 @@
                 <li class="list-group-item bg-dark text-light">Odometer in km:
                     <th:block th:text="${vehicle.odometerInKm}">{odometer}</th:block>
                 </li>
+                <li class="list-group-item bg-dark text-warning">Owner:
+                    <th:block th:text="${vehicle.ownerName}">{ownerName}</th:block>
+                </li>
             </ul>
 
             <a th:href="@{/vehicle/details/{uuid}(uuid=${vehicle.uuid})}" class="btn btn-danger m-4">View Details</a>

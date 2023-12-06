@@ -5,10 +5,13 @@ import bg.softuni.autho_moto_manager.model.dto.view.SaleVehicleView;
 import bg.softuni.autho_moto_manager.model.dto.view.VehicleDetailsViewDTO;
 import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.autho_moto_manager.model.enums.VehicleTypeEnum;
+import bg.softuni.autho_moto_manager.service.ModifyAuthorizeService;
 import bg.softuni.autho_moto_manager.service.SaleService;
-import bg.softuni.autho_moto_manager.service.UserService;
 import bg.softuni.autho_moto_manager.service.VehicleService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,14 +26,14 @@ public class VehicleController {
 
     private final VehicleService vehicleService;
     private final SaleService saleService;
-    private final UserService userService;
+    private final ModifyAuthorizeService modifyAuthorizeService;
 
     public VehicleController(VehicleService vehicleService,
                              SaleService saleService,
-                             UserService userService) {
+                             ModifyAuthorizeService modifyAuthorizeService) {
         this.vehicleService = vehicleService;
         this.saleService = saleService;
-        this.userService = userService;
+        this.modifyAuthorizeService = modifyAuthorizeService;
     }
 
     @ModelAttribute("saleDTO")
@@ -39,19 +42,25 @@ public class VehicleController {
     }
 
     @GetMapping("/details/{uuid}")
-    public String details(Model model, @PathVariable("uuid") String uuid) {
+    public String details(Model model,
+                          @PathVariable("uuid") String uuid,
+                          @AuthenticationPrincipal UserDetails principal) {
+
         VehicleDetailsViewDTO vehicle = vehicleService.getDetailsByUuid(uuid);
+
         model.addAttribute("vehicle", vehicle);
         model.addAttribute("automobileType", VehicleTypeEnum.AUTOMOBILE);
         model.addAttribute("costTypes", CostTypeEnum.values());
-        model.addAttribute("canModify", userService.hasPermissionToModify(uuid));
+        model.addAttribute("canModify", modifyAuthorizeService.isPermitted(uuid, principal));
+
         return "vehicle-details";
     }
 
-
+    @PreAuthorize("@modifyAuthorizeServiceImpl.isPermitted(#uuid, #principal)")
     @GetMapping("/sell/{uuid}")
     public String sell(Model model,
-                       @PathVariable("uuid") String uuid) {
+                       @PathVariable("uuid") String uuid,
+                       @AuthenticationPrincipal UserDetails principal) {
 
         SaleVehicleView saleView = saleService.getSaleVehicleView(uuid);
         model.addAttribute("saleView", saleView);
@@ -59,8 +68,10 @@ public class VehicleController {
         return "sell";
     }
 
+    @PreAuthorize("@modifyAuthorizeServiceImpl.isPermitted(#uuid, #principal)")
     @PostMapping("/sell/{uuid}")
-    public String sell(@PathVariable("uuid") String vehicle,
+    public String sell(@PathVariable("uuid") String uuid,
+                       @AuthenticationPrincipal UserDetails principal,
                        @Valid SaleDTO saleDTO,
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes) {
@@ -69,12 +80,11 @@ public class VehicleController {
             redirectAttributes.addFlashAttribute("saleDTO", saleDTO);
             redirectAttributes.addFlashAttribute(BINDING_RESULT_PACKAGE + "saleDTO", bindingResult);
 
-            return "redirect:/vehicle/sell/" + vehicle;
+            return "redirect:/vehicle/sell/" + uuid;
         }
 
         saleService.sell(saleDTO);
 
-        return "redirect:/vehicle/details/" + vehicle;
-
+        return "redirect:/vehicle/details/" + uuid;
     }
 }

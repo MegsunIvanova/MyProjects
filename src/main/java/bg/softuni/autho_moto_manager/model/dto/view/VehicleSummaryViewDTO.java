@@ -14,6 +14,7 @@ public class VehicleSummaryViewDTO {
     private String engine;
     private String transmission;
     private String primaryImage;
+    private String ownerName;
 
     public VehicleSummaryViewDTO(VehicleEntity vehicleEntity) {
         this.uuid = vehicleEntity.getUuid();
@@ -29,6 +30,7 @@ public class VehicleSummaryViewDTO {
                 ? null
                 : vehicleEntity.getPrimaryImage().getUrl();
         this.title = vehicleEntity.getSummaryTitle();
+        this.ownerName = vehicleEntity.getOwner().getName();
     }
 
     public String getUuid() {
@@ -73,5 +75,9 @@ public class VehicleSummaryViewDTO {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
     }
 }

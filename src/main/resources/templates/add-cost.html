@@ -14,7 +14,7 @@
         <img th:src="@{/images/motorcycle_art.png}" class="img-fluid">
         Add Cost:</h3>
 
-    <form th:action="@{/costs/add/{vehicle}(vehicle=${vehicle})}"
+    <form th:action="@{/costs/add/{vehicle}(vehicle=${uuid})}"
           th:method="POST"
           th:object="${costDTO}">
 
@@ -22,7 +22,7 @@
                name="vehicle"
                type="hidden"
                class="form-control"
-               th:value="${vehicle}"
+               th:value="${uuid}"
                required>
 
         <!--  First Row  -->

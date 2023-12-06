@@ -60,6 +60,9 @@
                     <li class="list-group-item bg-dark text-light">Notes:
                         <th:block th:text="${vehicle.notes}">{odometer}</th:block>
                     </li>
+                    <li class="list-group-item bg-dark text-warning">Owner:
+                        <th:block th:text="${vehicle.ownerName}">{Owner Name}</th:block>
+                    </li>
                 </ul>
             </div>
 
@@ -75,26 +78,28 @@
 
             <div class="list-group list-group-flush mt-3" th:if="${vehicle.isSold()}">
                 <p class="list-group-item bg-dark text-warning fs-5">
-                    <span>Sold for:</span>
+                    <span>Sold for: </span>
                     <span class="text-light"
                           th:text="${#numbers.formatDecimal(vehicle.sale.getPrice(), 2,  'WHITESPACE', 2, 'POINT')}">{price}</span>
                     <span class="text-light" th:text="${vehicle.sale.getCurrencyId()}">{currency}</span>
                 </p>
                 <p class="list-group-item bg-dark text-warning fs-5">
-                    <span>Rate:</span>
+                    <span>Rate: </span>
                     <span class="text-light" th:text="${vehicle.sale.getTransactionExRate()}">{rate}</span>
                 </p>
 
                 <p class="list-group-item bg-dark text-warning fs-5">
-                    <span>Total:</span>
-                    <span class="text-light" th:text="${#numbers.formatDecimal(vehicle.sale.getSalePriceInBGN(), 2,  'WHITESPACE', 2, 'POINT')}">{price}</span>
+                    <span>Total: </span>
+                    <span class="text-light"
+                          th:text="${#numbers.formatDecimal(vehicle.sale.getSalePriceInBGN(), 2,  'WHITESPACE', 2, 'POINT')}">{price}</span>
                     <span class="text-light">BGN</span>
                 </p>
 
                 <p class="list-group-item bg-dark text-warning fs-5">
-                    <span th:text="${vehicle.saleResult >= 0 ? 'Profit:' :'Loss:'}">{Profit:/Loss:}</span>
-                    <span class="text-light" th:text="${#numbers.formatDecimal(vehicle.saleResult, 2,  'WHITESPACE', 2, 'POINT')}">{price}</span>
-                    <span class="text-light">BGN</span>
+                    <span th:text="${vehicle.saleResult >= 0 ? 'Profit: ' :'Loss: '}">{Profit:/Loss:}</span>
+                    <span th:classappend="${vehicle.saleResult >= 0 ? 'text-light' : 'text-danger'}"
+                          th:text="${#numbers.formatDecimal(vehicle.saleResult, 2,  'WHITESPACE', 2, 'POINT')}">{price}</span>
+                    <span th:classappend="${vehicle.saleResult >= 0 ? 'text-light' : 'text-danger'}">BGN</span>
                 </p>
 
             </div>
@@ -129,11 +134,11 @@
             <div th:classappend="${vehicle.isSold() ? 'd-grid' : 'd-flex justify-content-between'}"
                  sec:authorize="isAuthenticated()">
 
-                <a  th:if="${canModify}" th:href="@{/costs/add/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
+                <a th:if="${canModify}" th:href="@{/costs/add/{uuid}(uuid=${vehicle.uuid})}"
                    class="btn btn-danger m-4">
                     Add cost</a>
 
-                <a th:href="@{/costs/more/{vihicleUuid}(vihicleUuid=${vehicle.uuid})}"
+                <a th:href="@{/costs/more/{uuid}(uuid=${vehicle.uuid})}"
                    class="btn btn-danger m-4">
                     View more</a>
             </div>

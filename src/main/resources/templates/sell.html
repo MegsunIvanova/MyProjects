@@ -37,13 +37,9 @@
             <div class="row justify-content-between p-3 mt-5">
                 <p class="col-8 text-warning p-0 me-2 " th:unless="${saleView.allCostsCompleted}">
                     To sell the vehicle all costs must be completed!</p>
-
-                <!--                     th:classappend="${saleView.allCostsCompleted} ? 'col-12 ' : 'col-4 justify-content-between'">-->
-
                     <a th:href="@{/costs/more/{uuid}(uuid=${uuid})}"
                        class="col btn btn-secondary">
                         View Costs</a>
-
             </div>
 
             <form class="mt-5"
@@ -145,7 +141,7 @@
 
                     <div class="d-grid">
                         <input type="submit"
-                               th:disabled="${!saleView.allCompleteCosts}"
+                               th:disabled="${!saleView.allCostsCompleted}"
                                class="btn btn-danger"
                                value="Submit"/>
                     </div>

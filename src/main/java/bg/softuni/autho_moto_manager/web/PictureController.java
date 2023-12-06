@@ -3,8 +3,10 @@ package bg.softuni.autho_moto_manager.web;
 import bg.softuni.autho_moto_manager.model.dto.binding.AddPictureDTO;
 import bg.softuni.autho_moto_manager.service.PictureService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -25,16 +27,18 @@ public class PictureController {
         return new AddPictureDTO();
     }
 
-    @GetMapping("/add/{vehicle}")
-    public String addPicture(@PathVariable("vehicle") String vehicle,
-                             Model model) {
-//        model.addAttribute("vehicle", vehicle);
+    @PreAuthorize("@modifyAuthorizeServiceImpl.isPermitted(#uuid, #principal)")
+    @GetMapping("/add/{uuid}")
+    public String addPicture(@PathVariable("uuid") String uuid,
+                             @AuthenticationPrincipal UserDetails principal) {
 
         return "add-picture";
     }
 
-    @PostMapping("/add/{vehicle}")
-    public String addPicture(@PathVariable("vehicle") String vehicle,
+    @PreAuthorize("@modifyAuthorizeServiceImpl.isPermitted(#uuid, #principal)")
+    @PostMapping("/add/{uuid}")
+    public String addPicture(@PathVariable("uuid") String uuid,
+                             @AuthenticationPrincipal UserDetails principal,
                              @Valid AddPictureDTO addPictureDTO,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {

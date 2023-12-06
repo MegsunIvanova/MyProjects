@@ -67,20 +67,20 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userEntity);
     }
 
-    @Override
-    public boolean hasPermissionToModify(String vehicleUuid) {
-        if (!vehicleRepository.existsByUuid(vehicleUuid)) {
-            throw new ObjectNotFoundException("Vehicle with UUID: " + vehicleUuid + " was not found!");
-        }
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean hasAdminRole = authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
-
-        return hasAdminRole
-                ? vehicleRepository.existsByUuidAndSaleIsNull(vehicleUuid)
-                : vehicleRepository.existsByUuidAndOwner_EmailAndSaleIsNull(vehicleUuid, authentication.getName());
-    }
+//    @Override
+//    public boolean hasPermissionToModify(String vehicleUuid) {
+//        if (!vehicleRepository.existsByUuid(vehicleUuid)) {
+//            throw new ObjectNotFoundException("Vehicle with UUID: " + vehicleUuid + " was not found!");
+//        }
+//
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        boolean hasAdminRole = authentication.getAuthorities().stream()
+//                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+//
+//        return hasAdminRole
+//                ? vehicleRepository.existsByUuidAndSaleIsNull(vehicleUuid)
+//                : vehicleRepository.existsByUuidAndOwner_EmailAndSaleIsNull(vehicleUuid, authentication.getName());
+//    }
 
     private UserEditDTO mapToUserEditDTO(UserEntity userEntity) {
         return new UserEditDTO()
