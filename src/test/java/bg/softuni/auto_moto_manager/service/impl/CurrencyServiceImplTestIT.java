@@ -3,6 +3,7 @@ package bg.softuni.auto_moto_manager.service.impl;
 import bg.softuni.auto_moto_manager.model.dto.binding.ExchangeRatesDTO;
 import bg.softuni.auto_moto_manager.model.entity.CurrencyEntity;
 import bg.softuni.auto_moto_manager.repository.CurrencyRepository;
+import bg.softuni.auto_moto_manager.repository.ExRateHistoryRepository;
 import bg.softuni.auto_moto_manager.service.CurrencyService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -10,8 +11,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,13 +31,18 @@ class CurrencyServiceImplTestIT {
     @Autowired
     private CurrencyRepository currencyRepository;
 
+    @Autowired
+    private ExRateHistoryRepository exRateHistoryRepository;
+
     @BeforeEach
     void setUp() {
+        exRateHistoryRepository.deleteAll();
         currencyRepository.deleteAll();
     }
 
     @AfterEach
     void tearDown() {
+        exRateHistoryRepository.deleteAll();
         currencyRepository.deleteAll();
     }
 
