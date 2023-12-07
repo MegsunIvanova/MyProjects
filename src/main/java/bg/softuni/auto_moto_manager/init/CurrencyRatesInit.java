@@ -24,7 +24,7 @@ public class CurrencyRatesInit implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if (openExchangeRatesConfig.isEnabled()) {
             String openExchangeRateUrlTemplate = openExchangeRatesConfig.urlTemplate();
             Map<String, String> requestParams = openExchangeRatesConfig.requestParams();
