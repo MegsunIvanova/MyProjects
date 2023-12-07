@@ -6,8 +6,6 @@ import bg.softuni.autho_moto_manager.model.entity.CostEntity;
 import bg.softuni.autho_moto_manager.model.entity.ModelEntity;
 import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
 import bg.softuni.autho_moto_manager.model.enums.CostTypeEnum;
-import bg.softuni.autho_moto_manager.repository.CostRepository;
-import bg.softuni.autho_moto_manager.repository.CurrencyRepository;
 import bg.softuni.autho_moto_manager.repository.MakeRepository;
 import bg.softuni.autho_moto_manager.repository.VehicleRepository;
 import bg.softuni.autho_moto_manager.service.VehicleService;
@@ -16,6 +14,7 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -88,9 +87,24 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public List<VehiclesUuidDTO> getMyVehiclesList() {
-        //TODO: filter only owned vehicles
-        return vehicleRepository.findAll().stream()
+    public List<VehiclesUuidDTO> getMyVehiclesList(UserDetails principal) {
+        if (principal == null) {
+            return new ArrayList<>();
+        }
+
+        boolean viewHasAdminRole = principal
+                .getAuthorities()
+                .stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        List<VehicleEntity> myVehicles;
+
+        if(viewHasAdminRole) {
+            myVehicles = vehicleRepository.findAll();
+        } else {
+            myVehicles = vehicleRepository.findAllByOwner_Email(principal.getUsername());
+        }
+
+        return myVehicles.stream()
                 .map(this::mapToVehicleUuidDTO)
                 .toList();
     }

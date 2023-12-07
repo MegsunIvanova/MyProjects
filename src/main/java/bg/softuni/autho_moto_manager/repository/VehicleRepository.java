@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,14 +19,6 @@ public interface VehicleRepository extends JpaRepository<VehicleEntity, Long> {
             attributePaths = {"costCalculation", "model", "primaryImage"})
     Optional<VehicleEntity> getByUuid(String uuid);
 
-    long countByUuidAndOwner_EmailAndSaleIsNull(String uuid, String ownerEmail);
-
-    long countByUuidAndSaleIsNull(String uuid);
-
-    boolean existsByUuid(String uuid);
-
-    boolean existsByUuidAndSaleIsNull(String uuid);
-
-    boolean existsByUuidAndOwner_EmailAndSaleIsNull(String uuid, String ownerEmail);
+    List<VehicleEntity> findAllByOwner_Email(String email);
 
 }
