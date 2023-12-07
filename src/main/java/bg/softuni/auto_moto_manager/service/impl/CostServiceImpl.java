@@ -11,6 +11,7 @@ import bg.softuni.auto_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.auto_moto_manager.repository.CostRepository;
 import bg.softuni.auto_moto_manager.repository.CurrencyRepository;
 import bg.softuni.auto_moto_manager.service.CostService;
+import bg.softuni.auto_moto_manager.service.aop.WarnIfExecutionExceeds;
 import bg.softuni.auto_moto_manager.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,7 @@ public class CostServiceImpl implements CostService {
         costRepository.save(costEntity);
     }
 
+    @WarnIfExecutionExceeds(timeInMillis = 1000)
     @Override
     public DetailedCostsView getDetailedCostsView(String vehicleUuid) {
         List<CostEntity> costsByVehicleUuid =

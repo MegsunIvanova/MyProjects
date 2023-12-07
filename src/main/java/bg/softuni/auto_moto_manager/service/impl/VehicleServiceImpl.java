@@ -9,6 +9,7 @@ import bg.softuni.auto_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.auto_moto_manager.repository.MakeRepository;
 import bg.softuni.auto_moto_manager.repository.VehicleRepository;
 import bg.softuni.auto_moto_manager.service.VehicleService;
+import bg.softuni.auto_moto_manager.service.aop.WarnIfExecutionExceeds;
 import bg.softuni.auto_moto_manager.service.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -50,6 +51,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    @WarnIfExecutionExceeds(timeInMillis = 1000)
     @Transactional
     public Page<VehicleSummaryViewDTO> getAllVehicles(Pageable page) {
         return vehicleRepository
@@ -58,6 +60,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    @WarnIfExecutionExceeds(timeInMillis = 1000)
     @Transactional
     public VehicleDetailsViewDTO getDetailsByUuid(String uuid) {
         VehicleEntity vehicleEntity = vehicleRepository

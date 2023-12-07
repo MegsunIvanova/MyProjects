@@ -2,11 +2,9 @@ package bg.softuni.auto_moto_manager.service.impl;
 
 import bg.softuni.auto_moto_manager.model.dto.binding.SaleDTO;
 import bg.softuni.auto_moto_manager.model.dto.view.SaleVehicleView;
-import bg.softuni.auto_moto_manager.model.dto.view.SaleViewDTO;
 import bg.softuni.auto_moto_manager.model.entity.CostEntity;
 import bg.softuni.auto_moto_manager.model.entity.SaleEntity;
 import bg.softuni.auto_moto_manager.model.entity.VehicleEntity;
-import bg.softuni.auto_moto_manager.repository.CostRepository;
 import bg.softuni.auto_moto_manager.repository.CurrencyRepository;
 import bg.softuni.auto_moto_manager.repository.SaleRepository;
 import bg.softuni.auto_moto_manager.repository.VehicleRepository;
@@ -17,24 +15,20 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SaleServiceImpl implements SaleService {
     private final SaleRepository saleRepository;
     private final VehicleRepository vehicleRepository;
-    private final CostRepository costRepository;
     private final CurrencyRepository currencyRepository;
     private final ModelMapper modelMapper;
 
     public SaleServiceImpl(SaleRepository saleRepository,
                            VehicleRepository vehicleRepository,
-                           CostRepository costRepository,
                            CurrencyRepository currencyRepository,
                            ModelMapper modelMapper) {
         this.saleRepository = saleRepository;
         this.vehicleRepository = vehicleRepository;
-        this.costRepository = costRepository;
         this.currencyRepository = currencyRepository;
         this.modelMapper = modelMapper;
     }
@@ -64,14 +58,7 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public void sell(SaleDTO saleDTO) {
         SaleEntity saleEntity = modelMapper.map(saleDTO, SaleEntity.class);
-
         saleRepository.save(saleEntity);
     }
-
-    @Override
-    public Optional<SaleViewDTO> getSaleByUUID(String uuid) {
-        return Optional.of(modelMapper.map(saleRepository.findByVehicle_Uuid(uuid), SaleViewDTO.class));
-    }
-
 
 }

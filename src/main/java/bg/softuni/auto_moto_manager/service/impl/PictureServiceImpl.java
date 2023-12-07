@@ -35,7 +35,5 @@ public class PictureServiceImpl implements PictureService {
             vehicle.setPrimaryImage(picture);
             vehicleRepository.save(vehicle);
         }
-
-
     }
 }
