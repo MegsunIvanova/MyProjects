@@ -4,8 +4,11 @@ import bg.softuni.autho_moto_manager.model.dto.binding.CreateVehicleDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.AddVehicleViewDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.VehicleDetailsViewDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.VehicleSummaryViewDTO;
+import bg.softuni.autho_moto_manager.model.dto.view.VehiclesUuidDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface VehicleService {
     AddVehicleViewDTO getAddVehicleView ();
@@ -15,4 +18,6 @@ public interface VehicleService {
     Page<VehicleSummaryViewDTO> getAllVehicles(Pageable pageable);
 
     VehicleDetailsViewDTO getDetailsByUuid(String uuid);
+
+    List<VehiclesUuidDTO> getMyVehiclesList();
 }

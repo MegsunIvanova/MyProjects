@@ -58,7 +58,6 @@ public class VehicleServiceImpl implements VehicleService {
                 .map(VehicleSummaryViewDTO::new);
     }
 
-
     @Override
     @Transactional
     public VehicleDetailsViewDTO getDetailsByUuid(String uuid) {
@@ -88,15 +87,18 @@ public class VehicleServiceImpl implements VehicleService {
         return new VehicleDetailsViewDTO(vehicleEntity, pictureViewDTOS, totalCostsByType, sale);
     }
 
-    private Map<String, List<String>> getModelsByMake() {
-        Map<String, List<String>> modelsByMake = new LinkedHashMap<>();
+    @Override
+    public List<VehiclesUuidDTO> getMyVehiclesList() {
+        //TODO: filter only owned vehicles
+        return vehicleRepository.findAll().stream()
+                .map(this::mapToVehicleUuidDTO)
+                .toList();
+    }
 
-        makeRepository.findAllOrdered()
-                .forEach(make -> modelsByMake.put(
-                        make.getName(),
-                        make.getModels().stream().map(ModelEntity::getName).toList()));
-
-        return modelsByMake;
+    private VehiclesUuidDTO mapToVehicleUuidDTO(VehicleEntity vehicleEntity) {
+        return new VehiclesUuidDTO()
+                .setUuid(vehicleEntity.getUuid())
+                .setTitle(vehicleEntity.getSummaryTitle());
     }
 
     protected static String primaryImgSrc(VehicleEntity vehicleEntity) {
@@ -109,6 +111,17 @@ public class VehicleServiceImpl implements VehicleService {
         }
 
         return vehicleEntity.getPrimaryImage().getUrl();
+    }
+
+    private Map<String, List<String>> getModelsByMake() {
+        Map<String, List<String>> modelsByMake = new LinkedHashMap<>();
+
+        makeRepository.findAllOrdered()
+                .forEach(make -> modelsByMake.put(
+                        make.getName(),
+                        make.getModels().stream().map(ModelEntity::getName).toList()));
+
+        return modelsByMake;
     }
 }
 

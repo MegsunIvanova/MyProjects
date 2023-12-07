@@ -2,6 +2,8 @@ package bg.softuni.autho_moto_manager.service.impl;
 
 import bg.softuni.autho_moto_manager.model.dto.binding.SaleDTO;
 import bg.softuni.autho_moto_manager.model.dto.view.SaleVehicleView;
+import bg.softuni.autho_moto_manager.model.dto.view.SaleViewDTO;
+import bg.softuni.autho_moto_manager.model.dto.view.VehicleDetailsViewDTO;
 import bg.softuni.autho_moto_manager.model.entity.CostEntity;
 import bg.softuni.autho_moto_manager.model.entity.SaleEntity;
 import bg.softuni.autho_moto_manager.model.entity.VehicleEntity;
@@ -16,6 +18,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SaleServiceImpl implements SaleService {
@@ -64,6 +67,11 @@ public class SaleServiceImpl implements SaleService {
         SaleEntity saleEntity = modelMapper.map(saleDTO, SaleEntity.class);
 
         saleRepository.save(saleEntity);
+    }
+
+    @Override
+    public Optional<SaleViewDTO> getSaleByUUID(String uuid) {
+        return Optional.of(modelMapper.map(saleRepository.findByVehicle_Uuid(uuid), SaleViewDTO.class));
     }
 
 

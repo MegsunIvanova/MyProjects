@@ -10,17 +10,19 @@
     <nav th:replace="~{fragments/navigation}">Navigation</nav>
 </header>
 
-<div class="jumbotron text-center text-light font-weight-bold">
-    <h1>Welcome to <strong class="text-danger">AUTO MOTO MANAGER</strong>,
-        <br>
-        <th:block sec:authorize="isAuthenticated()">
-            <th:block sec:authentication="name"></th:block>
-        </th:block>
-        <th:block sec:authorize="!isAuthenticated()">
-            Anonymous
-        </th:block>!
-    </h1>
-</div>
+<div th:replace="~{fragments/jumbotron}">Jumbotron</div>
+
+<!--<div class="jumbotron text-center text-light font-weight-bold">-->
+<!--    <h1>Welcome to <strong class="text-danger">AUTO MOTO MANAGER</strong>,-->
+<!--        <br>-->
+<!--        <th:block sec:authorize="isAuthenticated()">-->
+<!--            <th:block sec:authentication="name"></th:block>-->
+<!--        </th:block>-->
+<!--        <th:block sec:authorize="!isAuthenticated()">-->
+<!--            Anonymous-->
+<!--        </th:block>!-->
+<!--    </h1>-->
+<!--</div>-->
 
 </body>
 
