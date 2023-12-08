@@ -3,18 +3,18 @@ package bg.softuni.auto_moto_manager.model.dto.view;
 import bg.softuni.auto_moto_manager.model.entity.VehicleEntity;
 
 public class VehicleSummaryViewDTO {
-    private String uuid;
-    private String title;
-    private String type;
-    private String modelName;
-    private String makeName;
-    private String vin;
-    private Integer year;
-    private Integer odometerInKm;
-    private String engine;
-    private String transmission;
-    private String primaryImage;
-    private String ownerName;
+    private final String uuid;
+    private final String title;
+    private final String type;
+    private final String modelName;
+    private final String makeName;
+    private final String vin;
+    private final Integer year;
+    private final Integer odometerInKm;
+    private final String engine;
+    private final String transmission;
+    private final String primaryImage;
+    private final String ownerName;
 
     public VehicleSummaryViewDTO(VehicleEntity vehicleEntity) {
         this.uuid = vehicleEntity.getUuid();

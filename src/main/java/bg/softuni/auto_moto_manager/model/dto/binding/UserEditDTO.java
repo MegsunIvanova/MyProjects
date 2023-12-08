@@ -3,11 +3,9 @@ package bg.softuni.auto_moto_manager.model.dto.binding;
 public class UserEditDTO {
     private String name;
     private String email;
-//    private Set<UserRoleEnum> roles;
     private boolean admin;
 
     public UserEditDTO() {
-//        this.roles = new HashSet<>();
     }
 
     public String getName() {
@@ -27,16 +25,6 @@ public class UserEditDTO {
         this.email = email;
         return this;
     }
-
-//    public Set<UserRoleEnum> getRoles() {
-//        return roles;
-//    }
-
-//    public UserEditDTO setRoles(Set<UserRoleEnum> roles) {
-//        this.roles = roles;
-//        setAdmin(roles.contains(UserRoleEnum.ADMIN));
-//        return this;
-//    }
 
     public boolean isAdmin() {
         return admin;

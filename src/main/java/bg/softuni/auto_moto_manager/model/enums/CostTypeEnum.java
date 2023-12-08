@@ -14,7 +14,7 @@ public enum CostTypeEnum {
     REPAIRMENT_PARTS("Repairment parts"),
     OTHER_COSTS("Other costs");
 
-    String formattedName;
+    final String formattedName;
 
     CostTypeEnum(String formattedName) {
         this.formattedName = formattedName;

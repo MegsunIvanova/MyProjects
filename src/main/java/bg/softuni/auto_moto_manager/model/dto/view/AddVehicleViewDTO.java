@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 public class AddVehicleViewDTO {
-    private EngineEnum[] engineTypes;
-    private TransmissionEnum[] transmissions;
+    private final EngineEnum[] engineTypes;
+    private final TransmissionEnum[] transmissions;
     private Map<String, List<String>> modelsByMake;
 
     public AddVehicleViewDTO() {

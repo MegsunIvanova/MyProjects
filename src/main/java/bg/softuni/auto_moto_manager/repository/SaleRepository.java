@@ -8,6 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface SaleRepository extends JpaRepository<SaleEntity, Long> {
-
-    Optional<SaleEntity> findByVehicle_Uuid(String uuid);
 }

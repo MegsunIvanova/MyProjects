@@ -19,9 +19,7 @@ public class VehiclesRestController {
     @GetMapping("/api/my-vehicles")
     public List<VehiclesUuidDTO> myVehicles(@AuthenticationPrincipal UserDetails principal) {
 
-        List<VehiclesUuidDTO> vehicles = vehicleService.getMyVehiclesList(principal);
-
-        return vehicles;
+        return vehicleService.getMyVehiclesList(principal);
     }
 
 }

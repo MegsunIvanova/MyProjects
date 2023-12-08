@@ -46,7 +46,7 @@ public class AuthController {
 
             return "redirect:/users/register";
         }
-        //TODO: validation and errors handling
+
         userService.register(userRegisterDTO);
 
         return "redirect:/users/login";
@@ -93,6 +93,5 @@ public class AuthController {
         userService.editRoles(userEditDTO);
         return "redirect:/";
     }
-
 
 }

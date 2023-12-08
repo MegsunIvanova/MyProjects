@@ -6,14 +6,14 @@ import bg.softuni.auto_moto_manager.model.enums.CostTypeEnum;
 import java.math.BigDecimal;
 
 public class CostViewDTO {
-    private Long id;
-    private CostTypeEnum type;
-    private String description;
-    private BigDecimal amount;
-    private String currencyId;
-    private BigDecimal rateToBGN;
-    private BigDecimal amountInBGN;
-    private boolean completed;
+    private final Long id;
+    private final CostTypeEnum type;
+    private final String description;
+    private final BigDecimal amount;
+    private final String currencyId;
+    private final BigDecimal rateToBGN;
+    private final BigDecimal amountInBGN;
+    private final boolean completed;
 
     public CostViewDTO(CostEntity costEntity) {
         this.id = costEntity.getId();

@@ -59,6 +59,4 @@ public class ModelController {
         return "redirect:/";
     }
 
-
-
 }

@@ -9,11 +9,10 @@ import java.util.Map;
 
 public class DetailedCostsView {
 
-    private CostTypeEnum[] costTypes;
-    private Map<CostTypeEnum, BigDecimal> completedCostsAmount;
-    private Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount;
-    private Map<CostTypeEnum, List<CostViewDTO>> costsByType;
-
+    private final CostTypeEnum[] costTypes;
+    private final Map<CostTypeEnum, BigDecimal> completedCostsAmount;
+    private final Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount;
+    private final Map<CostTypeEnum, List<CostViewDTO>> costsByType;
 
     public DetailedCostsView(Map<CostTypeEnum, BigDecimal> completedCostsAmount,
                              Map<CostTypeEnum, BigDecimal> uncompletedCostsAmount,
