@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddCostViewDTO {
-    private CostTypeEnum[] costTypes;
+    private final CostTypeEnum[] costTypes;
     private List<String> currencies;
 
     public AddCostViewDTO() {
