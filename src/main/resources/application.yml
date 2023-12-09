@@ -41,6 +41,9 @@ logging:
     blog: WARN
 server:
   port: 8080
+  error:
+    whitelabel:
+      enabled: false
 
 auto.moto.manager:
   remember.me.key: ${REMEBER_ME_KEY:123}

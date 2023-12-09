@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" ,
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/head}"></head>
+
+<body>
+<header>
+    <nav th:replace="~{fragments/navigation}">Navigation</nav>
+</header>
+
+<section class="user_form container text-light text-center">
+    <div><img th:src="@{/images/carparts.png}" alt="Parts" class="img-fluid"></div>
+    <h3 class="my-3 text-danger fs-1">Error</h3>
+    <h4 class="my-3 text-light">Upps... something went wrong way.</h4>
+    <a class="btn btn-danger my-5" th:href="@{/static}">Go home ...</a>
+</section>
+
+</body>
+</html>
