@@ -13,6 +13,10 @@ public class UniqueVINValidator implements ConstraintValidator<UniqueVIN, String
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+        if(value == null || value.isEmpty()) {
+            return true;
+        }
+
         return this.vehicleRepository.findByVin(value).isEmpty();
     }
 }

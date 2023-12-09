@@ -34,8 +34,6 @@ public class CreateVehicleDTO {
 
     private String notes;
 
-    private UUID uuid;
-
     public CreateVehicleDTO() {
     }
 
@@ -102,12 +100,4 @@ public class CreateVehicleDTO {
         return this;
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public CreateVehicleDTO setUuid(UUID uuid) {
-        this.uuid = uuid;
-        return this;
-    }
 }

@@ -4,12 +4,15 @@ import bg.softuni.auto_moto_manager.model.dto.binding.CreateVehicleDTO;
 import bg.softuni.auto_moto_manager.model.dto.view.*;
 import bg.softuni.auto_moto_manager.model.entity.CostEntity;
 import bg.softuni.auto_moto_manager.model.entity.ModelEntity;
+import bg.softuni.auto_moto_manager.model.entity.UserEntity;
 import bg.softuni.auto_moto_manager.model.entity.VehicleEntity;
 import bg.softuni.auto_moto_manager.model.enums.CostTypeEnum;
 import bg.softuni.auto_moto_manager.repository.MakeRepository;
+import bg.softuni.auto_moto_manager.repository.UserRepository;
 import bg.softuni.auto_moto_manager.repository.VehicleRepository;
 import bg.softuni.auto_moto_manager.service.VehicleService;
 import bg.softuni.auto_moto_manager.service.aop.WarnIfExecutionExceeds;
+import bg.softuni.auto_moto_manager.service.exceptions.DatabaseException;
 import bg.softuni.auto_moto_manager.service.exceptions.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -29,13 +32,15 @@ import static bg.softuni.auto_moto_manager.util.Constants.BLANK_MOTORCYCLE_IMG_S
 public class VehicleServiceImpl implements VehicleService {
     private final MakeRepository makeRepository;
     private final VehicleRepository vehicleRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
     public VehicleServiceImpl(MakeRepository makeRepository,
                               VehicleRepository vehicleRepository,
-                              ModelMapper modelMapper) {
+                              UserRepository userRepository, ModelMapper modelMapper) {
         this.makeRepository = makeRepository;
         this.vehicleRepository = vehicleRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -45,8 +50,20 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public void create(CreateVehicleDTO createVehicleDTO) {
+    public void create(CreateVehicleDTO createVehicleDTO, UserDetails principal) {
         VehicleEntity vehicleEntity = modelMapper.map(createVehicleDTO, VehicleEntity.class);
+
+        UserEntity owner = userRepository
+                .findByEmail(principal.getUsername())
+                .orElseThrow(() -> new DatabaseException(
+                        "Logged user with username " +
+                                principal.getUsername() +
+                                " cannot be found in DB!")
+                );
+
+        vehicleEntity.setOwner(owner);
+        vehicleEntity.setUuid(UUID.randomUUID().toString());
+
         vehicleRepository.save(vehicleEntity);
     }
 
@@ -101,7 +118,7 @@ public class VehicleServiceImpl implements VehicleService {
 
         List<VehicleEntity> myVehicles;
 
-        if(viewHasAdminRole) {
+        if (viewHasAdminRole) {
             myVehicles = vehicleRepository.findAll();
         } else {
             myVehicles = vehicleRepository.findAllByOwner_Email(principal.getUsername());

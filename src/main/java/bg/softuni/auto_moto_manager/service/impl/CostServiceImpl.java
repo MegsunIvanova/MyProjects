@@ -44,12 +44,7 @@ public class CostServiceImpl implements CostService {
     @Override
     public void addCost(AddCostDTO addCostDTO) {
         CostEntity costEntity = modelMapper.map(addCostDTO, CostEntity.class);
-
-        if (costEntity.isCompleted() && costEntity.getTransactionExRate() == null) {
-            BigDecimal fixRate = costEntity.getCurrency().getRateToBGN();
-            costEntity.setTransactionExRate(fixRate);
-        }
-
+        mapTransactionRate(costEntity);
         costRepository.save(costEntity);
     }
 
@@ -101,12 +96,15 @@ public class CostServiceImpl implements CostService {
                 .orElseThrow(() -> new ObjectNotFoundException("Currency " + updateCostDTO.getCurrency() +
                         " was not found."));
 
+
         CostEntity updatedCost = costToUpdate.setType(updateCostDTO.getType())
                 .setDescription(updateCostDTO.getDescription())
                 .setAmount(updateCostDTO.getAmount())
                 .setCurrency(currencyEntity)
                 .setTransactionExRate(updateCostDTO.getTransactionExRate())
                 .setCompleted(updateCostDTO.isCompleted());
+
+        mapTransactionRate (updatedCost);
 
         costRepository.save(updatedCost);
     }
@@ -134,6 +132,13 @@ public class CostServiceImpl implements CostService {
                         .add(costViewDTO.getAmountInBGN());
                 uncompletedCostsAmount.put(type, sum);
             }
+        }
+    }
+
+    private void mapTransactionRate (CostEntity costEntity) {
+        if (costEntity.isCompleted() && costEntity.getTransactionExRate() == null) {
+            BigDecimal fixRate = costEntity.getCurrency().getRateToBGN();
+            costEntity.setTransactionExRate(fixRate);
         }
     }
 }

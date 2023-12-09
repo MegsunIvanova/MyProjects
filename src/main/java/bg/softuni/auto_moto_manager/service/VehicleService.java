@@ -14,7 +14,7 @@ import java.util.List;
 public interface VehicleService {
     AddVehicleViewDTO getAddVehicleView ();
 
-    void create(CreateVehicleDTO createVehicleDTO);
+    void create(CreateVehicleDTO createVehicleDTO, UserDetails principal);
 
     Page<VehicleSummaryViewDTO> getAllVehicles(Pageable pageable);
 

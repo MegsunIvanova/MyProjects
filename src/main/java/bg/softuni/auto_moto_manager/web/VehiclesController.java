@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,7 +47,8 @@ public class VehiclesController {
     @PostMapping("/add")
     public String createVehicle(@Valid CreateVehicleDTO createVehicleDTO,
                                 BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes) {
+                                RedirectAttributes redirectAttributes,
+                                @AuthenticationPrincipal UserDetails principal) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("createVehicleDTO", createVehicleDTO);
@@ -56,7 +59,7 @@ public class VehiclesController {
             return "redirect:/vehicles/add";
         }
 
-        vehicleService.create(createVehicleDTO);
+        vehicleService.create(createVehicleDTO, principal);
 
         return "redirect:/";
     }

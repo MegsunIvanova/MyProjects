@@ -55,7 +55,7 @@ public class VehicleEntity extends BaseEntity {
     @ManyToOne(optional = false)
     private UserEntity owner;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String uuid;
 
     public VehicleEntity() {

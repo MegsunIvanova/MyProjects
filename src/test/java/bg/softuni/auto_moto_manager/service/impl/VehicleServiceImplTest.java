@@ -7,6 +7,7 @@ import bg.softuni.auto_moto_manager.model.enums.EngineEnum;
 import bg.softuni.auto_moto_manager.model.enums.TransmissionEnum;
 import bg.softuni.auto_moto_manager.model.enums.VehicleTypeEnum;
 import bg.softuni.auto_moto_manager.repository.MakeRepository;
+import bg.softuni.auto_moto_manager.repository.UserRepository;
 import bg.softuni.auto_moto_manager.repository.VehicleRepository;
 import bg.softuni.auto_moto_manager.service.VehicleService;
 import org.junit.jupiter.api.Assertions;
@@ -40,6 +41,9 @@ class VehicleServiceImplTest {
     private MakeRepository mockMakeRepository;
     @Mock
     private VehicleRepository mockVehicleRepository;
+
+    @Mock
+    private UserRepository mockUserRepository;
     @Mock
     private ModelMapper mockModelMapper;
 
@@ -48,6 +52,7 @@ class VehicleServiceImplTest {
         serviceToTest = new VehicleServiceImpl(
                 mockMakeRepository,
                 mockVehicleRepository,
+                mockUserRepository,
                 mockModelMapper);
 
 

@@ -115,7 +115,10 @@ public class ApplicationConfiguration {
                         : modelRepository.findByName(ctx.getSource())
                         .orElseThrow(() -> new ObjectNotFoundException("Model " + ctx.getSource() + " was not found!"));
 
-        Provider<String> uuidProvider = p -> String.valueOf(UUID.randomUUID());
+        Converter<String, String> vinConverter =
+                ctx -> (ctx.getSource() == null || ctx.getSource().isEmpty())
+                        ? null
+                        : ctx.getSource();
 
         modelMapper.createTypeMap(CreateVehicleDTO.class, VehicleEntity.class)
                 .addMappings(mapper -> mapper.skip(VehicleEntity::setSale))
@@ -123,8 +126,8 @@ public class ApplicationConfiguration {
                         .using(modelConverter)
                         .map(CreateVehicleDTO::getModel, VehicleEntity::setModel))
                 .addMappings(mapper -> mapper
-                        .with(uuidProvider)
-                        .map(CreateVehicleDTO::getUuid, VehicleEntity::setUuid));
+                        .using(vinConverter)
+                        .map(CreateVehicleDTO::getVin, VehicleEntity::setVin));
     }
 
     private void configMapCreateModelDTOToModelEntity(ModelMapper modelMapper) {
@@ -162,7 +165,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public RestTemplate restTemplate (RestTemplateBuilder restTemplateBuilder) {
+    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
         return restTemplateBuilder
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
